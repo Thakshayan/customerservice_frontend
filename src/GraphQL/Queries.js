@@ -1,12 +1,24 @@
 import {gql} from '@apollo/client';
 
-export const VIEW_MODERATORS = gql`
+const VIEW_MODERATORS = gql`
     query {
-        showDistricts {
-            id
-            province {
-            id
-            }
+        Moderators {
+            workerId
+            phone
+            name
+            email
           }
     }
 `;
+
+const IS_LOGGED_IN = gql`
+  {
+    isLoggedIn @client
+  }
+`;
+
+
+export {
+    VIEW_MODERATORS,
+    IS_LOGGED_IN
+}

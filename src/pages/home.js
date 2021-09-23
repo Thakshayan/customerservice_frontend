@@ -5,6 +5,11 @@ import {VIEW_MODERATORS} from "../GraphQL/Queries";
 import { useEffect } from "react";
 import {useState} from "react";
 
+//components
+import Header from "../components/header";
+import Navbar from '../components/navbar';
+import Preloader from '../components/preloader';
+
 
 function Home() {
 
@@ -18,9 +23,17 @@ function Home() {
 
     return (
         <div>
-            
+                     {/* [ Pre-loader ] start */}
+                     <Preloader/>
+            { /* [ Pre-loader ] End 
+            [ navigation menu ] start */}
+            <Navbar/>
+            {/* </div> [ navigation menu ] end 
+            [ Header ] start */}
+            <Header/>
+            {/*<!-- [ Header ] end --> */}   
         {/*<!-- [ Main Content ] start -->*/}
-        {data? <Content/> :null}
+        <Content/>
         {/*<!-- [ Main Content ] end --> */}
         </div>
     );
