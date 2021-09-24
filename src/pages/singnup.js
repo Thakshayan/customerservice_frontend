@@ -18,7 +18,7 @@ const SignUp = props => {
 
         
       onCompleted: data => {
-          console.log(data)
+
         // store the token
         localStorage.setItem('token', data.signUp);
         // update the local cache

@@ -18,7 +18,7 @@ function Home() {
     return (
         <div>
                      {/* [ Pre-loader ] start */}
-                     <Preloader/>
+                     {/* <Preloader/> */}
             { /* [ Pre-loader ] End 
             [ navigation menu ] start */}
             <Navbar/>

@@ -2,10 +2,11 @@ import { Route, Switch } from "react-router-dom";
 
 import Pages from "./pages/"
 
-import { ApolloClient, ApolloProvider, InMemoryCache, createHttpLink } from "@apollo/client";
+import { ApolloClient, ApolloProvider,  createHttpLink } from "@apollo/client";
+import {InMemoryCache} from "apollo-cache-inmemory";
 import {setContext} from "apollo-link-context";
-import { ToastProvider } from "react-toast-notifications";
-const uri = process.env.API_URI;
+
+const uri = "http://localhost:8000/api";
 const httpLink = createHttpLink({uri});
 const cache = new InMemoryCache();
 const authLink = setContext((_,{headers})=>{
@@ -35,10 +36,10 @@ function App() {
   
   return (
     <ApolloProvider client={client}>
-      <ToastProvider>
+
           
           <Pages />
-        </ToastProvider>
+  
      </ApolloProvider>    
     
   );

@@ -62,7 +62,7 @@ const SignUpForm = props => {
           required
           type="password"
           id="signInspPassword"
-          name="signInspPassword"
+          name={"signInspPassword"}
           className="form-control"
           placeholder="Password"
           onChange={onChange}
