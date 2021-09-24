@@ -13,17 +13,18 @@ import ViewEmployee from "./viewEmployee";
 import Profile from "./profile";
 import AssignWorker from "./assignWorker";
 import ViewWork from "./viewWork";
-//import Work from "./pages/work";
+import Work from "./work";
 import RemoveEmployee from "./removeEmployee";
 import EditBasicInfo from "./editEmployeeBasicInfo";
 import EditWorkerInfo from "./editEmployeeWorkerInfo";
 import EditReview from "./editRating";
-//import AddWork from ".addWork";
+import AddWork from "./addWork";
 import WorkRequest from "./workRequest";
 import ProviderProfile from "./providerProfile";
 import SignUp from "./singnup";
 import ServiceInfo from "./serviceInfo";
 import SignIn from "./signin";
+import AddModerator from './addModerator';
 
 
 
@@ -44,12 +45,10 @@ const Pages = () => {
 
         <PrivateRoute exact path='/' component={Home}/>
       
-        <PrivateRoute exact path='/addModerator'>
-          <AddEmployee type="Moderator"/>
-        </PrivateRoute>
-        <PrivateRoute exact path='/addWorker'>
-          <AddEmployee type="Worker"/>
-        </PrivateRoute>
+        <PrivateRoute exact path='/addModerator' component={AddModerator} />
+          
+        <PrivateRoute exact path='/addWorker' component={AddEmployee} />
+          
         <PrivateRoute exact path='/viewWorker'>
           <ViewEmployee type="Worker"/>
         </PrivateRoute>
@@ -62,12 +61,10 @@ const Pages = () => {
         
         <PrivateRoute exact path='/assignWorker' component={AssignWorker}/>
         
-        <PrivateRoute exact path='/viewWork'>
-          <ViewWork/>
-        </PrivateRoute>
-        <PrivateRoute exact path='/viewFinishedWork'>
-          <ViewWork/>
-        </PrivateRoute>
+        <PrivateRoute exact path='/viewWork' component={ViewWork} />
+        
+        <PrivateRoute exact path='/viewFinishedWork' component={ViewWork} />
+         
         
         {/* <PrivateRoute exact path='/work' component={Work}/>
          */}

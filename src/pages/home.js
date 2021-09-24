@@ -13,13 +13,7 @@ import Preloader from '../components/preloader';
 
 function Home() {
 
-    const {error,loading, data} = useQuery(VIEW_MODERATORS);
-    const [datas,setData] = useState();
 
-    useEffect(()=>{
-        setData(datas)
-        console.log(data,error,loading);
-    },[data]);
 
     return (
         <div>

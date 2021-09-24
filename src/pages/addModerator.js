@@ -6,7 +6,7 @@ import Navbar from '../components/navbar';
 import Preloader from '../components/preloader';
 
 
-function AddEmployee({type}) {
+function AddModerator() {
     return (
         <div>
             {/* [ Pre-loader ] start */}
@@ -20,11 +20,11 @@ function AddEmployee({type}) {
             {/*<!-- [ Header ] end --> */}
             
             {/*<!-- [ Main Content ] start -->*/}
-            <AddWorkerForm type="Worker"/>
+            <AddWorkerForm type="Moderator"/>
             {/*<!-- [ Main Content ] end -->*/}
         </div>
     );
   }
   
-  export default AddEmployee;
+  export default AddModerator;
   
