@@ -8,6 +8,8 @@ import ProfileCard from '../profileCard';
 import PhotoCard from '../profilephoto';
 import WorkerInfoCard from "../workerInfoCard";
 
+
+
 function ProfileContent(){
 
     const {id} = useParams();
@@ -15,15 +17,11 @@ function ProfileContent(){
     const [content,setContent] = useState([]);
 
     useEffect(()=>{
-        fetch(`http://localhost:8000/serviceprovider/getprofile/${id}`)
-            .then(res => res.json())
-            .then(data => {
-                setContent(data);
-                console.log(content);
-            })
-            .catch(err=> console.log);
 
-    },[])
+        console.log(id)
+
+
+    },[id])
 
     return(
         <div className="pcoded-main-container">
@@ -42,7 +40,7 @@ function ProfileContent(){
 
                                 {/*<!--[ profile section ] starts-->*/}
                                 <div className="col-md-12 col-xl-5">
-                                    <PhotoCard/>
+                                    <PhotoCard id={id}/>
                                 </div>
                                 
                                 {/*<!--[ profile section ] end-->
@@ -60,7 +58,10 @@ function ProfileContent(){
                                     {/*<!--[ Worker info section ] end-->
 
                                     <!-- [ rating list ] starts-->*/}
-                                    <RatingList id={id} />
+                                    <RatingList 
+                                        content={[5,4,5,2,1]} 
+                                        value = {4.7}
+                                    />
                                     {/*<!-- [ rating list ] end-->*/}
 
                                     {/*<!-- [ finish button ] starts-->*/}
@@ -77,11 +78,11 @@ function ProfileContent(){
                                 
                                 <div className="col-xl-8">
                                     {/*<!--[ Recent Notification ] start-->*/}
-                                    <Notificator title="New Notifications"/>
+                                    <Notificator title="New Notifications" content={null}/>  {/* Need add the content */}
                                     {/*<!--[ Recent Notification ] end--> */}
                                     
                                     {/*<!--[ Recent Notification ] start-->*/}
-                                    <Notificator title="New Messages"/>
+                                    {/* <Notificator title="New Messages"/> */}
                                     {/*<!--[ Recent Notification ] end--> */}
                                 </div>
                                 {/* <!-- [ Main Content ] end -->  */}

@@ -1,22 +1,28 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
+import { WORKER_PROFESSIONAL } from "../../GraphQL/Queries";
+import { useQuery } from "@apollo/client";
 
 const WorkerInfoCard = ({id,edit,title}) => {
 
     const [content,setContent] = useState([]);
+    const [Id,setID] = useState(id) 
+
+    const {error,loading,data} = useQuery(WORKER_PROFESSIONAL,{
+        variables:{
+            id:Id
+        }
+    })
 
     useEffect(()=>{
+        console.log("WorkerInfo",data,error,loading)
+        if(data){
+            setContent([data.getWorker]);
+            console.log(data.getWorker);
+        }
+    },[data])
 
-        fetch(`http://localhost:8000/serviceprovider/getWorkerInfo/${id}`)
-            .then(res => res.json())
-            .then(data => {
-                setContent(data)
-                console.log(data)
-            })
-            .catch(err=> console.log);
-
-    },[])
 
 
 
@@ -25,7 +31,7 @@ const WorkerInfoCard = ({id,edit,title}) => {
             <div className="card yearly-sales">
                 <div className="card-block" style={{padding:'10px 30px 10px 30px'}}>
                     <div className="card-header">
-                        <h5>{title}</h5>
+                        <h5>Worker Info</h5>
                     </div>
                     {content[0] ?
                     <div className="" style={{paddingTop:"25px"}}>
@@ -88,7 +94,7 @@ const WorkerInfoCard = ({id,edit,title}) => {
 
                     {edit ? 
                         <div style={{paddingTop:"20px",float:"right"}}>
-                            <Link to={`/edit/workerInfo/${id}`} className="btn btn-mtd btn-primary" style={{width:"100px",height:"25px",padding:'0 0'}}> 
+                            <Link to={`/CSA/edit/workerInfo/${id}`} className="btn btn-mtd btn-primary" style={{width:"100px",height:"25px",padding:'0 0'}}> 
                                 Edit 
                                 <i className="fas fa-edit" style={{paddingLeft:'10px'}}></i>
                             </Link>

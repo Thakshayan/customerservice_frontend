@@ -2,6 +2,7 @@ import React,{ useState } from "react";
 
 import * as Yup from 'yup';
 import {useFormik} from 'formik';
+import { useMutation } from "@apollo/client";
 
 //import { passwordValidator } from "../formComponents/formValidator";
 
@@ -9,6 +10,12 @@ const PasswordChanger = ({id}) => {
 
     const [password,setPassword] = useState("password");
     const [className, setClassName] = useState("fa fa-eye");
+
+    // const [updatePassword,{loading,error}] = useMutation(IPDATE_PASSWORD,{
+    //     onCompleted: data=>{
+    //         console.log(data)
+    //     }
+    // })
 
     // const validate = values => {
 
@@ -60,17 +67,9 @@ const PasswordChanger = ({id}) => {
         onSubmit: values => {
             alert(JSON.stringify(values));
 
-            fetch(`http://localhost:8000/serviceprovider/editPassword/${id}`,{
-                method: 'PUT',
-                headers: {
-                    'Content-Type':'application/json'
-                },
-                body: JSON.stringify(values)
-            }).then(()=>{
-                alert("Successfully submitted"); 
-            }).catch((err)=>{
-                console.log(err);
-            })
+                // updatePassword({
+                //     variables:values
+                // })
             }
     });
 

@@ -1,21 +1,27 @@
 import { useEffect } from "react";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useQuery } from "@apollo/client";
+import { GET_WORKER, WORKER_PERSONAL, WORK_PROFILE } from "../../GraphQL/Queries";
 
 const ProfileCard = ({id,edit,title}) => {
 
 
     const [content,setContent] = useState([]);
 
-    useEffect(()=>{
-        fetch(`http://localhost:8000/serviceprovider/getbasic/${id}`)
-            .then(res => res.json())
-            .then(data => {
-                setContent(data)
-            })
-            .catch(err=> console.log);
+    const {error,loading,data} = useQuery(WORKER_PERSONAL,{
+        variables:{
+            id:id
+        }
+    })
 
-    },[])
+    useEffect(()=>{
+    
+        if(data){
+            setContent([data.getWorker]);
+            console.log(data.getWorker);
+        }
+    },[data,id])
 
     return (  
         <div className="">
@@ -67,7 +73,7 @@ const ProfileCard = ({id,edit,title}) => {
                     :null}
 
                     {edit ?<div style={{paddingTop:"20px",float:"right"}}>
-                        <Link to={`/edit/basicInfo/${id}`} className="btn btn-mtd btn-primary" style={{width:"100px",height:"25px",padding:'0 0'}}> 
+                        <Link to={`/CSA/edit/basicInfo/${id}`} className="btn btn-mtd btn-primary" style={{width:"100px",height:"25px",padding:'0 0'}}> 
                             Edit 
                             <i className="fas fa-edit" style={{paddingLeft:'10px'}}></i>
                         </Link>

@@ -3,41 +3,75 @@ import { useEffect , useState } from 'react';
 import BreadCrumb from '../../breadcrumb';
 import SearchBar from '../../searchBar';
 import PaginationBar from '../../pagination';
-import NotificationBar from '../../notification/notificationBar';
+import RequestBar from './requestBar';
+
+// import { GET_BOOKINGS, GET_BOOKING } from '../../../GraphQL/Queries';
+
+import { useQuery } from '@apollo/client';
+
 
 
 const NewWorkRequest = () => {    
 
-    const [content,setContent] = useState([]);
     const [id,setID] = useState('');
+    // const [Id,setID] = useState(id);
+    // const fetchContent = useQuery(GET_BOOKING,{
+    //     variables:{ workId:id
+    //     }
+    // });
+
+
+    const [contents,setContents] = useState([]);
+    const [content,setContent] = useState([]);
     const [page,setPage] = useState(0);
-    const [offSet,setOffSet] = useState(1);
-    const limit = 10;
+    const [offSet,setOffSet] = useState();
+
+    // const {error,loading,data} = useQuery(GET_BOOKINGS,{
+    //     variables:{
+    //         page:page,
+    //         offSet:1
+    //     }
+    // });
 
 
-    useEffect(()=>{
+    // useEffect(()=>{
+    //     console.log(data)
+    //     console.log(type)
+    //     if(error){
+    //         console.log(error)
+    //     }
+    //     if(data){
+      
+    //         setContent(data.getWorks)
+    //         setContents(data.getWorks)
+    //         setOffSet(data.getWorkCount/1)
+    //     }
 
-        fetch(`http://localhost:8000/serviceprovider/newRequestCount`)
-            .then(res => res.json())
-            .then(data => {
-                setOffSet(data/limit);              
-            })
-            .catch(err => console.log(err));
 
-            
+    // },[data])
+
+
+
+    // useEffect(()=>{
+    //     console.log(contents)
+    //     if(id){
+    //         fetchContent.refetch({
+    //         workId:id
+    //         }).then( datas => {
+          
+    //             if(datas){
+    //                 setContent([datas.data.getWork])
+    //                 console.log(datas.data.getWork)
+    //             }
+    
+    //         })
+    //     }else if(contents){
+    //         setContent(contents)
+    //     }
         
-    },[]);
+    // },[id]);
 
-    useEffect(()=>{
 
-        fetch(`http://localhost:8000/serviceprovider/newRequests?pages=${page}`)
-            .then(res => res.json())
-            .then(data => {
-                setContent(data);               
-            })
-            .catch(err => console.log(err));
-        
-    },[page]);
 
 
     return(  
@@ -62,20 +96,20 @@ const NewWorkRequest = () => {
                                             </div>
                                             <div className="" style={{marginTop:'20px'}}>
                                             
-                                                <SearchBar placeholder="Enter work ID ..." />
+                                            <SearchBar placeholder="Enter work Booker ID ..." id={id} setId={setID}/>
+                                            
                                             </div>
                                             
                                             <div className="card-block px-0 py-3">
                                                 <div className="">
                                                     <div className="container">
                                                         <div className="justify-content-center" >
-                                                            <NotificationBar
-                                                                title = "This is a xample title"
-                                                                time = "21 July 12:56"
-                                                                description = "This is a xample description. This is a xample description. This is a xample description. This is a xample description"
-                                                                viewURL = "#"
-                                                                delURL = "#"
-                                                                id = "ID001"
+                                                            <RequestBar
+                                                                by={"ID001"} //customerId
+                                                                workstation ={"workstation"}
+                                                                description ="This is a sample booking description"
+                                                                key ={'1'}
+                                                                date=""
                                                             /> 
 
                                                             {content.map((e)=>{

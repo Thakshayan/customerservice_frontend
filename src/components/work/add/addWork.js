@@ -3,6 +3,8 @@ import {useFormik} from 'formik';
 import * as Yup from 'yup';
 import {useState} from 'react';
 import ButtonCard from '../../buttonCard';
+import { useMutation } from '@apollo/client';
+import { ADD_WORK } from '../../../GraphQL/Mutations';
 
 
 function AddWorkerForm({type}){
@@ -11,6 +13,13 @@ function AddWorkerForm({type}){
     const [workerArray,setWorkerArray] = useState([]);
     const [workerId,setWorkerId] = useState('');
     const [error,setError] = useState('');
+
+    const [addWork,{loading,errors}] = useMutation(ADD_WORK,{
+        onCompleted: data=>{
+            console.log(data)
+            //setID()
+        }
+    })
 
     const addWorker = (e)=>{
        
@@ -60,7 +69,7 @@ function AddWorkerForm({type}){
             address: Yup.string()
                 .required('Please fill the address'),
             customerId: Yup.string()
-                .required('Please enter the Worker ID')
+                // .required('Please enter the Worker ID')
                 .matches(/^[\w\d]+$/,"can only have letters and digits"),
         }),
         onSubmit: values => {
@@ -68,20 +77,15 @@ function AddWorkerForm({type}){
             if(workerArray.length >0){
                 
                 values.workers = workerArray;
-                const work = values;
+                values.phone = Number(values.phone);
+                values.estimation = Number(values.estimation)
                 
-                console.log(work)
-                alert(JSON.stringify(work))
+                alert(JSON.stringify(values,null,2))
 
-                fetch('http://localhost:8000/serviceprovider/addWork',{
-                    method: 'POST',
-                    headers: {"Content-Type": "application/json"},
-                    body: JSON.stringify(work)
-                }).then(()=>{
-                    alert("Successfully submitted"); 
-                }).catch((err)=>{
-                    console.log(err);
+                addWork({
+                    variables:values
                 })
+                
                 
             }else {
                 setError("Add Atleast one Worker");
@@ -138,7 +142,7 @@ function AddWorkerForm({type}){
                                                             
                                                             <div className="form-group">
                                                                 <label htmlFor="estimation">Estimation(In days)</label>
-                                                                <input type="Number" className="form-control" value={formik.values.estimation} aria-label="Enter estimation in days" id="estimation" placeholder="Phone Number" onChange={formik.handleChange} onBlur={formik.handleBlur} required/>
+                                                                <input type="Number" className="form-control" value={formik.values.estimation} aria-label="Enter estimation in days" id="estimation" placeholder="Estimation" onChange={formik.handleChange} onBlur={formik.handleBlur} required/>
                                                                 {formik.touched.estimation && formik.errors.estimation ? <small id="nameError" className="error form-text text-muted error "> {formik.errors.estimation}</small>: null}
                                                             </div>
                                                             
