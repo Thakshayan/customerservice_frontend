@@ -1,18 +1,20 @@
-// import React and our routing dependencies
-import React from 'react';
-import { useQuery, gql } from '@apollo/client';
-import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 
-
-
+//components
+import Header from "../components/header";
+import NavBar from '../components/navbar';
+import NavBarWorker from '../components/navbarWorker';
+import Preloader from '../components/preloader';
 
 // Pages
-import Home from '../components/home';
+import Home from './home';
 import AddEmployee from "./addEmployee";
+import AddModerator from "./addModerator";
 import ViewEmployee from "./viewEmployee";
+import ViewModerator from "./viewModerator";
 import Profile from "./profile";
 import AssignWorker from "./assignWorker";
 import ViewWork from "./viewWork";
+import ViewFinishWork from "./viewFinishedWork";
 import Work from "./work";
 import RemoveEmployee from "./removeEmployee";
 import EditBasicInfo from "./editEmployeeBasicInfo";
@@ -24,7 +26,20 @@ import ProviderProfile from "./providerProfile";
 import SignUp from "./singnup";
 import ServiceInfo from "./serviceInfo";
 import SignIn from "./signin";
-import AddModerator from './addModerator';
+import Message from "./messages";
+import ViewReview from "./viewRating";
+import RemoveModerator from "./removeModerator";
+import SPNotification from "./notification";
+import SPMessages from "./spMessages";
+
+// import React and our routing dependencies
+import React from 'react';
+import { useQuery, gql } from '@apollo/client';
+import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
+
+import AddWorkImage from "./addWorkImage";
+
+
 
 
 
@@ -39,59 +54,65 @@ const Pages = () => {
   return (
     <Router>
 
-        <Route exact path="/signup" component={SignUp}/> 
-        <Route exact path="/signin" component={SignIn}/> 
-
-
-        <PrivateRoute exact path='/' component={Home}/>
+        
+        <Route path="/signin" component={SignIn}/> 
       
-        <PrivateRoute exact path='/addModerator' component={AddModerator} />
-          
-        <PrivateRoute exact path='/addWorker' component={AddEmployee} />
-          
-        <PrivateRoute exact path='/viewWorker'>
-          <ViewEmployee type="Worker"/>
-        </PrivateRoute>
-        <PrivateRoute exact path='/viewModerator'>
-          <ViewEmployee type="Moderator"/>
-        </PrivateRoute>
-        <PrivateRoute exact path='/profile/:id' component={Profile}/>
-         
-        <PrivateRoute exact path='/profile' component={ProviderProfile}/>
+        <Route path="/CSA"render={({ match:{url}}) => (
+        <>
+        {/* [ Pre-loader ] start */}
+        <Preloader/>
+        { /* [ Pre-loader ] End 
+
+          [ navigation menu ] start */}
+        <NavBar/>
+        {/* </div> [ navigation menu ] end 
+
+        [ Header ] start */}
+        <Header/>
+        {/*<!-- [ Header ] end --> */}
+       
+        <PrivateRoute exact path={`${url}/`} component={Home}/>
+        <PrivateRoute exact path={`${url}/addModerator`} component={AddModerator}/>
+        <PrivateRoute exact path={`${url}/addWorker`} component={AddEmployee}/>
+        <PrivateRoute exact path={`${url}/viewWorker`} component={ViewEmployee}/>
+        <PrivateRoute exact path={`${url}/viewModerator`} component={ViewModerator}/>
+        <PrivateRoute exact path={`${url}/removeWorker`} component={RemoveEmployee}/>
+        <PrivateRoute exact path={`${url}/removeModerator`} component={RemoveModerator}/>
+        <PrivateRoute exact path={`${url}/edit/basicInfo/:id`} component={EditBasicInfo}/>
+        <PrivateRoute exact path={`${url}/edit/workerInfo/:id`} component={EditWorkerInfo}/>
+       
+
+        <PrivateRoute exact path={`${url}/profile/:id`} component={Profile}/>
         
-        <PrivateRoute exact path='/assignWorker' component={AssignWorker}/>
+
+        {/* <PrivateRoute exact path={`${url}/assignWorker`} component={AssignWorker}/> */}
+        <PrivateRoute exact path={`${url}/addWork`} component={AddWork}/>
+        <PrivateRoute exact path={`${url}/viewRequest`} component={WorkRequest}/>
+        <PrivateRoute exact path={`${url}/assignWorker/:id`} component={AssignWorker}/>
+        <PrivateRoute exact path={`${url}/viewWork`} component={ViewWork}/>
+        <PrivateRoute exact path={`${url}/viewFinishedWork`} component={ViewFinishWork}/>      
+        <PrivateRoute exact path={`${url}/work/:id`} component={Work}/>
+        <PrivateRoute exact path={`${url}/work/images/:id`} component={AddWorkImage}/>
+
+
+        <PrivateRoute exact path={`${url}/messages/:id`} component={Message}/>
+        <PrivateRoute exact path={`${url}/messages`} component={SPMessages}/>
+
+        <PrivateRoute exact path={`${url}/notifications`} component={SPNotification}/>
+
         
-        <PrivateRoute exact path='/viewWork' component={ViewWork} />
+        <PrivateRoute exact path={`${url}/editRating`} component={EditReview}/>
+        <PrivateRoute exact path={`${url}/viewRating`} component={ViewReview}/>
+        <PrivateRoute exact path={`${url}/viewRating/:id`} component={ViewReview}/>
         
-        <PrivateRoute exact path='/viewFinishedWork' component={ViewWork} />
-         
+        <PrivateRoute exact path={`${url}/serviceInfo`} component={ServiceInfo}/>
+        <PrivateRoute exact path={`${url}/profile`} component={ProviderProfile}/>
         
-        {/* <PrivateRoute exact path='/work' component={Work}/>
-         */}
-        <PrivateRoute exact path='/removeWorker'>
-          <RemoveEmployee type="Worker"/>
-        </PrivateRoute>
-        <PrivateRoute exact path='/removeModerator'>
-          <RemoveEmployee type="Moderator" />
-        </PrivateRoute>
-        <PrivateRoute exact path='/edit/basicInfo/:id'>
-          <EditBasicInfo type="Worker" />
-        </PrivateRoute>
-        <PrivateRoute exact path='/edit/workerInfo/:id'>
-          <EditWorkerInfo type="Worker" />
-        </PrivateRoute>
-        <PrivateRoute exact path='/editRating'>
-          <EditReview />
-        </PrivateRoute>
-        {/* <PrivateRoute exact path='/addWork'>
-          <AddWork/>
-        </PrivateRoute> */}
-        <PrivateRoute exact path='/viewRequest'>
-          <WorkRequest/>
-        </PrivateRoute>
-        <PrivateRoute exact path='/serviceInfo'>
-          <ServiceInfo/>
-        </PrivateRoute>
+        </>
+        )}
+        />
+  
+    
 
 
 
@@ -102,22 +123,25 @@ const Pages = () => {
 const PrivateRoute = ({ component: Component, ...rest }) => {
   const { loading, error, data } = useQuery(IS_LOGGED_IN);
   // if the data is loading, display a loading message
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <p>Loading...{console.log(data.isLoggedIn)}</p>;
   // if there is an error fetching the data, display an error message
   if (error) return <p>Error!</p>;
+
   return (
     <Route
       {...rest}
       render={props =>
+        
         data.isLoggedIn === true ? (
+          
           <Component {...props} />
         ) : (
-          <Redirect
+         <Redirect
             to={{
               pathname: '/signin',
               state: { from: props.location }
             }}
-          />
+          /> 
         )
       }
     />

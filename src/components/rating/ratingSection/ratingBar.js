@@ -1,6 +1,9 @@
+import { useEffect } from "react/cjs/react.development";
+
 function RatingBar({rate,count,percentage}){
 
-    const runCallback = (stars)=>{
+
+    const runCallback = (stars)=>{        
         return stars();    
     }
 

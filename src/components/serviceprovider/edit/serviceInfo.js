@@ -18,6 +18,15 @@ const EditServiceInfo = () => {
 
     }
 
+    const removeDistrict = ()=>{
+
+    }
+
+    
+    const removeService = ()=>{
+
+    }
+
     const formik = useFormik({
         initialValues:{},validationSchema: Yup.object({
             
@@ -64,10 +73,10 @@ const EditServiceInfo = () => {
                                         </div>
                                         
                                         <div className="col-12 col-sm-12 col-md-3 col-xl-3" style={{margin:'10px'}}>
-                                            <Link to="" className="label theme-bg2 text-white f-12" style={{float:'right',right:"20px"}}>
+                                            <button onClick={removeService} className="label theme-bg2 text-white f-12" style={{float:'right',right:"20px"}}>
                                                 Remove
                                                 &nbsp; <i className="far fa-trash-alt"></i>
-                                            </Link>
+                                            </button>
                                         </div>
                                     </div>
 
@@ -108,15 +117,15 @@ const EditServiceInfo = () => {
                                                 <h6 className="text-muted"><i className="fas fa-circle text-c-green f-10 m-r-15"></i>  </h6>
                                             </div>
 
-                                            <div className="col-8 col-sm-7 col-md-5 col-xl-7" style={{margin:'10px'}}>
-                                                <p className="m-0">this is a sample service</p>
+                                            <div className="col-8 col-sm-7 col-md-5 col-xl-5" style={{margin:'10px'}}>
+                                                <p className="m-0">Jaffna</p>
                                             </div>
                                             
                                             <div className="col-12 col-sm-3 col-md-4 col-xl-3" style={{margin:'10px'}}>
-                                                <Link to="" className="label theme-bg2 text-white f-12" style={{float:'right',right:"20px"}}>
+                                                <button onClick={removeDistrict} className="label theme-bg2 text-white f-12" style={{float:'right',right:"20px"}}>
                                                     Remove
                                                     &nbsp; <i className="far fa-trash-alt"></i>
-                                                </Link>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>

@@ -18,51 +18,38 @@ const SignUpForm = props => {
   return (
     <div>
       {/* Display the appropriate form header */}
-      {props.formType === 'signup' ? <h2>Sign Up</h2> : <h2>Sign In</h2>}
+      <h2>Moderator</h2>
       {/* perform the mutation when a user submits the form */}
       <form
         onSubmit={event => {
           event.preventDefault();
           console.log(values)
           props.action({
-            variables: {
-              ...values
-            }
+            variables: 
+              values
+            
           });
         }}
       >
-        {props.formType === 'signup' && (
-          <React.Fragment>
-            <div className="input-group mb-4">
-            <input
-              required
-              type="text"
-              id="username"
-              name="username"
-              className="form-control"
-              placeholder="username"
-              onChange={onChange}
-            />
-            </div>
-          </React.Fragment>
-        )}
+      
         <div className="input-group mb-4">
         <input
           required
           type="text"
-          id="signInspUsername"
+          id="workerId"
           className="form-control"
-          name="signInspUsername"
+          name="workerId"
           placeholder="User ID"
           onChange={onChange}
         />
         </div>
         <div className="input-group mb-4">
         <input
-          required
+          
           type="password"
-          id="signInspPassword"
-          name={"signInspPassword"}
+          id="password"
+          name="password"
+          
           className="form-control"
           placeholder="Password"
           onChange={onChange}

@@ -1,13 +1,50 @@
+import React from 'react';
 import BreadCrumb from '../../breadcrumb';
 import PasswordChanger from '../../form/changePassword';
 import PhotoUpdate from '../../form/changePhoto';
 import ChangeCard from '../../form/changeCard';
+import {gql,useMutation} from '@apollo/client'
 
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
 import {useState} from 'react';
+import { from } from '@apollo/client';
+import { ADD_EMPLOYEE } from '../../../GraphQL/Mutations';
+
+
 
 function AddWorkerForm({type}){
+
+    const [addWorker,{loading,error}] = useMutation(ADD_EMPLOYEE,{
+        onCompleted:data => {
+            setID(data.addWorker);    
+          }
+    });
+
+
+
+    // const  isValidID = (message) => {
+    //     return this.test("isValidMessage", message, function (value) {
+    //       const { path, createError } = this;
+      
+    //      console.log(value)
+      
+
+      
+    //       if (true) {
+    //         return createError({
+    //           path,
+    //           message: message ?? INVALID_FORMAT_ERROR_MESSAGE
+    //         });
+    //       }
+      
+    //       return true;
+    //     });
+    //   }
+    //   yup.addMethod(yup.mixed, "isValidCountry2", isValidCountry2);
+
+
+
 
     const toggleAddPassword = (e) => {
         if (addPassword === "password"){
@@ -21,7 +58,7 @@ function AddWorkerForm({type}){
 
     const [addPassword,setAddPassword] = useState("password");
     const [addClassName, setAddClassName] = useState("fa fa-eye");
-    const [id,setID] = useState('');
+    const [id,setID] = useState();
     
     const formik = useFormik({
         initialValues:{
@@ -32,7 +69,7 @@ function AddWorkerForm({type}){
             address:'',
             // date:'',
             email:'',
-            type:'Moderator',
+            type:type,
             password:''
         },validationSchema: Yup.object({
             name: Yup.string()
@@ -40,9 +77,11 @@ function AddWorkerForm({type}){
                 .matches(/^[a-zA-Z]+\s[a-zA-Z]+$/,"Cannot have special characters and seperated with space"),
             nic: Yup.string()
                 .required('Please enter the NIC')
-                .matches(/^([0-9]{12})|([0-9]{9}(v|V))$/,"Enter a valid nic"),
+                .matches(/^([0-9]{12})$|^([0-9]{9}(v|V))$/,"Enter a valid nic")
+               ,
             id: Yup.string()
                 .required('Please enter the Worker ID')
+                
                 .matches(/^[\w\d]+$/,"can only have letters and digits"),
             phone: Yup.number()
                 .required('Please enter the phone number'),
@@ -64,20 +103,29 @@ function AddWorkerForm({type}){
         }),
         onSubmit: values => {
             alert(JSON.stringify(values,null,2))
-            const employee = values
-            
-            console.log(employee)
-
-            fetch('http://localhost:8000/serviceprovider/addEmployee',{
-                method: 'POST',
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(employee)
-            }).then(()=>{
-                alert("Successfully submitted"); 
-            }).catch((err)=>{
-                console.log(err);
-            })
+            values.phone = Number(values.phone)
+ 
+            try{
+                addWorker({
+                    variables:values  
+                  })
+                
+            }catch (err){
+                console.log(err)
             }
+           
+
+  
+            // fetch('http://localhost:8000/serviceprovider/addEmployee',{
+            //     method: 'POST',
+            //     headers: {"Content-Type": "application/json"},
+            //     body: JSON.stringify(employee)
+            // }).then(()=>{
+            //     alert("Successfully submitted"); 
+            // }).catch((err)=>{
+            //     console.log(err);
+            // })
+        }
     })
 
 
@@ -138,7 +186,7 @@ function AddWorkerForm({type}){
                                                     <div className="col-md-6">
                                                         
                                                             <div className="form-group">
-                                                                <label htmlFor="workerId">Worker ID</label>
+                                                                <label htmlFor="id">Worker ID</label>
                                                                 <input type="text" className="form-control" id="id" value={formik.values.id} placeholder="Worker ID" onChange={formik.handleChange} onBlur={formik.handleBlur} required/>
                                                                 {formik.touched.id && formik.errors.id ? <small id="nameError" className="error form-text text-muted error "> {formik.errors.id}</small>: null}
                                                             </div>
@@ -177,11 +225,12 @@ function AddWorkerForm({type}){
                                 {/*<!-- [ Basic info ] end -->*/}
 
                                 {/*<!-- [ photo form ] start -->*/}
-                                <ChangeCard
+                                {id ?<ChangeCard
                                     title ='Change profile'
                                     setID = {setID}
                                     childComponent ={<PhotoUpdate/>}
-                                />
+                                    id = {id}
+                                />:null}
                                 {/*<!-- [ photo form ] end -->*/}
 
 

@@ -1,29 +1,28 @@
 import React, { useEffect } from 'react';
 import { useMutation, useApolloClient } from '@apollo/client';
-import { Link } from 'react-router-dom'; 
+import { Link } from 'react-router-dom';
 
 
-import { SIGNIN_USER } from '../GraphQL/Mutations';
+import { SIGNIN_MODERATOR } from '../GraphQL/Mutations';
 import SignUpForm from '../components/form/signupForm';
 
 const SignIn = (props) => {
 
     const client = useApolloClient();
-    const [signIn, { loading, error }] = useMutation(SIGNIN_USER, {
+    const [signINModerator, { loading, error }] = useMutation(SIGNIN_MODERATOR, {
       onCompleted: data => {
 
         console.log(data)
-
-        // store the token
-        localStorage.setItem('token', data.signIn);
+          //store the token
+        localStorage.setItem('token', data.signINModerator);
         // update the local cache
         client.writeData({ data: { isLoggedIn: true } });
         // redirect the user to the homepage
-        props.history.push('/');
+        props.history.push('/CSA');
       }
     });
 
-    return ( 
+    return (
         <div className="auth-wrapper">
         <div className="auth-content">
             <div className="auth-bg">
@@ -50,20 +49,20 @@ const SignIn = (props) => {
                             <input type="checkbox" name="checkbox-fill-1" id="checkbox-fill-a1" checked=""/>
                             <label for="checkbox-fill-a1" className="cr"> Save Details</label>
                         </div>
-                    </div> 
+                    </div>
                     <button className="btn btn-primary shadow-2 mb-4">Login</button>
                     </form> */}
 
-                    <SignUpForm action={signIn} formType="signin"/>
+                    <SignUpForm action={signINModerator} formType="signin"/>
 
-                    
-                    <p className="mb-2 text-muted">Forgot password? <Link to="">Reset</Link></p>
-                    <p className="mb-0 text-muted">Don’t have an account? <Link to="">Signup</Link></p>
+
+                    {/* <p className="mb-2 text-muted">Forgot password? <Link to="">Reset</Link></p>
+                    <p className="mb-0 text-muted">Don’t have an account? <Link to="">Signup</Link></p> */}
                 </div>
             </div>
         </div>
     </div>
      );
 }
- 
+
 export default SignIn;

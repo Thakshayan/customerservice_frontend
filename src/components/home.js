@@ -1,14 +1,12 @@
-
-
-
 import Notificator from './notification/notificator';
 import RatingList from "./rating/ratingSection/ratingList";
 
 import Chart from "./chart";
 import SummaryChart from "./pieChart";
+import Message from './message/messages';
 
 
-function Content(){
+function Content({content}){
     return(
         <div className="pcoded-main-container">
             <div className="pcoded-wrapper">
@@ -32,16 +30,18 @@ function Content(){
                                     count = '0'
                                 /> */}
                                 <Chart 
-                                    Array = {['Mon', 'Tue', 'Wed', 'Thu', 'Fri','Sat','Sun']}
+                                    ArrayX = {['Mon', 'Tue', 'Wed', 'Thu', 'Fri','Sat','Sun']}
                                     Request = 'New Requests'
+                                    ArrayY = {[6, 9, 8, 8, 6, 6,]}
                                 />
                                 {/*<!--[ New request section ] end-->
 
                                 <!--[ Messages section ] starts-->*/}
                                 
                                 <Chart 
-                                    Array = {['Mon', 'Tue', 'Wed', 'Thu', 'Fri','Sat','Sun']}
-                                    Request = 'On Going Works '
+                                    ArrayX = {['Mon', 'Tue', 'Wed', 'Thu', 'Fri','Sat','Sun']}
+                                    Request = 'On Going Works'
+                                    ArrayY = {[6, 11, 8, 4, 6, 3,]}
                                 />
 
                                 {/*<!--[ Messages section ] end-->*/}
@@ -49,10 +49,10 @@ function Content(){
                               
                                 <div className="col-xl-8">
                                 {/*<!--[ Recent Notification ] start-->*/}
-                                <Notificator title="Notification"/>
+                                <Notificator title="Notification" content={null}/>
                                 {/* <!--[ Recent Notification ] end-->*/}
                                 {/*<!--[ Recent Notification ] start-->*/}
-                                <Notificator title="Messages"/>
+                                <Message title="Messages" content={null}/>
                                 {/* <!--[ Recent Notification ] end-->*/}
                                 </div>
 
@@ -72,7 +72,9 @@ function Content(){
                                 {/* <Chart 
                                     Array = {['Mon', 'Tue', 'Wed', 'Thu', 'Fri','Sat','Sun']}
                                 /> */}
-                                <SummaryChart/>
+                                <SummaryChart
+                                    value = {[2, 5, 6]}
+                                />
                                 {/*<!--[ On going work section ] end-->
 
                                     
@@ -101,7 +103,7 @@ function Content(){
                                         </div>
                                     </div>
                                 {/*<!-- [ rating list ] starts-->*/}
-                                    <RatingList/>    
+                                    <RatingList content={[50,60,6,7,3]}/>    
                                 {/*<!-- [ rating list ] end-->*/}
                                 </div>
                                {/* <!-- [ statistics year chart ] end -->

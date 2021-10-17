@@ -10,8 +10,10 @@ import { useParams } from 'react-router-dom';
 
 function EditEmployeeInfo({type}){
 
-    const [id,setID] = useState('ID89');
-    const {Id} = useParams()
+
+    const {id} = useParams()
+    const [Id,setID] = useState(id);
+    
 
     useEffect(()=>{        
         setID(Id)
@@ -20,11 +22,11 @@ function EditEmployeeInfo({type}){
     
     const formik = useFormik({
         initialValues:{
-            id:'',
+            id:id,
             phone:'',
             date:'',
             email:'',
-            type: type,
+            // type: type,
         },validationSchema: Yup.object({
 
             id: Yup.string()
@@ -32,11 +34,14 @@ function EditEmployeeInfo({type}){
                 .matches(/^[\w\d]+$/,"can only have letters and digits"),
             phone: Yup.number()
                 .required('Please enter the phone number'),
+            email: Yup.string()
+                .email('Invalid email Address')
+                .required('Please enter the email address'),
             date:Yup.date()
                 .required("Please select a date"),
-            type:Yup.string()
-                .required("Please select a type")
-                .matches(/\w+/,"cannot have special characters")  
+            // type:Yup.string()
+            //     .required("Please select a type")
+            //     .matches(/\w+/,"cannot have special characters")  
         }),
         onSubmit: values => {
             alert(JSON.stringify(values,null,2))
@@ -44,15 +49,7 @@ function EditEmployeeInfo({type}){
             
             console.log(employee)
 
-            fetch(`http://localhost:8000/serviceprovider/editWorkerInfo/${id}`,{
-                method: 'POST',
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(employee)
-            }).then(()=>{
-                alert("Successfully submitted"); 
-            }).catch((err)=>{
-                console.log(err);
-            })
+            
             }
     })
 
@@ -67,7 +64,7 @@ function EditEmployeeInfo({type}){
                     <div className="pcoded-inner-content">
 
                         {/*<!-- [ breadcrumb ] start -->*/}
-                        <BreadCrumb type={type} reason="Edit" />
+                        <BreadCrumb type="Employee" reason="Edit" />
                         {/*<!-- [ breadcrumb ] end -->*/}
 
                         <div className="main-body">
@@ -104,11 +101,16 @@ function EditEmployeeInfo({type}){
                                                                 {formik.touched.date && formik.errors.date ? <small id="nameError" className="error form-text text-muted error "> {formik.errors.date}</small>: null}
                                                             </div>
                                                             <div className="form-group">
+                                                                <label htmlFor="email">Email address</label>
+                                                                <input type="email" className="form-control" value={formik.values.email} id="email" aria-describedby="emailHelp" placeholder="Enter email" onChange={formik.handleChange} onBlur={formik.handleBlur} required/>
+                                                                {formik.touched.email && formik.errors.email ? <small id="nameError" className="error form-text text-muted error "> {formik.errors.email}</small>: null}
+                                                            </div>
+                                                            {/* <div className="form-group">
                                                                 <label htmlFor="type">Designation</label>
                                                                 <input type='text'  className="form-control" id="type" value={formik.values.type} placeholder="Designation" onChange={formik.handleChange} onBlur={formik.handleBlur} required/>
                                                                 {formik.touched.type && formik.errors.type ? <small id="nameError" className="error form-text text-muted error "> {formik.errors.type}</small>: null}
                                                             </div>
-                                                            
+                                                             */}
 
 
                                                         
@@ -133,6 +135,7 @@ function EditEmployeeInfo({type}){
                                 <ChangeCard
                                     title ='Change Password'
                                     setID = {setID}
+                                    id = {id}
                                     childComponent ={
                                         <PasswordChanger
                                             id={id}

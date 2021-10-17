@@ -6,54 +6,81 @@ import BreadCrumb from '../../breadcrumb';
 
 import { useEffect } from 'react';
 import { useState } from 'react/cjs/react.development';
+import {gql,useQuery} from "@apollo/client";
 
 
-
+import { GET_WORKERS,GET_WORKER } from "../../../GraphQL/Queries";
 
 function ViewWorker({type}){
 
+
+    const [contents,setContents] = useState([]);
     const [content,setContent] = useState([]);
     const [id,setID] = useState('');
     const [page,setPage] = useState(0);
-    const [offSet,setOffSet] = useState(1);
+    const [offSet,setOffSet] = useState();
+
+    const fetchContent = useQuery(GET_WORKER,{
+        variables:{ workerId:id }
+    });
+
+    const {error,loading,data} = useQuery(GET_WORKERS,{
+        variables:{
+            page:page,
+            offSet:3,
+            type:type
+        }
+    });
 
 
     useEffect(()=>{
-
-        // fetch(`http://localhost:8000/serviceprovider/viewWorkersCount`)
-        //     .then(res => res.json())
-        //     .then(data => {
-        //         setOffSet(data/3);              
-        //     })
-        //     .catch(err => console.log(err));
-
-            
         
-    },[]);
+        if(error){
+            console.log(error)
+        }
+        if(data){
+            setContent(data.getWorkers)
+            setContents(data.getWorkers)
+            setOffSet(data.getWorkerCount/3)
+        }
+        
+
+    },[data])
+
+
+
+    // useEffect(()=>{
+    //     console.log(data)
+    //     console.log(id)
+    //     if(id){
+    //         console.log(contents)
+    //         setContent([contents])
+    //     }else if(data){
+    //         console.log(data.getWorkers)
+    //         setContent(data.getWorkers)
+    //     }
+        
+    // },[id]);
 
     useEffect(()=>{
-
-        // fetch(`http://localhost:8000/serviceprovider/viewWorkers?pages=${page}`)
-        //     .then(res => res.json())
-        //     .then(data => {
-        //         setContent(data);               
-        //     })
-        //     .catch(err => console.log(err));
         
-        // console.log(page);
-        // console.log(content)
-        // console.log(content.length)
-    },[page]);
+        if(id){
+            fetchContent.refetch({
+                id:id
+            }).then( datas => {
 
-    const initialState = () => {
+                if(datas){
+                    setContent([datas.data.getWorker])
+                }
+    
+            })
+        }else if(contents){
+            setContent(contents)
+        }
+        
+    },[id]);
 
-        // fetch(`http://localhost:8000/serviceprovider/viewWorkers`)
-        //     .then(res => res.json())
-        //     .then(data => {
-        //         setContent(data);               
-        //     })
-        //     .catch(err => console.log(err));
-    }
+
 
 
     return(  
@@ -64,9 +91,10 @@ function ViewWorker({type}){
                         {/*<!-- [ breadcrumb ] start -->*/}
                         <BreadCrumb type={type} reason="View"/>
                         {/*<!-- [ breadcrumb ] end -->*/}
-                        <SearchBar  placeholder="Enter worker ID ..." setCardContent={setContent} setId={setID}/>
                         {/*<!-- [ search bar ] start -->*/}
-
+                        {/* <SearchBar  placeholder="Enter worker ID ..." setCardContent={setContents} setId={setID} id={id}/> */}
+                        <SearchBar placeholder="Enter work ID ..." id={id} setId={setID}/>
+                                           
                         {/*<!-- [ search bar ] end -->*/}
                         
                         <div className="main-body">
@@ -75,15 +103,15 @@ function ViewWorker({type}){
                                 <div className="row">
 
                                     {
-                                        content ? content.map((e) => <EmployeeCard
+                                        content[0] ? content.map((e) => <EmployeeCard
+
                                                 content = {e}
-                                                key = {e._id}
+                                                key = {e.id}
+                                                type ={type}
                                         />): null
                                     }
 
-                                   {!content[0] ?
-                                       initialState():null
-                                   }
+
                                     
                                 </div>
                             </div>

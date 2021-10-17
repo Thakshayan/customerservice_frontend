@@ -1,7 +1,7 @@
 import React from "react";
 import { Pie } from "react-chartjs-2";
 	
-const App = () => {
+const SummaryChart = ({value}) => {
 	
 // Sample data
 const data = {
@@ -9,7 +9,7 @@ const data = {
 	datasets: [
 		{
 		label: "Works status",
-		data: [2, 5, 6],
+		data: value,
 		backgroundColor: [ "#f4c22b","#c04000", "#1de9b6"],
 		}
 	]
@@ -34,4 +34,4 @@ return (
 );
 }
 	
-export default App;
+export default SummaryChart;

@@ -9,11 +9,21 @@ import {useFormik} from 'formik';
 import * as Yup from 'yup';
 import {useEffect, useState} from 'react';
 import { useParams } from 'react-router-dom';
+import { useMutation } from '@apollo/client';
+import { EDIT_BASIC } from '../../../GraphQL/Mutations';
+import AddEmployee from '../../form/addEmployeeForm';
 
 function EditEmployee({type}){
 
-    const [id,setID] = useState('ID89');
-    const {Id} = useParams()
+    const {id} = useParams();
+    const [Id,setID] = useState(id);
+    
+
+    const [editBasic,{loading, error}] = useMutation(EDIT_BASIC,{
+        onCompleted: data =>{
+            console.log(data)
+        }
+    })
 
     useEffect(()=>{
         
@@ -28,14 +38,14 @@ function EditEmployee({type}){
             nic:'',
             //phone:'',
             email:'',
-            adress:''
+            address:''
         },validationSchema: Yup.object({
             name: Yup.string()
                 .required('Please enter the full name')
                 .matches(/^[a-zA-Z]+\s[a-zA-Z]+$/,"Cannot have special characters and seperated with space"),
             nic: Yup.string()
                 .required('Please enter the NIC')
-                .matches(/^([0-9]{12})|([0-9]{9}(v|V))$/,"Enter a valid nic"),
+                .matches(/^([0-9]{12})$|^([0-9]{9}(v|V))$/,"Enter a valid nic"),
             // phone: Yup.number()
             //     .required('Please enter the phone number'),
             email: Yup.string()
@@ -46,21 +56,20 @@ function EditEmployee({type}){
 
         }),
         onSubmit: values => {
-            alert(JSON.stringify(values,null,2))
-            const employee = values
-            
-            console.log(employee)
 
-            fetch('http://localhost:8000/serviceprovider/editBasicInfo/:id',{
-                method: 'POST',
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(employee)
-            }).then(()=>{
-                alert("Successfully submitted"); 
-            }).catch((err)=>{
-                console.log(err);
+            values.workerId = id
+            alert(JSON.stringify(values,null,2))
+       
+            
+          
+
+            editBasic({
+                variables:
+                    values
+                
             })
-            }
+
+        }
     })
 
 
@@ -74,7 +83,7 @@ function EditEmployee({type}){
                     <div className="pcoded-inner-content">
 
                         {/*<!-- [ breadcrumb ] start -->*/}
-                        <BreadCrumb type={type} reason="Edit" />
+                        <BreadCrumb type="Employee" reason="Edit" />
                         {/*<!-- [ breadcrumb ] end -->*/}
 
                         <div className="main-body">
@@ -119,9 +128,9 @@ function EditEmployee({type}){
 
                                                         
                                                     </div>
-                                                    <div className="col-md-6">    
-                                                        <ProfileCard id={id} />
-                                                    </div>
+                                                    {id ?<div className="col-md-6">    
+                                                        <ProfileCard id={Id} title="Personal Info"/>
+                                                    </div>:null}
                                                 </div>
                                                 <button type="submit" className="btn btn-primary">Submit</button>
                                                         
@@ -133,13 +142,14 @@ function EditEmployee({type}){
                                 </div>
                                 {/*<!-- [ Basic info ] end -->*/}
 
-                                {/*<!-- [ photo form ] start -->*/}
+                                {/* <!-- [ photo form ] start -->*/}
                                 <ChangeCard
                                     title ='Change profile'
                                     setID = {setID}
-                                    childComponent ={<PhotoUpdate/>}
+                                    id ={Id}
+                                    childComponent ={ <PhotoUpdate/> }
                                 />
-                                {/*<!-- [ photo form ] end -->*/}
+                                {/*<!-- [ photo form ] end --> */}
 
                             </div>
                         </div>

@@ -2,20 +2,15 @@ import NotificationBar from './notificationBar';
 import {Link} from "react-router-dom"
 import { useEffect,useState } from 'react';
 
-function Notificator({title}){
+function Notificator({title,content,id}){
 
     const [Notification,setNotification] = useState([]);
 
-    // useEffect(()=>{
-
-    //     fetch(`http://localhost:8000/serviceprovider/getNotification`)
-    //         .then(res => res.json())
-    //         .then(data => {
-    //             setNotification(data);               
-    //         })
-    //         .catch(err => console.log(err));
-
-    // },[])
+    useEffect(()=>{
+        if(content){
+            setNotification(content)
+        }
+    },[])
 
 
     return(
@@ -28,37 +23,40 @@ function Notificator({title}){
                     <div className="">
                         <div className="">
                             <div className="">
+
+                                {Notification[0] ? Notification.map((e)=>{
+
+                                    <NotificationBar
+                                        title = "closed"
+                                        time = "21 July 12:56"
+                                        description = "This is a xample description about the booking"
+                                        workstation = "Jaffna"
+                                    /> 
+
+                                }):null}
+                                
                                 <NotificationBar
-                                    title = "This is a xample title"
+                                    title = "closed"
                                     time = "21 July 12:56"
-                                    description = "This is a xample description. This is a xample description. This is a xample description. This is a xample description"
-                                    viewURL = "#"
-                                    delURL = "#"
-                                    id = "ID001"
-                                /> 
-                                <NotificationBar
-                                    title = "This is a xample title"
+                                    description = "This is a xample description about the booking"
+                                    workstation = "Jaffna"
+                                
+                                />  
+                                <hr/>
+                                 <NotificationBar
+                                    title = "closed"
                                     time = "21 July 12:56"
-                                    description = "This is a xample description. This is a xample description. This is a xample description. This is a xample description"
-                                    viewURL = "#"
-                                    delURL = "#"
-                                    id = "ID001"
-                                /> 
-                                <NotificationBar
-                                    title = "This is a xample title"
-                                    time = "21 July 12:56"
-                                    description = "This is a xample description. This is a xample description. This is a xample description. This is a xample description"
-                                    viewURL = "#"
-                                    delURL = "#"
-                                    id = "ID001"
-                                />       
+                                    description = "This is a xample description about the booking"
+                                    workstation = "Kalutara"
+                                
+                                />        
                             </div>
                         </div>
                     </div>
                 </div>
                 
                 <div style={{padding:"0px 30px 10px 0px",float:"right"}}>
-                    <Link to={`/view`} className="btn btn-mtd btn-primary" style={{width:"150px",height:"25px",padding:'0 0',float:'right'}}> 
+                    <Link to={id?`/CSA/notifications/${id}`:`/CSA/notifications`} className="btn btn-mtd btn-primary" style={{width:"150px",height:"25px",padding:'0 0',float:'right',background: 'linear-gradient(-135deg, #1de9b6 0%, #1dc4e9 100%)'}}> 
                         View More 
                         <i className="far fa-eye" style={{paddingLeft:'10px'}}></i>
                     </Link>

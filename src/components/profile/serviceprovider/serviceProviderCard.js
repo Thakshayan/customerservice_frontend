@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const ProviderCard = ({title}) => {
+const ProviderCard = ({title,content}) => {
     return ( 
         <div className="">
             <div className="card yearly-sales">
@@ -43,7 +43,7 @@ const ProviderCard = ({title}) => {
                                 A,B,C,D <hr/>
                                 </div>
                                 <div style={{paddingTop:"20px",float:"right"}}>
-                                    <Link to="" className="btn btn-mtd btn-primary" style={{width:"100px",height:"25px",padding:'0 0'}}> 
+                                    <Link to="/CSA/serviceInfo/" className="btn btn-mtd btn-primary" style={{width:"100px",height:"25px",padding:'0 0'}}> 
                                         Edit 
                                         <i className="fas fa-edit" style={{paddingLeft:'10px'}}></i>
                                     </Link>

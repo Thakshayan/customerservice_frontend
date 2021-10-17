@@ -1,12 +1,18 @@
 import BreadCrumb from "../../breadcrumb";
 import ChangeCard from "../../form/changeCard";
 import FinishCard from "../../finishCard";
-import { useState } from "react";
+import { useState,useEffect } from "react";
+
+import { GET_WORKER } from "../../../GraphQL/Queries";
+import { useQuery } from "@apollo/client";
 
 
 const RemoveEmployeeCard = ({type}) => {
 
     const [id,setID] = useState('');
+
+
+    
 
     return ( 
     <div className="pcoded-main-container main-container">
@@ -29,10 +35,8 @@ const RemoveEmployeeCard = ({type}) => {
                                      
                                     <FinishCard
                                         title= {`Remove ${type}`}
-                                        icon ={<i className="fas fa-user-slash" style={{paddingLeft:'10px'}}></i>}
-                                        button = 'Suspend'
-                                        buttonClass = 'btn-danger'
-                                        id = {id}
+
+                                        workerId = {id}
                                     />
                                 }
                             />
