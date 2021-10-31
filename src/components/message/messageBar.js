@@ -1,22 +1,28 @@
 import { useMutation } from '@apollo/client';
 import {button} from 'react-router-dom';
+import {useEffect} from 'react'
 
-//import {UPDATE_READ} from '../../GraphQL/Mutations';
+import {UPDATE_READ} from '../../GraphQL/Mutations';
 
-function MessageBar({message,By,received_date,read,key}){
+function MessageBar({message,By,received_date,read,object}){
 
-    // const [updateRead,{loading,error}] = useMutation(UPDATE_READ,{
-    //     onCompleted: data=>{
-    //         console.log(data)
-    //     }
-    // })
+    const [readMessage,{loading,error}] = useMutation(UPDATE_READ,{
+        onCompleted: data=>{
+            console.log(data)
+            if(data.readMessage){
+                window.location.reload()
+            }
+        }
+    })
+
+
 
     const confirmRead = () => {
-        // updateRead({
-        //     variables:{
-        //         id:key
-        //     }
-        // })
+        readMessage({
+            variables:{
+                readMessageId:object._id
+            }
+        })
     }
 
 
@@ -24,10 +30,10 @@ function MessageBar({message,By,received_date,read,key}){
     <div className="unread row align-items-center" style={{marginBottom:'15px'}}>
         <div className="col-sm-12 col-md-3 col-xl-3 d-flex " style={{margin:'10px'}}>
             <img className="rounded-circle mover" style={{width:"100px"}} src="/assets/images/user/avatar-1.jpg" alt="activity-user"/>
-            <h6 className="mover" style={{marginTop:"30px",color:"#888"}}> &nbsp;{By} </h6>
+            <h6 className="mover" style={{marginTop:"30px",color:"#888"}}> &nbsp; </h6>
         </div>
         <div className="col-sm-9 col-md-5 col-xl-8" style={{margin:'10px'}}>
-            <h6 className="mb-1"></h6>
+            <h6 className="mb-1">{By}</h6>
             <p className="m-0">{message}</p>
         </div>
         <div className="col-12 col-sm-6 col-md-3 col-xl-7 mr-auto" style={{margin:'10px'}}>

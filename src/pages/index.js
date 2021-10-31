@@ -85,8 +85,8 @@ const Pages = () => {
         <PrivateRoute exact path={`${url}/profile/:id`} component={Profile}/>
         
 
-        {/* <PrivateRoute exact path={`${url}/assignWorker`} component={AssignWorker}/> */}
-        <PrivateRoute exact path={`${url}/addWork`} component={AddWork}/>
+        <PrivateRoute exact path={`${url}/assignWorker`} component={AssignWorker}/>
+        <PrivateRoute exact path={`${url}/addWork/:id`} component={AddWork}/>
         <PrivateRoute exact path={`${url}/viewRequest`} component={WorkRequest}/>
         <PrivateRoute exact path={`${url}/assignWorker/:id`} component={AssignWorker}/>
         <PrivateRoute exact path={`${url}/viewWork`} component={ViewWork}/>
@@ -107,6 +107,7 @@ const Pages = () => {
         
         <PrivateRoute exact path={`${url}/serviceInfo`} component={ServiceInfo}/>
         <PrivateRoute exact path={`${url}/profile`} component={ProviderProfile}/>
+       
         
         </>
         )}

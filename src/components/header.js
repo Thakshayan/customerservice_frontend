@@ -5,11 +5,12 @@ import { useState } from 'react';
 
 import { Redirect } from 'react-router';
 
-import {GET_ME} from '../GraphQL/Queries'
+import {GET_SPME,GET_ME} from '../GraphQL/Queries'
 
 function Header(){
 
-    const {error,loading,data} = useQuery(GET_ME);
+    const {error,loading,data} = useQuery(GET_SPME);
+    const {errorM,loadingM,dataM} = useQuery(GET_ME);
     const [userName,setUserName] = useState();
     const [id,setId] = useState();
 
@@ -19,13 +20,33 @@ function Header(){
     }
 
     useEffect(()=>{
-
         if(data){
-            console.log(data)
-            setId(data.getMe.workerId)
-            setUserName(data.getMe.name)
+            // if(data.moderator_me){
+            //     console.log(data)
+            //     setId(data.moderator_me.username)
+            //     setUserName(data.moderator_me.name)
+            // }
+            if(data.SP_me){
+                console.log(data)
+                setId(data.SP_me.username)
+                setUserName(data.SP_me.name)
+            }
         }
+        
     },[data])
+
+    useEffect(()=>{
+        console.log(errorM,loadingM,dataM)
+        if(dataM){
+            if(dataM.moderator_me){
+                console.log(data)
+                setId(data.moderator_me.username)
+                setUserName(data.moderator_me.name)
+            }
+            
+        }
+        
+    },[dataM,loadingM,errorM])
 
 
     return(
@@ -45,78 +66,14 @@ function Header(){
             <div className="collapse navbar-collapse">
                 <ul className="navbar-nav mr-auto">
 
-                    {/* <li><Link to="#" className="full-screen" onClick="{#toggleFullScreen()}"><i className="feather icon-maximize"></i></Link></li>
-                     */}
-                    {/* <li className="nav-item dropdown">
-                        <Link className="dropdown-toggle" to="#0" data-toggle="dropdown">Dropdown</Link>
-                        <ul className="dropdown-menu">
-                            <li><Link className="dropdown-item" to="#0">Action</Link></li>
-                            <li><Link className="dropdown-item" to="#0">Another action</Link></li>
-                            <li><Link className="dropdown-item" to="#0">Something else here</Link></li>
-                        </ul>
-                    </li>
                     
-                    <li className="nav-item" >
-                        <div className="main-search">
-                            <div className="input-group" style={{paddingLeft:"10px"}}>
-                                <input type="text" id="m-search" className="form-control" placeholder="Search . . ."/>
-                                <Link to="#0" className="input-group-append search-close">
-                                    <i className="feather icon-x input-group-text"></i>
-                                </Link>
-                                <span className="input-group-append search-btn btn btn-primary">
-                                    <i className="feather icon-search input-group-text"></i>
-                                </span>
-                            </div>
-                        </div>
-                    </li> */}
                 </ul>
                 <ul className="navbar-nav ml-auto">
                     <li>
                         <div className="dropdown">
                             <Link className="dropdown-toggle" to="#0" data-toggle="dropdown"><i className="icon feather icon-bell"></i></Link>
                             <div className="dropdown-menu dropdown-menu-right notification">
-                                {/* <div className="noti-head">
-                                    <h6 className="d-inline-block m-b-0">Notifications</h6>
-                                    <div className="float-right">
-                                        <Link to="#0" className="m-r-10">mark as read</Link>
-                                        <Link to="#0">clear all</Link>
-                                    </div>
-                                </div>
-                                <ul className="noti-body">
-                                    <li className="n-title">
-                                        <p className="m-b-0">NEW</p>
-                                    </li>
-                                    <li className="notification">
-                                        <div className="media">
-                                            <img className="img-radius" src="assets/images/user/avatar-1.jpg" alt="Generic placeholder"/>
-                                            <div className="media-body">
-                                                <p><strong>John Doe</strong><span className="n-time text-muted"><i className="icon feather icon-clock m-r-10"></i>30 min</span></p>
-                                                <p>New ticket Added</p>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li className="n-title">
-                                        <p className="m-b-0">EARLIER</p>
-                                    </li>
-                                    <li className="notification">
-                                        <div className="media">
-                                            <img className="img-radius" src="assets/images/user/avatar-2.jpg" alt="Generic placeholder"/>
-                                            <div className="media-body">
-                                                <p><strong>Joseph William</strong><span className="n-time text-muted"><i className="icon feather icon-clock m-r-10"></i>30 min</span></p>
-                                                <p>Prchace New Theme and make payment</p>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li className="notification">
-                                        <div className="media">
-                                            <img className="img-radius" src="assets/images/user/avatar-3.jpg" alt="Generic placeholder"/>
-                                            <div className="media-body">
-                                                <p><strong>Sara Soudein</strong><span className="n-time text-muted"><i className="icon feather icon-clock m-r-10"></i>30 min</span></p>
-                                                <p>currently login</p>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul> */}
+                                
                                 <div className="noti-footer">
                                     <Link to="/CSA/notifications">show all notifications</Link>
                                 </div>

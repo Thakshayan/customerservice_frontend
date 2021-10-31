@@ -5,12 +5,12 @@ const SummaryChart = ({value}) => {
 	
 // Sample data
 const data = {
-	labels: ["On-going Work","New Work","Finished Work"],
+	labels: ["New Work","On-going Work","Finished Work"],
 	datasets: [
 		{
 		label: "Works status",
 		data: value,
-		backgroundColor: [ "#f4c22b","#c04000", "#1de9b6"],
+		backgroundColor: [ "#c04000","#f4c22b", "#1de9b6"],
 		}
 	]
 }

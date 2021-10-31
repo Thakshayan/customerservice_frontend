@@ -1,15 +1,18 @@
 import MessageBar from './messageBar';
 import {Link} from "react-router-dom"
 import { useEffect,useState } from 'react';
+import Empty from '../empty';
+import Loading from '../loading';
 //import { GET_SP_MESSAGE } from '../../GraphQL/Queries';
 
-function Message({title,content,id}){
+function Message({title,content,id,loading}){
 
     const [Notification,setNotification] = useState([]);
 
 
 
     useEffect(()=>{
+        console.log(content)
         if(content){
             setNotification(content)
         }
@@ -26,37 +29,29 @@ function Message({title,content,id}){
                 <div className="card-block px-0 py-3">
                     <div className="">
                         <div className="">
+                            {!loading ?
                             <div className="">
 
                                 {content && content[0]? content.map((e)=>{
                                     return <MessageBar
-                                        By = "ID00"
-                                        received_date = "21 July 12:56"
-                                        message = "This is a xample Message"
-                                        read ={true}
-                                        
+                                        By = {e.by}
+                                        received_date = {e.received_date}
+                                        message = {e.message}
+                                        read ={e.read}
+                                        key={e._id}
                                         /> 
                                     
-                                }):null}
+                                }):
+                                    <Empty/>
+                                }
 
-                                    <MessageBar
-                                        By = "ID00"
-                                        received_date = "21 July 12:56"
-                                        message = "This is a xample Message"
-                                        read ={true}
-                                        
-                                        /> 
-                                    <MessageBar
-                                        By = "ID00"
-                                        received_date = "21 July 12:56"
-                                        message = "This is a xample Message"
-                                        read ={false}
-                                        
-                                        /> 
-                                
+
                                
                                
                             </div>
+                            :
+                                <Loading/>
+                            }
                         </div>
                     </div>
                 </div>

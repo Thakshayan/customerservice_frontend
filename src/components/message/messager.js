@@ -8,15 +8,34 @@ import MessageBar from './messageBar';
 import { useState, useEffect } from "react"
 import { useFormik } from 'formik';
 import * as Yup from "yup";
+import { useMutation } from '@apollo/client';
+import { SEND_MESSAGE } from '../../GraphQL/Mutations';
+
+import { dateFormatter } from '../formatter';
+import Empty from '../empty';
+import Loading from '../loading';
 
 
 
-const Messager = ({content,setPage,page,offSet}) => {    
+const Messager = ({content,setPage,page,offSet,loading}) => {    
 
-
+    const [sendMessage,{loadingMessage,error}] = useMutation(SEND_MESSAGE,{
+        onCompleted:data=>{
+            if(data){
+                alert("Success")
+            }
+        }
+    })
 
     const [To,setTo] = useState();
     const [toErr,setToErr] = useState();
+    const [contents,setContent] = useState();
+
+    useEffect(() => {
+        console.log("content")
+        console.log(content)
+        setContent(content)
+    }, [content])
 
     const toValidation = ()=>{
 
@@ -30,23 +49,27 @@ const Messager = ({content,setPage,page,offSet}) => {
     const formik = useFormik({
         initialValues:{
             to:'',
-            jobTitle:'',
+           
             description:''
         },validationSchema: Yup.object({
             
             
-            jobTitle:Yup.string()
-                .required("Please give a title"),
+            to:Yup.string()
+                .required("Please enter a receiver"),
             description: Yup.string()
                 .required("Please give a short description"),
             
         }),
         onSubmit: values =>{
-            if (!toErr){
-                values.to = To
-            }
+           
              
             alert(JSON.stringify(values))
+            sendMessage({
+                variables:{
+                    to:values.to,
+                    message:values.description
+                }
+            })
 
         }
     })
@@ -74,46 +97,37 @@ const Messager = ({content,setPage,page,offSet}) => {
                                             {/* <div className="" style={{marginTop:'20px'}}>
                                                 <SearchBar placeholder="Enter worker ID ..." setCardContent={setContent} setId={setID} URL="getMessages"/>
                                             </div> */}
-                                            
-                                            {content ? <div className="card-block px-0 py-3">
+                                            { !loading ?
+                                            contents ? <div className="card-block px-0 py-3">
                                                 <div className="">
                                                     <div className="">
                                                         <div className="">
 
-                                                        {content.map(e => {
-                                                            console.log(e);
+                                                        {contents.map(e => {
+                                                            // console.log(e);
 
-                                                            const monthNames = ["January", "February", "March", "April", "May", "June",
-                                                            "July", "August", "September", "October", "November", "December"
-                                                            ];
-                                            
-                                                            const date_ob = new Date(e.date);
-                                                            
-                                                        
-                                                            const date = date_ob.getDate()+" "+monthNames[date_ob.getMonth()]+" "+date_ob.getFullYear();
+                                      
                                                             return <MessageBar
-                                                                By = "ID00"
-                                                                received_date = "21 July 12:56"
-                                                                message = "This is a xample Message"
-                                                                read ={true}
-                                                                key ={"key"}
-                                                            />
+                                                                By = {e.by}
+                                                                received_date = {dateFormatter(e.received_date)}
+                                                                message = {e.message}
+                                                                read ={e.read}
+                                                                key={e._id}
+                                                                object={e}
+                                                            /> 
 
                                                             
 
                                                         })}
 
-                                                            <MessageBar
-                                                                By = "ID00"
-                                                                received_date = "21 July 12:56"
-                                                                message = "This is a xample Message"
-                                                                read ={true}     
-                                                            /> 
-                                                                     
+
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div> : null}
+                                            </div> : <Empty/>
+                                            : 
+                                            <Loading/>
+                                            }
                                         <div>
                                             <PaginationBar setPage={setPage} page={page} offSet={offSet}/>
                                             </div>  
@@ -135,20 +149,20 @@ const Messager = ({content,setPage,page,offSet}) => {
                                             <form onSubmit={formik.handleSubmit} style={{marginTop:"50px"}}>
 
 
-                                            <div className="form-group">
+                                            {/* <div className="form-group">
                                                 <label htmlFor="to"> To </label>
                                                 <input type="text" className="form-control" value={To} id="jobTitle" aria-label="Enter job title" placeholder="Job Title" onChange={e => setTo(e.target.value)} onBlur={toValidation} required/>
                                                     
                                                 </div>
                                                 { toErr  ?<small id="toError" className="error form-text text-muted error "> {toErr}</small>: null}
-                                           
+                                            */}
                                                 <div className="form-group">
-                                                    <label htmlFor="Title">Title</label>
-                                                    <input type="text" className="form-control" value={formik.values.jobTitle} id="jobTitle" aria-label="Enter job title" placeholder="Job Title" onChange={formik.handleChange} onBlur={formik.handleBlur} required/>
-                                                    { formik.touched.jobTitle && formik.errors.jobTitle ? <small id="nameError" className="error form-text text-muted error "> {formik.errors.jobTitle}</small>: null}
+                                                    <label htmlFor="to">To</label>
+                                                    <input type="text" className="form-control" value={formik.values.jobTitle} id="to" aria-label="Enter the receiver" placeholder="To" onChange={formik.handleChange} onBlur={formik.handleBlur} required/>
+                                                    { formik.touched.to && formik.errors.to ? <small id="nameError" className="error form-text text-muted error "> {formik.errors.to}</small>: null}
                                                 </div>
                                                 <div className="form-group">
-                                                    <label htmlFor="description">Description</label>
+                                                    <label htmlFor="description">Message</label>
                                                     <textarea className="form-control" id="description" rows="5" value={formik.values.description} aria-label="Enter description" onChange={formik.handleChange} onBlur={formik.handleBlur} required></textarea>
                                                     {formik.touched.description && formik.errors.description ? <small id="nameError" className="error form-text text-muted error "> {formik.errors.description}</small>: null}
                                                 </div>

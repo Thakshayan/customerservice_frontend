@@ -4,27 +4,10 @@ import { useEffect } from "react";
 import { WORKER_PROFESSIONAL } from "../../GraphQL/Queries";
 import { useQuery } from "@apollo/client";
 
-const WorkerInfoCard = ({id,edit,title}) => {
+const WorkerInfoCard = ({id,edit,title,content}) => {
 
-    const [content,setContent] = useState([]);
-    const [Id,setID] = useState(id) 
-
-    const {error,loading,data} = useQuery(WORKER_PROFESSIONAL,{
-        variables:{
-            id:Id
-        }
-    })
-
-    useEffect(()=>{
-        console.log("WorkerInfo",data,error,loading)
-        if(data){
-            setContent([data.getWorker]);
-            console.log(data.getWorker);
-        }
-    },[data])
-
-
-
+    const [contents,setContent] = useState(content);
+    
 
     return (  
         <div className="">
@@ -41,7 +24,7 @@ const WorkerInfoCard = ({id,edit,title}) => {
                                 Worker ID:
                             </div>
                             <div className="col-6 col-md-6">
-                                {content[0].workerId}
+                                {content.username}
                             </div>
                         </div>
                         <hr/>
@@ -50,7 +33,7 @@ const WorkerInfoCard = ({id,edit,title}) => {
                                 Designation:
                             </div>
                             <div className="col-6 col-md-6">
-                                {content[0].type}
+                                {content.type}
                             </div>
                         </div>
                         <hr/>
@@ -59,7 +42,7 @@ const WorkerInfoCard = ({id,edit,title}) => {
                                 phone:
                             </div>
                             <div className="col-6 col-md-6">
-                                {content[0].phone}
+                                {content.phone}
                             </div>
                         </div>
                         <hr/>
@@ -68,7 +51,7 @@ const WorkerInfoCard = ({id,edit,title}) => {
                                 Joined Date:
                             </div>
                             <div className="col-6 col-md-6">
-                                {content[0].date}
+                                {content.date}
                             </div>
                         </div>
                         <hr/>
@@ -77,7 +60,7 @@ const WorkerInfoCard = ({id,edit,title}) => {
                                 Total Works:
                             </div>
                             <div className="col-6 col-md-6">
-                                {content[0].works}
+                                {content.works}
                             </div>
                         </div>
                         <hr/>
@@ -86,7 +69,7 @@ const WorkerInfoCard = ({id,edit,title}) => {
                                 Left Date:
                             </div>
                             <div className="col-6 col-md-6">
-                                {content[0].leftDate?content[0].leftDate:"..."}
+                                {content.leftDate?content.leftDate:"..."}
                             </div>
                         </div>
                     </div>

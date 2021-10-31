@@ -24,6 +24,28 @@ function RatingList({content,value}){
         
     },[content])
 
+    const rating = (content) =>{
+
+        if(!content){
+            return 0
+        }
+        var value = 0
+        var div = 0
+        var count=5;
+        content.map(e=>{
+            value += e*count
+            div += e
+            count--
+        })
+
+        
+        if(!div){
+            return 0
+        }
+
+        return (value/div).toFixed(2)
+    }
+
     return(
         <div className="">
             <div className="card user-list">
@@ -33,13 +55,13 @@ function RatingList({content,value}){
                 <div className="card-block">
                     <div className="row align-items-center justify-content-center m-b-20">
                         <div className="col-6">
-                            <h2 className="f-w-300 d-flex align-items-center float-left m-0">{value} <i className="fas fa-star f-10 m-l-10 text-c-yellow"></i></h2>
+                            <h2 className="f-w-300 d-flex align-items-center float-left m-0">{rating(content)} <i className="fas fa-star f-10 m-l-10 text-c-yellow"></i></h2>
                         </div>
                         <div className="col-6">
                             <h6 className="d-flex  align-items-center float-right m-0"> <i className="fas fa-caret-up text-c-green f-22 m-l-10"></i></h6>
                         </div>
                     </div>
-                    {percentage ?<div className="row">
+                    {percentage && content ?<div className="row">
                         <RatingBar rate="5" count={content[0]} percentage={percentage[0]}/>
                         <RatingBar rate="4" count={content[1]} percentage={percentage[1]}/>
                         <RatingBar rate="3" count={content[2]} percentage={percentage[2]}/>

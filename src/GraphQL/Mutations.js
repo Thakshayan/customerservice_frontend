@@ -1,90 +1,177 @@
 import { gql } from '@apollo/client';
 
 
-// const SIGNIN_USER = gql`
-//   mutation SignINSPMutation(
-//     $signInspUsername: String!, 
-//     $signInspPassword: String!) {
-//     signINSP(
-//       username: "seyan12", 
-//       password: "seyan12")
-//   }
-// `;
 
-// const SIGNUP_USER = gql`
-//   mutation signUp(
-//     $email: String!, 
-//     $signInspUsername: String!, 
-//     $signInspPassword: String!) {
-//     signUp(
-//       email: $email, 
-//       username: $signInspUsername, 
-//       password: $signInspPassword)
-//   }
-// `;
 
-const ADD_EMPLOYEE= gql`
-  mutation Mutation(
-      $id: String!, 
-      $type: String!, 
-      $password: String!, 
-      $address: String!, 
-      $name: String!, 
-      $email: String!, 
-      $phone: Int!, 
-      $nic: String!) {
-      addWorker(
-          workerId: $id, 
-          type: $type, 
-          password: $password, 
-          address: $address, 
-          name: $name, 
-          email: $email, 
-          phone: $phone, 
-          nic: $nic)
-    }
-`
+const SIGN_INSP = gql`
+  mutation SignINSPMutation(
+    $workerId: String!, 
+    $password: String!) {
 
-const REMOVE_EMPLOYEE = gql`
-mutation Mutation($workerId: String!) {
-
-  removeWorker(
-    workerId: $workerId) 
-}
-`
-
-const ADD_WORK = gql`
-  mutation Mutation(
-    $jobTitle: String!, 
-    $workId: String!, 
-    $workers: [String!]!, 
-    $phone: Int!, 
-    $address: String!, 
-    $description: String!, 
-    $estimation: Int!) {
-
-    addWork(
-      jobTitle: $jobTitle, 
-      workId: $workId, 
-      worker: $workers, 
-      phone: $phone, 
-      Address: $address, 
-      description: $description, 
-      estimation: $estimation, 
-      status: "confirmed")
+    signINSP(
+      username: $workerId, 
+      password: $password
+      )
   }
 `
 
-const SIGNIN_MODERATOR = gql`
+const SIGNIN_MODERATOR= gql`
   mutation Mutation(
     $workerId: String!, 
-    $password: String) {
-
+    $password: String!) {
     signINModerator(
-      workerId: $workerId, 
+      username: $workerId, 
       password: $password)
   }
 `
+
+const ADD_MODERATOR = gql`
+  mutation SignINSPMutation(
+    $id: String!, 
+    $password: String!, 
+    $name: String!, 
+    $nic: String!, 
+    $email: String!, 
+    $phone: String!, 
+    $address: String!
+    ) {
+    addModerator(
+      username: $id, 
+      password: $password, 
+      name: $name, 
+      nic: $nic, 
+      email: $email, 
+      contact_no: $phone, 
+      address: $address) {
+      _id
+    }
+  }
+
+`
+
+const ADD_WORKER = gql`
+  mutation Mutation(
+    $id: String!, 
+    $password: String!, 
+    $name: String!, 
+    $nic: String!, 
+    $email: String!, 
+    $phone: String!, 
+    $address: String!
+    ) {
+    addWorker(
+      username: $id, 
+      password: $password, 
+      name: $name, 
+      nic: $nic, 
+      email: $email, 
+      contact_no: $phone, 
+      address: $address) {
+        _id 
+    }
+  }
+`
+
+const REJECT_BOOKING = gql`
+  mutation CancelBookingMutation($ID: ID!) {
+    cancelBooking(id: $ID)
+  }
+`
+
+const UPDATE_READ = gql`
+  mutation ReadMessageMutation(
+    $readMessageId: ID) {
+    readMessage(id: $readMessageId)
+  }
+`
+
+const SEND_MESSAGE = gql`
+  mutation SendMessageMutation(
+    $to: String!,
+    $message: String!) {
+
+    sendMessage(
+      to: $to, 
+      message: $message) {
+      _id
+    }
+  }
+` 
+
+
+const REMOVE_WORKER  = gql`
+  mutation Mutation($workerId: ID!) {
+    removeWorker(worker: $workerId)
+  }
+`
+
+const REMOVE_MODERATOR = gql`
+  mutation Mutation($workerId: ID!) {
+    removeModerator(moderator: $workerId)
+  }
+`
+
+const ADD_WORK = gql`
+  mutation AppointmentMutation(
+    $bookingID: ID!, 
+    $workId: String!, 
+    $date: Date!, 
+    $estimation: String!, 
+    $workers: [ID]) {
+
+    appointment(
+      booking: $bookingID, 
+      appointment_id: $workId, 
+      starting_date: $date, 
+      duration: $estimation, 
+      worker: $workers) {
+      _id
+    }
+    confirmBooking(id: $bookingID)
+  }
+`
+
+
+
+
+
+
+const ADD_SERVICE = gql`
+  mutation Mutation($serviceName: String!, $icon: String!) {
+    addService(service_name: $serviceName, icon: $icon) {
+      service_name
+      description
+      icon
+    }
+  }
+`
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const EDIT_BASIC = gql`
   mutation Mutation(
@@ -110,27 +197,45 @@ const EDIT_BASIC = gql`
 
 // const ASSIGN_WORKER = gql``
 
-// const SEND_MESSAGE = gql`` 
 
-// const UPDATE_READ = gql``
+
+
 
 // const UPLOAD_WORK_IMAGE = gql``
 
 
 export {
-    ADD_EMPLOYEE,
-    REMOVE_EMPLOYEE,
-    EDIT_BASIC,
+    SIGN_INSP,
+
+
+    ADD_MODERATOR,
+    ADD_WORKER,
+
+    REMOVE_MODERATOR,
+    REMOVE_WORKER,
+
+    REJECT_BOOKING,
 
     ADD_WORK,
 
-    SIGNIN_MODERATOR,
+    UPDATE_READ,
+    SEND_MESSAGE,
+
+
+    
+
+
+    EDIT_BASIC,
+
+    
+
+    
 
     // UPLOAD_IMAGE,
     // UPLOAD_WORK_IMAGE,
     // UPDATE_PASSWORD,
     // ASSIGN_WORKER,
 
-    // SEND_MESSAGE,
-    // UPDATE_READ,
+    
+    
 }

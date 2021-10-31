@@ -1,16 +1,19 @@
 import NotificationBar from './notificationBar';
 import {Link} from "react-router-dom"
 import { useEffect,useState } from 'react';
+import Empty from '../empty';
+import Loading from '../loading';
 
-function Notificator({title,content,id}){
+function Notificator({title,content,id,loading}){
 
     const [Notification,setNotification] = useState([]);
 
     useEffect(()=>{
+
         if(content){
             setNotification(content)
         }
-    },[])
+    },[content])
 
 
     return(
@@ -20,37 +23,31 @@ function Notificator({title,content,id}){
                     <h5>{title}</h5>
                 </div>
                 <div className="card-block px-0 py-3">
-                    <div className="">
-                        <div className="">
-                            <div className="">
+                    <div >
+                        <div >
+                            { !loading ?
+                            <div>
 
                                 {Notification[0] ? Notification.map((e)=>{
 
-                                    <NotificationBar
-                                        title = "closed"
-                                        time = "21 July 12:56"
-                                        description = "This is a xample description about the booking"
-                                        workstation = "Jaffna"
+                                   return <NotificationBar
+                                        title = {e.state}
+                                        time = {e.date}
+                                        description = {e.message}
+                                        key={e._id}
                                     /> 
 
-                                }):null}
+                                }):
+                                    <Empty
+                                        message="No Notifications"
+                                    />
+                                }
                                 
-                                <NotificationBar
-                                    title = "closed"
-                                    time = "21 July 12:56"
-                                    description = "This is a xample description about the booking"
-                                    workstation = "Jaffna"
-                                
-                                />  
-                                <hr/>
-                                 <NotificationBar
-                                    title = "closed"
-                                    time = "21 July 12:56"
-                                    description = "This is a xample description about the booking"
-                                    workstation = "Kalutara"
-                                
-                                />        
+                                   
                             </div>
+                            : 
+                                <Loading/>
+                            }
                         </div>
                     </div>
                 </div>

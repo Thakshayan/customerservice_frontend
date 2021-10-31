@@ -1,6 +1,6 @@
 import {Link} from 'react-router-dom';
 
-function NotificationBar({title,description,workstation,time,viewURL,delURL}){
+function NotificationBar({title,description,time,viewURL,delURL}){
     return(
     <div className="unread row align-items-center" style={{marginBottom:'15px'}}>
         <div className="col-sm-12 col-md-3 col-xl-2 d-flex " style={{margin:'10px'}}>
@@ -8,7 +8,7 @@ function NotificationBar({title,description,workstation,time,viewURL,delURL}){
             <h6 className="mover" style={{marginTop:"30px",color:"#888"}}> &nbsp; </h6>
         </div>
         <div className="col-sm-9 col-md-5 col-xl-8" style={{margin:'10px'}}>
-            <h6 className="mb-1">The booking to {workstation} is {title} </h6>
+            <h6 className="mb-1">The booking is {title} </h6>
             <p className="m-0">{description}</p>
         </div>
         <div className="col-12 col-sm-6 col-md-3 col-xl-12 mr-auto" style={{margin:'10px'}}>

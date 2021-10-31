@@ -1,81 +1,26 @@
 import { useState, useEffect } from 'react';
-import {useQuery} from "@apollo/client";
-
 
 
 import BreadCrumb from '../../breadcrumb';
-import SearchBar from '../searchBar';
+import SearchBar from '../../searchBar';
 
 import ChangeCard from '../../form/changeCard';
 import AssignForm from '../../form/assignWorkerForm';
 import AssignWorkerCard from './assignWorkerCard';
-import { useParams } from 'react-router';
-
-import {GET_BOOKINGS} from "../../../GraphQL/Queries";
 
 
 
-const AssignWorkerForm = ({type}) => {
 
-    const {id} = useParams()
+const AssignWorkerForm = ({type,contents,setID,workerId,setAssignWorkerID,workId,assignWorkerId}) => {
 
-    const [workId,setId] = useState(id);
-    const [workerId,setID] = useState();
-    const [assignWorkerId,setAssignWorkerID] = useState();
-    
-    // const [Id,setID] = useState(id);
-    // const fetchContent = useQuery(GET_BOOKING,{
-    //     variables:{ workId:id
-    //     }
-    // });
+    const [content,setContent] = useState([])
 
-
-
-    const [content,setContent] = useState([]);
-    const [page,setPage] = useState(0);
-    const [offSet,setOffSet] = useState();
-
-    // const {error,loading,data} = useQuery(GET_BOOKINGS,{
-    //     variables:{
-    //         page:page,
-    //         offSet:1
-    //     }
-    // });
-
-
-    // useEffect(()=>{
-
-    //     if(error){
-    //         console.log(error)
-    //     }
-    //     if(data){
-      
-    //         // setContent(data.getWorkers)
-    //         // setOffSet(data.getWorkersCount/1)
-    //     }
-
-
-    // },[data])
-
-
-
-    // // useEffect(()=>{
-    // //     console.log(id)
-    // //     if(id){
-    // //         fetchContent.refetch({
-    // //         workId:id
-    // //         }).then( datas => {
-          
-    // //             if(datas){
-    // //                 setContent([datas.data.getWork])
-    // //                 console.log(datas.data.getWork)
-    // //             }
-    
-    // //         })
-    // //     }
-        
-    // // },[id]);
-
+    useEffect(()=>{
+        if(contents){
+            
+            setContent(contents)
+        }
+    },[contents])
 
 
     
@@ -107,15 +52,24 @@ const AssignWorkerForm = ({type}) => {
                                             <div className="card-block px-0 py-3">
                                                 <div className="">
                                                     <div className="">
-                                                        <div className="">
-                                                            <AssignWorkerCard
-                                                                id="ID89"
-                                                                designation="Moderator"
-                                                                phone="345678"
-                                                                rating= "4.7"
-                                                                viewURL=""
-                                                                delURL=""
-                                                            />     
+                                                        <div className="" style={{margin:'auto'}}>
+
+                                                            {content[0] ? content.map(e =>{
+                                                                console.log(e)
+                                                                return   <AssignWorkerCard
+                                                                            id={e.username}
+                                                                            designation="Worker"
+                                                                            phone={e.contact_no}
+                                                                            rating= {e.rating}
+                                                                            email = {e.email}
+                                                                            viewURL={`/CSA/profile/${e._id}`}
+                                                                            delURL=""
+                                                                            key = {e._id}
+                                                                        />  
+                                                            })
+
+                                                            :
+                                                            null}   
                                                         </div>
                                                     </div>
                                                 </div>

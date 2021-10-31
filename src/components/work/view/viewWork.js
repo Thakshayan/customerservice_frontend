@@ -7,75 +7,20 @@ import WorkBar from './workBar';
 import { useState, useEffect } from 'react';
 import {useQuery} from "@apollo/client";
 
-import {GET_WORKS} from "../../../GraphQL/Queries";
-import {GET_WORK} from "../../../GraphQL/Queries";
+
+import Loading from '../../loading';
+import Empty from '../../empty';
+
+import { dateFormatter } from '../../formatter';
 
 
-
-const ViewWorks = ({type}) => {    
-
-
-
-    const [id,setID] = useState('');
-    // const [Id,setID] = useState(id);
-    const fetchContent = useQuery(GET_WORK,{
-        variables:{ workId:id
-        }
-    });
-
-
-    const [contents,setContents] = useState([]);
-    const [content,setContent] = useState([]);
-    const [page,setPage] = useState(0);
-    const [offSet,setOffSet] = useState();
-
-    const {error,loading,data} = useQuery(GET_WORKS,{
-        variables:{
-            page:page,
-            offSet:1,
-            status:type
-        }
-    });
-
-
-    useEffect(()=>{
-        console.log(data)
-        console.log(type)
-        if(error){
-            console.log(error)
-        }
-        if(data){
-      
-            setContent(data.getWorks)
-            setContents(data.getWorks)
-            setOffSet(data.getWorkCount/1)
-        }
-
-
-    },[data])
-
-
-
-    useEffect(()=>{
-        console.log(contents)
-        if(id){
-            fetchContent.refetch({
-            workId:id
-            }).then( datas => {
-          
-                if(datas){
-                    setContent([datas.data.getWork])
-                    console.log(datas.data.getWork)
-                }
+const ViewWorks = ({type,content,setPage,page,offSet,id,setID,loading}) => {  
     
-            })
-        }else if(contents){
-            setContent(contents)
-        }
-        
-    },[id]);
+    const [contents,setContent]=useState([])
 
-
+    useEffect(()=>{
+        setContent(content)
+    },[content])
 
 
     return(  
@@ -103,38 +48,40 @@ const ViewWorks = ({type}) => {
                                             </div>
                                             
                                             <div className="card-block px-0 py-3">
-                                                <div className="">
-                                                    <div className="">
-                                                        <div className="">
+                                                <div >
+                                                    <div >
+                                                        {!loading ?
+                                                        <div >
 
-                                                            {content[0]? content.map(e =>{
-
-
-                                                                const monthNames = ["January", "February", "March", "April", "May", "June",
-                                                                "July", "August", "September", "October", "November", "December"
-                                                                ];
-
-                                                                const date_ob = new Date(e.date);
+                                                            {contents[0]? contents.map(e =>{
 
 
-                                                                const date = date_ob.getDate()+" "+monthNames[date_ob.getMonth()]+" "+date_ob.getFullYear();
-                                                               console.log(date_ob)
                                                                 return  <WorkBar
-                                                                title = {e.jobTitle}
-                                                                time = {date}
-                                                                description = {e.description}
-                                                                viewURL = {`/CSA/work/${e.workId}`}
+                                                                title = {e.appointment_id}
+                                                                time = {dateFormatter(e.starting_date)}
+                                                                description = {e.booking.description}
+                                                                viewURL = {`/CSA/work/${e._id}`}
                                                                 
-                                                                id = {e.workId}
-                                                                key = {e.workId}
+                                                                id = {e.appointment_id}
+                                                                key = {e.appointment_id}
                                                             />  
 
 
-                                                            }):null}
+                                                            }):
+                                                                <Empty
+                                                                    message="No results Found"
+                                                                />
+                                                            }
 
                                                         
                                                                    
                                                         </div>
+
+                                                        : 
+                                                        
+                                                            <Loading/>
+                                                       
+                                                        }
                                                     </div>
                                                 </div>
                                             </div>

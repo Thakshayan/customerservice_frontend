@@ -3,25 +3,11 @@ import { useState } from 'react';
 import {Link} from 'react-router-dom';
 import { useEffect } from 'react/cjs/react.development';
 
-import {GET_PROFILE} from '../../GraphQL/Queries'
-
-function PhotoCard({id}){
 
 
-    // const {error,loading,data} =  useQuery(GET_PROFILE,{
-    //     variables:{
-    //         id
-    //     }
-    // });
+function PhotoCard({id,profile}){
 
     const [image,setImage] = useState("/assets/images/user/profile.jpg");
-
-    // useEffect(()=>{
-    //     if(data){
-    //         setImage(image);
-    //     }
-    // },[])
-
 
     return(
         <div className="">
@@ -31,7 +17,11 @@ function PhotoCard({id}){
                         <h5>Profile</h5>
                     </div>
                     <div>
-                        <img src={image} alt="" style={{display:'block',height:'200px',width:'250px',margin:'auto',paddingTop:'15px',justifyContent:'center'}}/> 
+                        {profile ? 
+                            <img src={image} alt="" style={{display:'block',height:'200px',width:'250px',margin:'auto',paddingTop:'15px',justifyContent:'center'}}/> 
+                        :
+                            <img src="" alt="Image is loading"/>
+                        }
                     </div>
                     <hr/>
                    <div style={{ margin:'15px',display:'flex'}}>

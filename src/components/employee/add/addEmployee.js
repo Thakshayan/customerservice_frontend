@@ -7,21 +7,20 @@ import {gql,useMutation} from '@apollo/client'
 
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import { from } from '@apollo/client';
-import { ADD_EMPLOYEE } from '../../../GraphQL/Mutations';
 
 
 
-function AddWorkerForm({type}){
 
-    const [addWorker,{loading,error}] = useMutation(ADD_EMPLOYEE,{
-        onCompleted:data => {
-            setID(data.addWorker);    
-          }
-    });
+function AddWorkerForm({type,addEmployee,setID,Id,content}){
 
+    
+    const [id,setId] = useState(Id)
 
+    useEffect(() => {
+        console.log(id)
+    }, [id])
 
     // const  isValidID = (message) => {
     //     return this.test("isValidMessage", message, function (value) {
@@ -58,7 +57,7 @@ function AddWorkerForm({type}){
 
     const [addPassword,setAddPassword] = useState("password");
     const [addClassName, setAddClassName] = useState("fa fa-eye");
-    const [id,setID] = useState();
+    
     
     const formik = useFormik({
         initialValues:{
@@ -69,7 +68,6 @@ function AddWorkerForm({type}){
             address:'',
             // date:'',
             email:'',
-            type:type,
             password:''
         },validationSchema: Yup.object({
             name: Yup.string()
@@ -103,10 +101,10 @@ function AddWorkerForm({type}){
         }),
         onSubmit: values => {
             alert(JSON.stringify(values,null,2))
-            values.phone = Number(values.phone)
+            values.phone = String(values.phone)
  
             try{
-                addWorker({
+                addEmployee({
                     variables:values  
                   })
                 
@@ -115,16 +113,7 @@ function AddWorkerForm({type}){
             }
            
 
-  
-            // fetch('http://localhost:8000/serviceprovider/addEmployee',{
-            //     method: 'POST',
-            //     headers: {"Content-Type": "application/json"},
-            //     body: JSON.stringify(employee)
-            // }).then(()=>{
-            //     alert("Successfully submitted"); 
-            // }).catch((err)=>{
-            //     console.log(err);
-            // })
+
         }
     })
 
@@ -225,11 +214,14 @@ function AddWorkerForm({type}){
                                 {/*<!-- [ Basic info ] end -->*/}
 
                                 {/*<!-- [ photo form ] start -->*/}
-                                {id ?<ChangeCard
+                                {content ?<ChangeCard
                                     title ='Change profile'
                                     setID = {setID}
                                     childComponent ={<PhotoUpdate/>}
-                                    id = {id}
+                                    id = {Id}
+                                    content = {content}
+                                    type={type}
+
                                 />:null}
                                 {/*<!-- [ photo form ] end -->*/}
 

@@ -1,17 +1,12 @@
 import BreadCrumb from "../../breadcrumb";
-import ChangeCard from "../../form/changeCard";
+import ChangeCard from "./changeCard";
 import FinishCard from "../../finishCard";
-import { useState,useEffect } from "react";
-
-import { GET_WORKER } from "../../../GraphQL/Queries";
-import { useQuery } from "@apollo/client";
+import Empty from "../../empty";
 
 
-const RemoveEmployeeCard = ({type}) => {
-
-    const [id,setID] = useState('');
 
 
+const RemoveEmployeeCard = ({type,action,content,id,setID,loading}) => {
     
 
     return ( 
@@ -28,18 +23,24 @@ const RemoveEmployeeCard = ({type}) => {
 
                                                        
                             {/*<!-- [ Remove card ] start -->*/}
-                            <ChangeCard
+                            {content ?<ChangeCard
                                 title = {`Remove ${type}`}
                                 setID = {setID}
-                                childComponent ={
+                                content = {content}
+                                type={type}
+                                action = {action}
+                                loading = {loading}
+                                
                                      
-                                    <FinishCard
-                                        title= {`Remove ${type}`}
-
-                                        workerId = {id}
-                                    />
-                                }
-                            />
+                                   
+                                
+                            />:
+                            <div style={{width:'100%'}}>
+                                <Empty
+                                    message="No matches"
+                                />
+                            </div>
+                            }
                             {/*<!-- [ Remove card ] end -->*/}
 
                         </div>

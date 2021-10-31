@@ -1,42 +1,19 @@
-import SearchBar from "../work/searchBar";
+import SearchBar from "../searchBar";
 import EmployeeCard from "../employee/employeeCard";
-
+import FinishCard from "../finishCard";
 
 import { useState,useEffect } from "react";
 
 import { GET_WORKER } from "../../GraphQL/Queries";
 import { useQuery } from "@apollo/client";
+import ElementCard from "../employee/remove/elementCard";
 
-const ChangeCard = ({title,childComponent,setID,id}) => {
+const ChangeCard = ({title,content,setID,id,type,action,childComponent,loading}) => {
 
-
-    const [Id,setId] = useState(id)
-
-    const [content,setContent] = useState();
-    const fetchContent = useQuery(GET_WORKER,{
-        variables:{ id:Id }
-    });
 
     useEffect(() => {
-        setID(Id)
-    }, [])
-
-    useEffect(()=>{
-        console.log(Id)
-        if(Id){
-            setID(Id)
-            fetchContent.refetch({
-                id:Id
-            }).then( datas => {
-
-                if(datas){
-                    setContent(datas.data.getWorker)
-                }
-    
-            })
-        }
-        
-    },[Id]);
+        console.log(content)
+    }, [content])
     
     return ( 
         <div className="row"> 
@@ -48,26 +25,33 @@ const ChangeCard = ({title,childComponent,setID,id}) => {
                     <div className="" style={{marginTop:'20px'}}>
                         {/* <SearchBar placeholder="Enter worker ID ..." setCardContent={setCardContent} setId={setID} id={id}/>
                      */}
-                     <SearchBar placeholder="Enter worker ID ..." id={Id} setId={setId}/>
+                     <SearchBar placeholder="Enter worker ID ..." id={id} setId={setID}/>
                                             
                      </div>
                     {content ?
                     <div className="card-block px-0 py-3">
                         <div className="">
                             <div className="">
-                                <div className="row d-flex" >
+                                <div className="row d-flex" style={{margin:'auto',alignItems:'center',justifyContent:'center'}}>
 
-                                    
-                                    {content ? 
-                                        <EmployeeCard content={content} type=""/>
-                                    : null} 
+                                    { content[0] ? 
 
-                                    {content ?                             
-                                        <div className="col-10 col-sm-5 col-md-5 col-xl-7" style={{margin:'20px'}}>
-                        
-                                            {childComponent}
-                                        </div>
-                                    : null}  
+                                    content.map ((e) => {
+                                    console.log("object Id",e._id)
+                                    return <ElementCard
+                                        key = {e._id}
+                                        content = {e}
+                                        type = {type}
+                                        childComponent = {
+                                            childComponent}
+                                            
+                                    />})
+                                     
+                                    :null
+                                    }
+
+
+
                                    
                                                                        
                                 </div>

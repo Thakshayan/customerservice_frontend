@@ -12,8 +12,8 @@ const EmployeeCard = ({content,type}) => {
     },[])
 
     return ( 
-    <div className="col-12 col-sm-6 col-md-6 col-xl-4">
-        <div className="card-container ">
+     <div className="col-12 col-sm-6 col-md-6 col-xl-4">
+        {content ?<div className="card-container ">
             <div className="card-employee">
                 <div className="bg">
                     <svg viewBox="0 0 200 200" xmlns=""> 
@@ -35,19 +35,19 @@ const EmployeeCard = ({content,type}) => {
                     <p className="p" style={{marginTop:"5px"}}>|&nbsp; {type} &nbsp; |  </p>
 
                     <div className="details" style={{paddingTop:"40px"}}>
-                        <div> <i className="fas fa-user icon"></i> {type} ID :  {content.workerId}{/*{content.username} */} </div>
-                        <div> <i className="fas fa-phone icon" style={{color:"green"}}></i> Tel : {content.phone} {/*{content.contact_no} */}</div>
+                        <div> <i className="fas fa-user icon"></i> {type} ID :  {content.username} </div>
+                        <div> <i className="fas fa-phone icon" style={{color:"green"}}></i> Tel : {content.contact_no} </div>
                         <div> <i className="fas fa-envelope-square icon" style={{color:"#800000"}}></i> Email : {content.email} </div>
                     </div>
                     <div className="employeeCard-footer">
-                    <Link to={`/CSA/profile/${content.workerId}`} className="btn-follow" aria-label="view more">
+                    <Link to={`/CSA/profile/${content.username}`} className="btn-follow" aria-label="view more">
                         View More &nbsp;
                         <i className="fas fa-arrow-alt-circle-right" aria-hidden="true" ></i>
                     </Link>
                 </div>
                 </div>
             </div>
-        </div>
+        </div>:null}
         </div>
      );
 }

@@ -3,7 +3,7 @@ import ViewNotifications from "../components/notification/notifications";
 import { useState, useEffect } from 'react';
 import {useQuery} from "@apollo/client";
 
-//import {GET_NOTIFICATIONS} from "../GraphQL/Queries";
+import {GET_SPNOTIFICATION} from "../GraphQL/Queries";
 
 
 const SPNotification = () => {
@@ -11,31 +11,30 @@ const SPNotification = () => {
 
     const [contents,setContents] = useState([]);
     const [content,setContent] = useState([]);
-    const [page,setPage] = useState(0);
+    const [page,setPage] = useState(1);
     const [offSet,setOffSet] = useState();
 
-    // const {error,loading,data} = useQuery(GET_NOTIFICATIONS,{
-    //     variables:{
-    //         page:page,
-    //         offSet:1,
-    //         status:type
-    //     }
-    // });
+    const {error,loading,data} = useQuery(GET_SPNOTIFICATION,{
+        variables:{
+            page:page,
+            offset:1
+        }
+    });
 
 
-    // useEffect(()=>{
-    //     console.log(data)
-    //     console.log(type)
-    //     if(error){
-    //         console.log(error)
-    //     }
-    //     if(data){
-      
-    //         setContent(data.getNotifications) //change
-    //     }
+    useEffect(()=>{
+
+        if(error){
+            console.log(error)
+        }
+        if(data){
+            console.log(data)
+            setContent(data.getMyNotification); //change
+            setOffSet(data.getCountNotification.Count/1)
+        }
 
 
-    // },[data])
+    },[data])
 
 
 
@@ -45,6 +44,7 @@ const SPNotification = () => {
             setPage={setPage} 
             page={page} 
             offSet={offSet}
+            loading={loading}
         />
      );
 }

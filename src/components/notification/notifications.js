@@ -3,7 +3,11 @@ import SearchBar from '../searchBar';
 import PaginationBar from '../pagination';
 import NotificationBar from './notificationBar';
 
-const ViewNotifications = ({content,setPage,page,offSet}) => {    
+import {dateFormatter} from "../formatter"
+import Loading from '../loading';
+import Empty from '../empty';
+
+const ViewNotifications = ({content,setPage,page,offSet,loading}) => {    
 
 
     return(  
@@ -34,47 +38,31 @@ const ViewNotifications = ({content,setPage,page,offSet}) => {
                                             <div className="card-block px-0 py-3">
                                                 <div className="">
                                                     <div className="">
-                                                        <div className="">
+                                                        {!loading ?
+                                                        <div >
 
                                                             {content[0]? content.map(e =>{
 
-
-                                                                const monthNames = ["January", "February", "March", "April", "May", "June",
-                                                                "July", "August", "September", "October", "November", "December"
-                                                                ];
-
-                                                                const date_ob = new Date(e.date);
-
-
-                                                                const date = date_ob.getDate()+" "+monthNames[date_ob.getMonth()]+" "+date_ob.getFullYear();
-                                                               console.log(date_ob)
-                                                                return  <NotificationBar
-                                                                title = "closed"
-                                                                time = "21 July 12:56"
-                                                                description = "This is a xample description about the booking"
-                                                                workstation = "Jaffna"
-                                                            /> 
+                                                               return <NotificationBar
+                                                                    title = {e.state}
+                                                                    time = {dateFormatter(e.date)}
+                                                                    description = {e.message}
+                                                                    key={e._id}
+                                                                /> 
 
 
-                                                            }):null}
+                                                            }):
+                                                                <Empty
+                                                                    message="No Notifications"
+                                                                />
+                                                            }
 
-                                                            <NotificationBar
-                                                                title = "closed"
-                                                                time = "21 July 12:56"
-                                                                description = "This is a xample description about the booking"
-                                                                workstation = "Jaffna"
-                                                            /> 
-
-                                                            <NotificationBar
-                                                                title = "closed"
-                                                                time = "21 July 12:56"
-                                                                description = "This is a xample description about the booking"
-                                                                workstation = "Jaffna"
-                                                            /> 
+                                                           
 
                                                         
                                                                    
                                                         </div>
+                                                        : <Loading/>}
                                                     </div>
                                                 </div>
                                             </div>
