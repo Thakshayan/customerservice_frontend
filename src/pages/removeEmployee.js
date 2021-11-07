@@ -1,26 +1,60 @@
+import { useState,useEffect } from "react";
 import RemoveEmployeeCard from "../components/employee/remove/removeEmployee";
 
-//components
-import Header from "../components/header";
-import Navbar from '../components/navbar';
-import Preloader from '../components/preloader';
+import {useQuery,useMutation} from '@apollo/client'
+
+import { REMOVE_WORKER } from "../GraphQL/Mutations";
+import { GET_SEARCH_WORKER } from "../GraphQL/Queries";
+
+const RemoveEmployee = () => {
+
+    const [removeModerator,{loading,error}] = useMutation(REMOVE_WORKER,{
+        onCompleted: res =>{
+            console.log(res)
+            if(res.removeWorker){
+                window.location.href="/success"
+            }
+        }
+    });
 
 
-const RemoveEmployee = ({type}) => {
-    return ( 
-        <div>
-            {/* [ Pre-loader ] start */}
-            <Preloader/>
-            { /* [ Pre-loader ] End 
-            [ navigation menu ] start */}
-            <Navbar/>
-            {/* </div> [ navigation menu ] end 
-            [ Header ] start */}
-            <Header/>
-            {/*<!-- [ Header ] end --> */}
-            <RemoveEmployeeCard type={type}/>
-        </div>
+
+    const [Id,setId] = useState('')
+
+    const [content,setContent] = useState([]);
+    const fetchContent = useQuery(GET_SEARCH_WORKER,{
+        variables:{ workerId:Id }
+    });
+
+  
+
+    useEffect(()=>{
+        console.log(Id)
+        if(Id){
+            
+            fetchContent.refetch({
+                workerId:Id
+            }).then( data => {
+
+                console.log(data)
+                if(data){
+                    setContent(data.data.getWorker)
+                }
+    
+            })
+        }
         
+    },[Id]);
+
+    return ( 
+        <RemoveEmployeeCard 
+            type="Worker" 
+            action={removeModerator} 
+            content =  {content}
+            id ={Id}
+            setID = {setId}
+            loading = {loading}
+            />
      );
 }
  

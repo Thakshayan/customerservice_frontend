@@ -1,21 +1,21 @@
 import NotificationBar from './notificationBar';
 import {Link} from "react-router-dom"
 import { useEffect,useState } from 'react';
+import Empty from '../empty';
+import Loading from '../loading';
 
-function Notificator({title}){
+import {dateFormatter} from "../formatter";
+
+function Notificator({title,content,id,loading}){
 
     const [Notification,setNotification] = useState([]);
 
-    // useEffect(()=>{
-
-    //     fetch(`http://localhost:8000/serviceprovider/getNotification`)
-    //         .then(res => res.json())
-    //         .then(data => {
-    //             setNotification(data);               
-    //         })
-    //         .catch(err => console.log(err));
-
-    // },[])
+    useEffect(()=>{
+        console.log(id)
+        if(content){
+            setNotification(content)
+        }
+    },[content])
 
 
     return(
@@ -25,40 +25,37 @@ function Notificator({title}){
                     <h5>{title}</h5>
                 </div>
                 <div className="card-block px-0 py-3">
-                    <div className="">
-                        <div className="">
-                            <div className="">
-                                <NotificationBar
-                                    title = "This is a xample title"
-                                    time = "21 July 12:56"
-                                    description = "This is a xample description. This is a xample description. This is a xample description. This is a xample description"
-                                    viewURL = "#"
-                                    delURL = "#"
-                                    id = "ID001"
-                                /> 
-                                <NotificationBar
-                                    title = "This is a xample title"
-                                    time = "21 July 12:56"
-                                    description = "This is a xample description. This is a xample description. This is a xample description. This is a xample description"
-                                    viewURL = "#"
-                                    delURL = "#"
-                                    id = "ID001"
-                                /> 
-                                <NotificationBar
-                                    title = "This is a xample title"
-                                    time = "21 July 12:56"
-                                    description = "This is a xample description. This is a xample description. This is a xample description. This is a xample description"
-                                    viewURL = "#"
-                                    delURL = "#"
-                                    id = "ID001"
-                                />       
+                    <div >
+                        <div >
+                            { !loading ?
+                            <div>
+
+                                {Notification[0] ? Notification.map((e)=>{
+
+                                   return <NotificationBar
+                                        title = {e.state}
+                                        time = {dateFormatter(e.date)}
+                                        description = {e.message}
+                                        key={e._id}
+                                    /> 
+
+                                }):
+                                    <Empty
+                                        message="No Notifications"
+                                    />
+                                }
+                                
+                                   
                             </div>
+                            : 
+                                <Loading/>
+                            }
                         </div>
                     </div>
                 </div>
                 
                 <div style={{padding:"0px 30px 10px 0px",float:"right"}}>
-                    <Link to={`/view`} className="btn btn-mtd btn-primary" style={{width:"150px",height:"25px",padding:'0 0',float:'right'}}> 
+                    <Link to={id?`/CSA/notifications/${id}`:`/CSA/notifications`} className="btn btn-mtd btn-primary" style={{width:"150px",height:"25px",padding:'0 0',float:'right',background: 'linear-gradient(-135deg, #1de9b6 0%, #1dc4e9 100%)'}}> 
                         View More 
                         <i className="far fa-eye" style={{paddingLeft:'10px'}}></i>
                     </Link>

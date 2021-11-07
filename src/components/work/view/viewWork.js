@@ -1,43 +1,26 @@
 import BreadCrumb from '../../breadcrumb';
 import SearchBar from '../../searchBar';
 import PaginationBar from '../../pagination';
-import NotificationBar from '../../notification/notificationBar';
-
-import { useState, useEffect } from "react"
+import WorkBar from './workBar';
 
 
-const ViewWorks = () => {    
-
-    const [content,setContent] = useState([]);
-    const [id,setID] = useState('');
-    const [page,setPage] = useState(0);
-    const [offSet,setOffSet] = useState(1);
-    const limit = 10;
+import { useState, useEffect } from 'react';
+import {useQuery} from "@apollo/client";
 
 
-    useEffect(()=>{
+import Loading from '../../loading';
+import Empty from '../../empty';
 
-        fetch(`http://localhost:8000/serviceprovider/newRequestCount`)
-            .then(res => res.json())
-            .then(data => {
-                setOffSet(data/limit);              
-            })
-            .catch(err => console.log(err));
+import { dateFormatter } from '../../formatter';
 
-            
-        
-    },[]);
+
+const ViewWorks = ({type,content,setPage,page,offSet,id,setID,loading}) => {  
+    
+    const [contents,setContent]=useState([])
 
     useEffect(()=>{
-
-        fetch(`http://localhost:8000/serviceprovider/newRequests?pages=${page}`)
-            .then(res => res.json())
-            .then(data => {
-                setContent(data);               
-            })
-            .catch(err => console.log(err));
-        
-    },[page]);
+        setContent(content)
+    },[content])
 
 
     return(  
@@ -61,22 +44,44 @@ const ViewWorks = () => {
                                                 <h5>Search Work ID</h5>
                                             </div>
                                             <div className="" style={{marginTop:'20px'}}>
-                                                <SearchBar placeholder="Enter worker ID ..." setCardContent={setContent} setId={setID}/>
+                                                <SearchBar placeholder="Enter work ID ..." id={id} setId={setID}/>
                                             </div>
                                             
                                             <div className="card-block px-0 py-3">
-                                                <div className="">
-                                                    <div className="">
-                                                        <div className="">
-                                                            <NotificationBar
-                                                                title = "This is the title"
-                                                                time = "21 July 12:56"
-                                                                description = "This is a xample description. This is a xample description. This is a xample description. This is a xample description"
-                                                                viewURL = "#"
-                                                                delURL = "#"
-                                                                id = "ID001"
-                                                            />         
+                                                <div >
+                                                    <div >
+                                                        {!loading ?
+                                                        <div >
+
+                                                            {contents[0]? contents.map(e =>{
+
+
+                                                                return  <WorkBar
+                                                                title = {e.appointment_id}
+                                                                time = {dateFormatter(e.starting_date)}
+                                                                description = {e.booking.description}
+                                                                viewURL = {`/CSA/work/${e._id}`}
+                                                                
+                                                                id = {e.appointment_id}
+                                                                key = {e.appointment_id}
+                                                            />  
+
+
+                                                            }):
+                                                                <Empty
+                                                                    message="No results Found"
+                                                                />
+                                                            }
+
+                                                        
+                                                                   
                                                         </div>
+
+                                                        : 
+                                                        
+                                                            <Loading/>
+                                                       
+                                                        }
                                                     </div>
                                                 </div>
                                             </div>

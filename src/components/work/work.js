@@ -1,9 +1,33 @@
 import { Link } from "react-router-dom";
+import { useEffect, useLayoutEffect } from "react";
+import { useParams } from 'react-router';
 
 import Card from "../card";
-import FinishCard from "../finishCard";
 
-const WorkProfile = () => {
+import {WORK_PROFILE} from "../../GraphQL/Queries";
+import { useQuery } from "@apollo/client";
+import { useState } from "react/cjs/react.development";
+import {dateFormatter} from '../formatter'
+import Loading from "../loading";
+
+
+const WorkProfile = ({contents}) => {
+
+    const {id} = useParams()
+
+    const [Id,setID] = useState(id)
+    const [content,setContent] = useState()
+
+    useEffect(() => {
+        console.log(contents)
+        setContent(contents)
+    }, [contents])
+
+    useLayoutEffect(()=>{
+        window.scrollTo(0,0)
+    },[])
+    
+
     return ( 
 
     <div className="pcoded-main-container main-container">
@@ -19,35 +43,69 @@ const WorkProfile = () => {
                                 
 
                                 {/*<!--[ Messages section ] starts-->*/}
-                                
+                                <div className="col-sm-12 col-md-12 col-xl-4">
                                 <Card
-                                    title='New Messages'
+                                    title='Customer Messages'
                                     symbol = {<i className="fas fa-comment-dots text-c-green f-30 m-r-10"></i>}
-                                    count = '100'
+                                    count = ''
                                     button = {
-                                        <Link to="" className="label theme-bg text-white f-12" style={{width:"100%",float:"right",textAlign:"center"}}>
+                                        content ?<Link to={`/CSA/messages/${content.booking.by._id}`} className="label theme-bg text-white f-12" style={{width:"100%",float:"right",textAlign:"center"}}>
                                             View Info
                                             &nbsp; <i className="far fa-eye"></i>
                                         </Link>
+                                        :
+                                        <button className="label theme-bg text-white f-12" style={{width:"100%",float:"right",textAlign:"center",borderWidth:0}} disabled>
+                                            View Info
+                                            &nbsp; <i className="far fa-eye"></i>
+                                        </button>
                                     }
                                 />
+                                </div>
                                 {/*<!--[ Messages section ] end-->*/}
 
                                 
                                 {/*<!--[ Workers detail link section ] starts-->*/}
+                                <div className="col-sm-12 col-md-12 col-xl-4">
                                 <Card
                                     title='Assigned Workers'
                                     symbol = {<i className="fas fa-users text-c-green f-30 m-r-10"></i>}
-                                    count = '100'
+                                    count = ''
                                     button = {
-                                        <Link to="" className="label theme-bg text-white f-12" style={{width:"100%",float:"right",textAlign:"center"}}>
+                                        <Link to={`/CSA/assignWorker/${Id}`} className="label theme-bg text-white f-12" style={{width:"100%",float:"right",textAlign:"center"}}>
                                             View Info
                                             &nbsp; <i className="far fa-eye"></i>
                                         </Link>}
                                 />
+                                </div>
                                 {/*<!--[ Workers detail link section ] end-->*/}
 
-                                {/*<!-- [ work status ] starts-->*/}           
+                                {/*<!-- [ work status ] starts-->*/}    
+                                {/* {content && content.finishDate?     */}
+                                <div className="col-sm-12 col-md-12 col-xl-4">
+                                {content && content.state === 'finished' ?
+                                
+                                <Card
+                                title='Work Status'
+                                symbol =  {<i className="fas fa-check-circle text-c-green f-30 m-r-10"></i>}
+                                count = 'Finished'
+                                button = {
+                                    <button className="label theme-bg text-white f-12" style={{width:"100%",float:"right",textAlign:"center",borderWidth:0}}>
+                                        
+                                        {content.paid ?
+                                        <>
+                                            Payment Finished &nbsp;
+                                         <i className="fas fa-check-circle"></i> 
+                                        </>
+                                        :
+                                        <>
+                                            Payment Pending
+                                            &nbsp; <i className="feather icon-loader"></i>
+                                        </>
+                                        }
+                                        
+                                    </button>
+                                }
+                                /> :
                                 <Card
                                     title='Work Status'
                                     symbol =  {<i className="feather icon-loader text-c-green f-30 m-r-10"></i>}
@@ -59,7 +117,12 @@ const WorkProfile = () => {
                                         </Link>
                                     }
                                 />
+                            
+                                  
+                                }
+                                </div>
                                 {/*<!-- [ work status ] end-->*/}
+                                
                             </div>
 
                             <div className="row">
@@ -70,13 +133,13 @@ const WorkProfile = () => {
                                             <div className="card-header">
                                                 <h5>work info</h5>
                                             </div>
-                                            <div className="" style={{paddingTop:"25px"}}>
+                                            {content?<div className="" style={{paddingTop:"25px"}}>
                                                 <div className="row" style={{display:"flex"}}>
                                                     <div className="col-4 col-md-4 col-sm-4">
                                                         Work Id:
                                                     </div>
                                                     <div className="col-8 col-md-8 col-sm-8">
-                                                        001
+                                                        {content.appointment_id}
                                                     </div>
                                                 </div>
                                                 <hr/>
@@ -86,53 +149,60 @@ const WorkProfile = () => {
                                                         Ordered Date:
                                                     </div>
                                                     <div className="col-8 col-md-8 col-sm-8">
-                                                        20/10/2021
+                                                            {dateFormatter(content.starting_date)}
                                                     </div>
                                                 </div>
                                                 <hr/>
                                                 <div className="row" style={{display:"flex"}}>
                                                     <div className="col-4 col-md-4 col-sm-4">
-                                                        Subject:
+                                                        Work Address:
                                                     </div>
                                                     <div className="col-8 col-md-8 col-sm-8">
-                                                        This is a sample describtion about the work.
+                                                        {content.booking.workStationAddress}
                                                     </div>
                                                 </div>
                                                 <hr/>
                                                 <div className="row" style={{display:"flex"}}>
                                                     <div className="col-4 col-md-4 col-sm-4">
-                                                        Details:
+                                                        Description:
                                                     </div>
                                                     <div className="col-8 col-md-8 col-sm-8">
-                                                        This is a sample describtion about the work.
+                                                        {content.booking.description}
                                                     </div>
                                                 </div>
                                                 <hr/>
                                                 <div className="row" style={{display:"flex"}}>
                                                     <div className="col-4 col-md-4 col-sm-4">
-                                                        Address:
+                                                        District:
                                                     </div>
                                                     <div className="col-8 col-md-8 col-sm-8">
-                                                        Sample Address
+                                                        {content.booking.workStationDistrict}
                                                     </div>
                                                 </div>
                                                 <hr/>
                                                 <div className="row" style={{display:"flex"}}>
                                                     <div className="col-4 col-md-4 col-sm-4">
-                                                        Finish Date:
+                                                        Paid:
                                                     </div>
                                                     <div className="col-8 col-md-8 col-sm-8">
-                                                        ...
+                                                        {content.paid?"Yes":'...'}
+                                                    </div>
+                                                </div>
+                                                <hr/>
+                                                <div className="row" style={{display:"flex"}}>
+                                                    <div className="col-4 col-md-4 col-sm-4">
+                                                        Budget:
+                                                    </div>
+                                                    <div className="col-8 col-md-8 col-sm-8">
+                                                        {content.cost}
                                                     </div>
                                                 </div>
                                             </div>
+                                            :
+                                                <Loading/>
+                                            }
                                             <br/>
-                                            {/* <div style={{paddingTop:"20px",float:"right"}}>
-                                                <button className="btn btn-mtd btn-primary" style={{width:"100px",height:"25px",padding:'0 0'}}> 
-                                                    Edit 
-                                                    <i className="fas fa-edit" style={{paddingLeft:'10px'}}></i>
-                                                </button>
-                                            </div> */}
+                                            
                                         
                                         </div>
                                     </div>
@@ -142,20 +212,22 @@ const WorkProfile = () => {
                                 
                                 <div className="col-md-12 col-xl-6">
 
-                                    
-                                    {/*<!-- [ customer info ] starts-->*/}
+                                      {/*<!-- [ customer info ] starts-->*/}
+                                   
+                                  
                                     <div className="card yearly-sales">
                                         <div className="card-block" style={{padding:'10px 30px 10px 30px'}}>
                                             <div className="card-header">
                                                 <h5>Customer info</h5>
                                             </div>
+                                            {content ?
                                             <div className="" style={{paddingTop:"25px"}}>
                                                 <div className="row" style={{display:"flex"}}>
                                                     <div className="col-4 col-md-4 col-sm-4">
                                                         Full Name:
                                                     </div>
                                                     <div className="col-8 col-md-8 col-sm-8">
-                                                        Thakshayan Thanabalasingam
+                                                        {content.booking.by.name}
                                                     </div>
                                                 </div>
                                                 <hr/>
@@ -165,7 +237,7 @@ const WorkProfile = () => {
                                                         Customer ID:
                                                     </div>
                                                     <div className="col-8 col-md-8 col-sm-8">
-                                                        001
+                                                        {content.booking.by.username}
                                                     </div>
                                                 </div>
                                                 <hr/>
@@ -174,79 +246,64 @@ const WorkProfile = () => {
                                                         Email:
                                                     </div>
                                                     <div className="col-8 col-md-8 col-sm-8">
-                                                        Thakshayan007@gmail.com
+                                                        {content.booking.by.email}
                                                     </div>
                                                 </div>
                                                 <hr/>
                                                 <div className="row" style={{display:"flex"}}>
                                                     <div className="col-4 col-md-4 col-sm-4">
-                                                        Address:
+                                                        Phone:
                                                     </div>
                                                     <div className="col-8 col-md-8 col-sm-8">
-                                                        Sample Address
+                                                        {content.booking.by.contact_no}
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div style={{paddingTop:"20px",float:"right"}}>
-                                                <button className="btn btn-mtd btn-primary" style={{width:"100px",height:"25px",padding:'0 0'}}> 
-                                                    View 
-                                                    &nbsp; <i className="far fa-eye"></i>
-                                                </button>
-                                            </div>
+                                                <hr/>
+                                                <div className="row" style={{display:"flex"}}>
+                                                    <div className="col-4 col-md-4 col-sm-4">
+                                                        rating:
+                                                    </div>
+                                                    <div className="col-8 col-md-8 col-sm-8">
+                                                        {content.booking.by.rating}
+                                                    </div>
+                                                </div>
+                                                <br/>
+                                         
+                                            </div> 
+                                            :
+                                            
+                                            <Loading/>
+
+                                             }
+                                         
+                                        
+
                                         
                                         </div>
+                                        
                                     </div>
+
                                     {/*<!--[ customer info ] end-->*/}
 
-                                    {/*<!-- [ finish button ] starts-->*/}
-                                    <FinishCard
-                                        title='Finish the work'
-                                        icon ={<i className="fas fa-check-circle" style={{paddingLeft:'10px'}}></i>}
-                                        button = 'confirm finish'
-                                        buttonClass = 'btn-success'
-                                    />
-                                    {/*<!-- [ work status ] starts-->*/}           
-                                    
-                                {/*<!-- [ work status ] end-->*/}
-                                    {/*<!-- [ finish button ] end-->*/}
+                                    <Card
+                                    title='Work Images'
+                                    symbol = {<i className="far fa-images text-c-green f-30 m-r-10"></i>}
+                                    count = ''
+                                    button = {
+                                        <Link to={`/CSA/work/images/${Id}`} className="label theme-bg text-white f-12" style={{width:"100%",float:"right",textAlign:"center"}}>
+                                            View Images
+                                            &nbsp; <i className="far fa-eye"></i>
+                                        </Link>
+                                    }
+                                />
 
-                                    {/*<!-- [ rating card ] starts-->*/} 
-                                    {/* <div className="card user-list" >
-                                        <div className="card-header" style={{margin:'10px 0px 0px 20px'}}>
-                                            <h5>Rating</h5>
-                                        </div>
-                                        <div className="card-block" style={{padding:'10px 0px 0px 30px'}}>
-                                            <div className="row align-items-center justify-content-center m-b-20">
-                                                <div className="col-6">
-                                                    <h2 className="f-w-300 d-flex align-items-center float-left m-0">4.7 <i className="fas fa-star f-10 m-l-10 text-c-yellow"></i></h2>
-                                                </div>
-                                                <div className="col-6">
-                                                    <h6 className="d-flex  align-items-center float-right m-0" style={{padding:'10px 30px 0px 30px'}}> 
-                                                        <Link to="#" className="btn btn-primary" style={{width:'100px',height:'25px',padding:'0px 0px',background:'#038fcf'}}>
-                                                            View
-                                                            <i className="far fa-eye" style={{paddingLeft:'10px'}}></i>
-                                                        </Link>
-                                                    </h6>
-                                                </div>
-                                            </div>
-                                            <br/>
-                                        </div>
-                                    </div> */}
-                                    {/*<!-- [ rating list ] end-->*/}
+                                    
+            
                                     
                                 </div>
                                 
-                                <Card
-                                        title='Rating'
-                                        symbol =  {<i className="fas fa-star text-c-yellow f-30 m-r-10"></i>}
-                                        count = '4.7'
-                                        button = {
-                                            <Link to="" className="label theme-bg text-white f-12" style={{width:"100%",float:"right",textAlign:"center"}}>
-                                            view 
-                                                &nbsp; <i className="far fa-eye"></i>
-                                            </Link>
-                                        }
-                                    />       
+                                
+                                   
                                 
                                 
                             </div>

@@ -2,17 +2,40 @@ import { useState } from "react";
 
 import PhotoCard from "../profilephoto";
 import ProfileCard from "../profileCard";
-import WorkerInfoCard from "../workerInfoCard";
+import ProviderInfoCard from "../providerInfoCard";
 import RatingList from "../../rating/ratingSection/ratingList";
 import FinishCard from "../../finishCard";
 import Notificator from "../../notification/notificator";
 import ServiceProviderCard from "./serviceProviderCard";
+import { useMutation, useQuery } from "@apollo/client";
+import { ArrayFormater } from "../../formatter";
 
-const SpProfile = () => {
 
-    const id = "ID89";
+import { useEffect } from "react/cjs/react.development";
+import Message from "../../message/messages";
+import Empty from "../../empty";
+import Loading from "../../loading";
+
+const SpProfile = ({contents,loading}) => {
+
+    const [id,setID] = useState('')
+    const [content,setContent] = useState();
+    const [rating,setRating] = useState();
+    const [notification,setNotification] = useState();
+
+    useEffect(()=>{
+        if (contents){
+            setContent(contents.getMySP);
+            setRating(contents.ratingStats)
+            setID(contents.getMySP.username)
+            setNotification(contents.getMyNotification);
+        }
+        
+    },[contents])
+
+
     
-    const [content,setContent] = useState([]);
+    
 
     return ( 
         <div className="pcoded-main-container main-container">
@@ -27,31 +50,52 @@ const SpProfile = () => {
                         <div className="page-wrapper">
                             {//<!-- [ Main Content ] start -->
                             }
+                            {!loading ?
                             <div className="row">
                                 <div className="col-sm-12 col-xl-4">
                                 {/*<!--[ profile section ] starts-->*/}
-                                <PhotoCard/>
+                                {content ?
+                                    <PhotoCard 
+                                        profile={content.profile} 
+                                        id={content.username}
+                                        title={"Company Logo"}
+                                    />
+                                :
+                                    <Loading/>
+                                }
                                 {/*<!--[ profile section ] end--> */}
                                 
                                                                 
                                 
+                                {/*<!--[ Worker info section ] starts-->*/}
+                                <ProviderInfoCard 
+                                    id={id} 
                                 
-                                
-
-                                    {/*<!--[ Worker info section ] starts-->*/}
-                                    <WorkerInfoCard id={id} edit={true} title="Service Provider Info" />
-                                    {/*<!--[ Worker info section ] end-->
+                                    content={content}
+                                    title="Service Provider Info" />
+                                {/*<!--[ Worker info section ] end-->
 
                                     <!-- [ rating list ] starts-->*/}
-                                    <RatingList id={id} />
+                                  
+                                    <RatingList content={ArrayFormater(rating)} />
+                                 
                                     {/*<!-- [ rating list ] end-->*/}
 
-                                    {/*<!--[ profile section ] starts-->*/}
-                                    <PhotoCard/>
-                                    {/*<!--[ profile section ] end-->*/}
+                                    {/* <!--[ profile section ] starts-->*/}
+                                    {/* <PhotoCard id={id}/> */}
+                                    {/*<!--[ profile section ] end--> */}
 
                                     {/*<!--[ basic info section ] start-->*/}
-                                    <ProfileCard id={id} edit={true} title="Owner Info" />
+                                    {content && content.owner ? <ProfileCard 
+                                        id={id} 
+                                        edit={false} 
+                                        title="Owner Info" 
+                                        name = {content.owner.owner_name}
+                                        nic = {content.owner.owner_NIC}
+                                        contact = {content.owner.contact_no}
+                                    />:
+                                        <Loading/>
+                                    }
                                     {/*<!--[ basic info section ] end-->*/}
                                     
 
@@ -60,13 +104,13 @@ const SpProfile = () => {
                                     {/*<!-- [ finish button ] end-->*/}
 
                                     {/*<!-- [ finish button ] starts-->*/}
-                                    <FinishCard
+                                    {/* <FinishCard
                                         title='Close the company'
                                         icon ={<i className="fas fa-user-slash" style={{paddingLeft:'10px'}}></i>}
                                         button = 'Suspend'
                                         buttonClass = 'btn-danger'
                                         id = {id}
-                                    />
+                                    /> */}
                                     {/*<!-- [ finish button ] end-->*/}
 
 
@@ -78,21 +122,30 @@ const SpProfile = () => {
                                     {/*<!-- [ Services Info ] starts-->*/}
                                         <ServiceProviderCard
                                             title="Service Info"
+                                            content = {content}
                                         />
 
                                     {/*<!-- [ Services Info ] end-->*/}
 
                                     {/*<!--[ Recent Notification ] start-->*/}
-                                    <Notificator title="New Notifications"/>
+                                        <Notificator 
+                                            title="New Notifications"
+                                            content ={notification}
+                                        />
                                     {/*<!--[ Recent Notification ] end--> */}
                                     
                                     {/*<!--[ Recent Notification ] start-->*/}
-                                    <Notificator title="New Messages"/>
+                                        {/* <Message 
+                                            title="New Messages"
+                                            content = {null}
+                                        /> */}
                                     {/*<!--[ Recent Notification ] end--> */}
                                 </div>
                                 {/* <!-- [ Main Content ] end -->  */}
                             </div>
-                            
+                            : 
+                                <Loading/>
+                            }
                         </div>
                     </div>
                 </div>

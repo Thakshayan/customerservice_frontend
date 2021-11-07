@@ -2,10 +2,10 @@ import React from 'react';
 import {Line} from 'react-chartjs-2';
 
 
-function Chart({Array,Request}) {
+function Chart({ArrayX,Request,ArrayY}) {
 
   const state = {
-    labels: Array,
+    labels: ArrayX,
     datasets: [
       {
         label: Request,
@@ -14,7 +14,8 @@ function Chart({Array,Request}) {
         backgroundColor: '#1de9b6',
         borderColor: '#1de9b6',
         borderWidth: 1,
-        data: [6, 9, 8, 8, 6, 6,]
+        display:false,
+        data: ArrayY
       }
     ]
   }
@@ -33,13 +34,18 @@ function Chart({Array,Request}) {
             },
             
             scales : {
+              
               x: {
+                  ticks: {
+                      display: false
+                  }
+                ,
                 grid: {
                   display: false
                 },
                 title:{
                   display:true,
-                  text:'Days',
+                  text:'In a Day',
                   font:{
                    
                   }

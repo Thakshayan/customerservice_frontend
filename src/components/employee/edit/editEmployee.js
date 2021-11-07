@@ -9,17 +9,16 @@ import {useFormik} from 'formik';
 import * as Yup from 'yup';
 import {useEffect, useState} from 'react';
 import { useParams } from 'react-router-dom';
+import { useMutation } from '@apollo/client';
 
-function EditEmployee({type}){
+import AddEmployee from '../../form/addEmployeeForm';
+import Loading from '../../loading';
 
-    const [id,setID] = useState('ID89');
-    const {Id} = useParams()
+function EditEmployee({type,action,content,id,loading}){
 
-    useEffect(()=>{
-        
-        setID(Id)
-        console.log(Id);
-    },[Id])
+    
+    const [Id,setID] = useState();
+    
 
     
     const formik = useFormik({
@@ -28,16 +27,14 @@ function EditEmployee({type}){
             nic:'',
             //phone:'',
             email:'',
-            adress:''
+            address:''
         },validationSchema: Yup.object({
             name: Yup.string()
                 .required('Please enter the full name')
                 .matches(/^[a-zA-Z]+\s[a-zA-Z]+$/,"Cannot have special characters and seperated with space"),
-            nic: Yup.string()
-                .required('Please enter the NIC')
-                .matches(/^([0-9]{12})|([0-9]{9}(v|V))$/,"Enter a valid nic"),
-            // phone: Yup.number()
-            //     .required('Please enter the phone number'),
+            
+            phone: Yup.number()
+                .required('Please enter the phone number'),
             email: Yup.string()
                 .email('Invalid email Address')
                 .required('Please enter the email address'),
@@ -46,21 +43,20 @@ function EditEmployee({type}){
 
         }),
         onSubmit: values => {
-            alert(JSON.stringify(values,null,2))
-            const employee = values
-            
-            console.log(employee)
 
-            fetch('http://localhost:8000/serviceprovider/editBasicInfo/:id',{
-                method: 'POST',
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(employee)
-            }).then(()=>{
-                alert("Successfully submitted"); 
-            }).catch((err)=>{
-                console.log(err);
+            // values.workerId = id
+            alert(JSON.stringify(values,null,2))
+       
+            
+          
+
+            action({
+                variables:
+                    values
+                
             })
-            }
+
+        }
     })
 
 
@@ -74,7 +70,7 @@ function EditEmployee({type}){
                     <div className="pcoded-inner-content">
 
                         {/*<!-- [ breadcrumb ] start -->*/}
-                        <BreadCrumb type={type} reason="Edit" />
+                        <BreadCrumb type="Employee" reason="Edit" />
                         {/*<!-- [ breadcrumb ] end -->*/}
 
                         <div className="main-body">
@@ -96,13 +92,13 @@ function EditEmployee({type}){
 
                                                             <div className="form-group">
                                                                 <label htmlFor="name">Full Name</label>
-                                                                <input type="text" className="form-control" value={formik.values.name} id="name" placeholder="Full Name" onChange={formik.handleChange} onBlur={formik.handleBlur} required/>
+                                                                <input type="text" className="form-control" value={formik.values.name} id="name" placeholder="Full Name" onChange={formik.handleChange} onBlur={formik.handleBlur} required disabled/>
                                                                 { formik.touched.name && formik.errors.name ? <small id="nameError" className="error form-text text-muted error "> {formik.errors.name}</small>: null}
                                                             </div>
                                                             <div className="form-group">
-                                                                <label htmlFor="nic">NIC</label>
-                                                                <input type="text" className="form-control" id="nic" value={formik.values.nic} placeholder="Eg: 987654321v" onChange={formik.handleChange} onBlur={formik.handleBlur} required/>
-                                                                {formik.touched.nic && formik.errors.nic ? <small id="nameError" className="error form-text text-muted error "> {formik.errors.nic}</small>: null}
+                                                                <label htmlFor="phone">Phone Number</label>
+                                                                <input type="tel" className="form-control" value={formik.values.phone} id="phone" placeholder="Phone Number" onChange={formik.handleChange} onBlur={formik.handleBlur} required/>
+                                                                {formik.touched.phone && formik.errors.phone ? <small id="nameError" className="error form-text text-muted error "> {formik.errors.phone}</small>: null}
                                                             </div>
                                                             <div className="form-group">
                                                                 <label htmlFor="email">Email address</label>
@@ -119,9 +115,19 @@ function EditEmployee({type}){
 
                                                         
                                                     </div>
-                                                    <div className="col-md-6">    
-                                                        <ProfileCard id={id} />
-                                                    </div>
+                                                    {content ?<div className="col-md-6">    
+                                                   
+                                                                <ProfileCard 
+                                                                    id={content._id} 
+                                                                    edit={true} 
+                                                                    title="Personal Info" 
+                                                                    name = {content.name}
+                                                                    nic = {content.nic}
+                                                                    contact ={content.contact_no}
+                                                                    address = {content.address}
+                                                                />
+                                                            
+                                                    </div>:null}
                                                 </div>
                                                 <button type="submit" className="btn btn-primary">Submit</button>
                                                         
@@ -133,13 +139,22 @@ function EditEmployee({type}){
                                 </div>
                                 {/*<!-- [ Basic info ] end -->*/}
 
-                                {/*<!-- [ photo form ] start -->*/}
+                                {/* <!-- [ photo form ] start -->*/}
+                                {content ?
+                                <>
+                                
                                 <ChangeCard
                                     title ='Change profile'
                                     setID = {setID}
                                     childComponent ={<PhotoUpdate/>}
+                                    id = {id}
+                                    content = {[content]}
+                                    type={type}
+
                                 />
-                                {/*<!-- [ photo form ] end -->*/}
+                                </>
+                                :null}
+                                {/*<!-- [ photo form ] end --> */}
 
                             </div>
                         </div>

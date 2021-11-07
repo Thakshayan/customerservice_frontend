@@ -1,13 +1,68 @@
+import React, { useRef } from 'react';
+
+
 import BreadCrumb from '../../breadcrumb';
-import PasswordChanger from '../../form/changePassword';
 import PhotoUpdate from '../../form/changePhoto';
 import ChangeCard from '../../form/changeCard';
 
+
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
-import {useState} from 'react';
+import {useState,useLayoutEffect, useEffect} from 'react';
+import { CHECK_USER } from '../../../GraphQL/Queries';
+import {useQuery} from '@apollo/client'
 
-function AddWorkerForm({type}){
+
+
+
+
+function AddWorkerForm({type,addEmployee,setID,Id,content,ID,photoFocus}){
+
+
+    
+    
+    const [id,setId] = useState(Id)
+
+
+
+    const [username,setUsername] = useState('')
+    const [userError,setUserError] = useState()
+
+    const ChechUser = useQuery(CHECK_USER,{
+        variables:{
+            username:username
+        }
+    })
+
+    useEffect(()=>{
+        if(username){
+            ChechUser.refetch({
+                username:username
+            }).then((data) => {
+                console.log(data)
+                if(data.data && data.data.CheckUsername){
+                    setUserError('')
+                    
+                }else{
+                    setUserError('choose another username')
+                }
+            })
+        }
+
+    },[username]);
+
+
+    const updateUser = (e) =>{
+        console.log(e.target.value)
+        if(e.target.value){
+           
+            setUsername(e.target.value)
+            
+        }else{
+            setUserError('Please add the user name')
+            
+        }
+    }
 
     const toggleAddPassword = (e) => {
         if (addPassword === "password"){
@@ -21,7 +76,7 @@ function AddWorkerForm({type}){
 
     const [addPassword,setAddPassword] = useState("password");
     const [addClassName, setAddClassName] = useState("fa fa-eye");
-    const [id,setID] = useState('');
+    
     
     const formik = useFormik({
         initialValues:{
@@ -32,7 +87,6 @@ function AddWorkerForm({type}){
             address:'',
             // date:'',
             email:'',
-            type:'Moderator',
             password:''
         },validationSchema: Yup.object({
             name: Yup.string()
@@ -40,10 +94,12 @@ function AddWorkerForm({type}){
                 .matches(/^[a-zA-Z]+\s[a-zA-Z]+$/,"Cannot have special characters and seperated with space"),
             nic: Yup.string()
                 .required('Please enter the NIC')
-                .matches(/^([0-9]{12})|([0-9]{9}(v|V))$/,"Enter a valid nic"),
-            id: Yup.string()
-                .required('Please enter the Worker ID')
-                .matches(/^[\w\d]+$/,"can only have letters and digits"),
+                .matches(/^([0-9]{12})$|^([0-9]{9}(v|V))$/,"Enter a valid nic")
+               ,
+            // id: Yup.string()
+            //     .required('Please enter the Worker ID')
+                
+            //     .matches(/^[\w\d]+$/,"can only have letters and digits"),
             phone: Yup.number()
                 .required('Please enter the phone number'),
             address: Yup.string()
@@ -63,25 +119,36 @@ function AddWorkerForm({type}){
                 .oneOf([Yup.ref('password'),null],"Password must match")
         }),
         onSubmit: values => {
-            alert(JSON.stringify(values,null,2))
-            const employee = values
+            // alert(JSON.stringify(values,null,2))
+            values.phone = String(values.phone)
             
-            console.log(employee)
+            
+ 
+            if(username && !userError){
+                values.id = username
 
-            fetch('http://localhost:8000/serviceprovider/addEmployee',{
-                method: 'POST',
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(employee)
-            }).then(()=>{
-                alert("Successfully submitted"); 
-            }).catch((err)=>{
-                console.log(err);
-            })
-            }
+                addEmployee({
+                    variables:values  
+                  })
+                   
+                  .catch(err=>{
+                      alert("Error Occured")
+                  })
+                
+                
+            } else if(!username){
+                setUserError('Please add the user name')
+            } 
+            
+           
+
+
+        }
     })
 
 
 
+    
 
 
     return(  
@@ -138,9 +205,9 @@ function AddWorkerForm({type}){
                                                     <div className="col-md-6">
                                                         
                                                             <div className="form-group">
-                                                                <label htmlFor="workerId">Worker ID</label>
-                                                                <input type="text" className="form-control" id="id" value={formik.values.id} placeholder="Worker ID" onChange={formik.handleChange} onBlur={formik.handleBlur} required/>
-                                                                {formik.touched.id && formik.errors.id ? <small id="nameError" className="error form-text text-muted error "> {formik.errors.id}</small>: null}
+                                                                <label htmlFor="id">Worker ID</label>
+                                                                <input type="text" className="form-control" id="id" placeholder="Worker ID" onBlur={(e)=>{updateUser(e)}} />
+                                                                {userError ? <small id="nameError" className="error form-text text-muted error "> {userError}</small>: null}
                                                             </div>
                                                             <div className="form-group">
                                                                 <label htmlFor="email">Email address</label>
@@ -177,11 +244,22 @@ function AddWorkerForm({type}){
                                 {/*<!-- [ Basic info ] end -->*/}
 
                                 {/*<!-- [ photo form ] start -->*/}
+                                <div id="photoContainer" ref={photoFocus}>
+                                {content ?
+                                <>
+                                
                                 <ChangeCard
                                     title ='Change profile'
                                     setID = {setID}
                                     childComponent ={<PhotoUpdate/>}
+                                    id = {Id}
+                                    content = {content}
+                                    type={type}
+
                                 />
+                                </>
+                                :null}
+                                </div>
                                 {/*<!-- [ photo form ] end -->*/}
 
 

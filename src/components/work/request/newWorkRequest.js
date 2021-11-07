@@ -3,41 +3,15 @@ import { useEffect , useState } from 'react';
 import BreadCrumb from '../../breadcrumb';
 import SearchBar from '../../searchBar';
 import PaginationBar from '../../pagination';
-import NotificationBar from '../../notification/notificationBar';
+import RequestBar from './requestBar';
 
 
-const NewWorkRequest = () => {    
 
-    const [content,setContent] = useState([]);
-    const [id,setID] = useState('');
-    const [page,setPage] = useState(0);
-    const [offSet,setOffSet] = useState(1);
-    const limit = 10;
+import {dateFormatter} from "../../formatter";
+import Loading from '../../loading';
+import Empty from '../../empty';
 
-
-    useEffect(()=>{
-
-        fetch(`http://localhost:8000/serviceprovider/newRequestCount`)
-            .then(res => res.json())
-            .then(data => {
-                setOffSet(data/limit);              
-            })
-            .catch(err => console.log(err));
-
-            
-        
-    },[]);
-
-    useEffect(()=>{
-
-        fetch(`http://localhost:8000/serviceprovider/newRequests?pages=${page}`)
-            .then(res => res.json())
-            .then(data => {
-                setContent(data);               
-            })
-            .catch(err => console.log(err));
-        
-    },[page]);
+const NewWorkRequest = ({id,setID,content,setPage,page,offSet,loading}) => {    
 
 
     return(  
@@ -62,28 +36,40 @@ const NewWorkRequest = () => {
                                             </div>
                                             <div className="" style={{marginTop:'20px'}}>
                                             
-                                                <SearchBar placeholder="Enter work ID ..." />
+                                            <SearchBar placeholder="Enter work Booker ID ..." id={id} setId={setID}/>
+                                            
                                             </div>
                                             
                                             <div className="card-block px-0 py-3">
                                                 <div className="">
                                                     <div className="container">
+                                                    {!loading ?
                                                         <div className="justify-content-center" >
-                                                            <NotificationBar
-                                                                title = "This is a xample title"
-                                                                time = "21 July 12:56"
-                                                                description = "This is a xample description. This is a xample description. This is a xample description. This is a xample description"
-                                                                viewURL = "#"
-                                                                delURL = "#"
-                                                                id = "ID001"
+                                                            
+                                                           
+                                                            {content[0] ? content.map((e)=>{
+                                                                console.log("Not an")
+                                                                return <RequestBar
+                                                                    by={e.by.username} 
+                                                                    workstation ={e.workStationDistrict}
+                                                                    description ={e.description}
+                                                                    key ={e._id}
+                                                                    id = {e._id}
+                                                                    date={dateFormatter(e.date)}
                                                             /> 
 
-                                                            {content.map((e)=>{
-
-                                                            })}
-
+                                                            }):
+                                                            <Empty
+                                                            message="No Request Found"
+                                                            />
+                                                            }
+                                                           
                                                         </div>
+                                                             :<Loading/>}
+
+                                                             
                                                     </div>
+                                                    
                                                 </div>
                                             </div>
                                         </div>

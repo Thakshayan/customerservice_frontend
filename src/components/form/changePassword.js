@@ -2,6 +2,7 @@ import React,{ useState } from "react";
 
 import * as Yup from 'yup';
 import {useFormik} from 'formik';
+import { useMutation } from "@apollo/client";
 
 //import { passwordValidator } from "../formComponents/formValidator";
 
@@ -10,22 +11,6 @@ const PasswordChanger = ({id}) => {
     const [password,setPassword] = useState("password");
     const [className, setClassName] = useState("fa fa-eye");
 
-    // const validate = values => {
-
-    //     const errors = {};
-
-    //     errors.passwordUpdate = passwordValidator(values.passwordUpdate);
-    //     errors.confirmPasswordUpdate = (values.password !== values.confirmPasswordUpdate)?"Passwords not matching":null;
-
-    //     console.log("Hi")
-
-    //     if ( errors.passwordUpdate  || errors.confirmPasswordUpdate ){
-    //         return errors;
-    //     }
-    //     const error = {};
-    //     return error;
-
-    // }
 
     const togglePassword = (e) => {
         if (password == "password"){
@@ -60,17 +45,9 @@ const PasswordChanger = ({id}) => {
         onSubmit: values => {
             alert(JSON.stringify(values));
 
-            fetch(`http://localhost:8000/serviceprovider/editPassword/${id}`,{
-                method: 'PUT',
-                headers: {
-                    'Content-Type':'application/json'
-                },
-                body: JSON.stringify(values)
-            }).then(()=>{
-                alert("Successfully submitted"); 
-            }).catch((err)=>{
-                console.log(err);
-            })
+                // updatePassword({
+                //     variables:values
+                // })
             }
     });
 

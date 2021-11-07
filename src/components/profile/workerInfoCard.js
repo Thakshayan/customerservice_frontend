@@ -1,25 +1,12 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
+import { WORKER_PROFESSIONAL } from "../../GraphQL/Queries";
+import { useQuery } from "@apollo/client";
 
-const WorkerInfoCard = ({id,edit,title}) => {
+const WorkerInfoCard = ({id,edit,title,content,type}) => {
 
-    const [content,setContent] = useState([]);
-
-    useEffect(()=>{
-
-        fetch(`http://localhost:8000/serviceprovider/getWorkerInfo/${id}`)
-            .then(res => res.json())
-            .then(data => {
-                setContent(data)
-                console.log(data)
-            })
-            .catch(err=> console.log);
-
-    },[])
-
-
-
+  
     return (  
         <div className="">
             <div className="card yearly-sales">
@@ -27,7 +14,7 @@ const WorkerInfoCard = ({id,edit,title}) => {
                     <div className="card-header">
                         <h5>{title}</h5>
                     </div>
-                    {content[0] ?
+                    {content ?
                     <div className="" style={{paddingTop:"25px"}}>
                         
                         <div className="row" style={{display:"flex"}}>
@@ -35,7 +22,7 @@ const WorkerInfoCard = ({id,edit,title}) => {
                                 Worker ID:
                             </div>
                             <div className="col-6 col-md-6">
-                                {content[0].workerId}
+                                {content.username}
                             </div>
                         </div>
                         <hr/>
@@ -44,7 +31,7 @@ const WorkerInfoCard = ({id,edit,title}) => {
                                 Designation:
                             </div>
                             <div className="col-6 col-md-6">
-                                {content[0].type}
+                                {type}
                             </div>
                         </div>
                         <hr/>
@@ -53,25 +40,25 @@ const WorkerInfoCard = ({id,edit,title}) => {
                                 phone:
                             </div>
                             <div className="col-6 col-md-6">
-                                {content[0].phone}
+                                {content.contact_no}
                             </div>
                         </div>
                         <hr/>
                         <div className="row" style={{display:"flex"}}>
                             <div className="col-6 col-md-6">
-                                Joined Date:
+                                Votes:
                             </div>
                             <div className="col-6 col-md-6">
-                                {content[0].date}
+                                {content.no_of_vote}
                             </div>
                         </div>
                         <hr/>
                         <div className="row" style={{display:"flex"}}>
                             <div className="col-6 col-md-6">
-                                Total Works:
+                                Rating:
                             </div>
                             <div className="col-6 col-md-6">
-                                {content[0].works}
+                                {content.rating}
                             </div>
                         </div>
                         <hr/>
@@ -80,7 +67,7 @@ const WorkerInfoCard = ({id,edit,title}) => {
                                 Left Date:
                             </div>
                             <div className="col-6 col-md-6">
-                                {content[0].leftDate?content[0].leftDate:"..."}
+                                {content.left_date?content.left_date:"..."}
                             </div>
                         </div>
                     </div>
@@ -88,7 +75,7 @@ const WorkerInfoCard = ({id,edit,title}) => {
 
                     {edit ? 
                         <div style={{paddingTop:"20px",float:"right"}}>
-                            <Link to={`/edit/workerInfo/${id}`} className="btn btn-mtd btn-primary" style={{width:"100px",height:"25px",padding:'0 0'}}> 
+                            <Link to={ `/CSA/edit/workerInfo/${id}?type=${type}`} className="btn btn-mtd btn-primary" style={{width:"100px",height:"25px",padding:'0 0'}}> 
                                 Edit 
                                 <i className="fas fa-edit" style={{paddingLeft:'10px'}}></i>
                             </Link>

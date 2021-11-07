@@ -7,24 +7,24 @@ import {useFormik} from 'formik';
 import * as Yup from 'yup';
 import {useEffect, useState} from 'react';
 import { useParams } from 'react-router-dom';
+import Empty from '../../empty';
+import Loading from '../../loading';
+import ElementCard from '../elementCard';
 
-function EditEmployeeInfo({type}){
+function EditEmployeeInfo({type,content,loading,id,setID,action}){
 
-    const [id,setID] = useState('ID89');
-    const {Id} = useParams()
 
-    useEffect(()=>{        
-        setID(Id)
-    },[Id])
-
+    useEffect(()=>{
+        console.log(loading)
+    },[])
     
     const formik = useFormik({
         initialValues:{
-            id:'',
+            id:id,
             phone:'',
             date:'',
             email:'',
-            type: type,
+            // type: type,
         },validationSchema: Yup.object({
 
             id: Yup.string()
@@ -32,11 +32,14 @@ function EditEmployeeInfo({type}){
                 .matches(/^[\w\d]+$/,"can only have letters and digits"),
             phone: Yup.number()
                 .required('Please enter the phone number'),
+            email: Yup.string()
+                .email('Invalid email Address')
+                .required('Please enter the email address'),
             date:Yup.date()
                 .required("Please select a date"),
-            type:Yup.string()
-                .required("Please select a type")
-                .matches(/\w+/,"cannot have special characters")  
+            // type:Yup.string()
+            //     .required("Please select a type")
+            //     .matches(/\w+/,"cannot have special characters")  
         }),
         onSubmit: values => {
             alert(JSON.stringify(values,null,2))
@@ -44,15 +47,7 @@ function EditEmployeeInfo({type}){
             
             console.log(employee)
 
-            fetch(`http://localhost:8000/serviceprovider/editWorkerInfo/${id}`,{
-                method: 'POST',
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(employee)
-            }).then(()=>{
-                alert("Successfully submitted"); 
-            }).catch((err)=>{
-                console.log(err);
-            })
+            
             }
     })
 
@@ -67,77 +62,79 @@ function EditEmployeeInfo({type}){
                     <div className="pcoded-inner-content">
 
                         {/*<!-- [ breadcrumb ] start -->*/}
-                        <BreadCrumb type={type} reason="Edit" />
+                        <BreadCrumb type="Employee" reason="Edit" />
                         {/*<!-- [ breadcrumb ] end -->*/}
 
                         <div className="main-body">
                             <div className="page-wrapper">
 
+                                {/*<!-- [ password update form ] start -->*/}
+                                    
 
-                                 {/*<!-- [ Basic info ] start -->*/}
-                                 <div className="row">
-                                    <div className="col-sm-12">
+                        <div className="row"> 
+                                    <div className="col-xl-12">
                                         <div className="card">
                                             <div className="card-header">
-                                                <h5>Worker Componant</h5>
+                                                <h5>Edit Password</h5>
                                             </div>
-                                            <div className="card-body">
-                                                <h5>{type}</h5>
-                                                <hr/>
-                                                <form onSubmit={formik.handleSubmit}>
-                                                    <div className="row">
-                                                        <div className="col-md-6">
+                                        
+                                        
+                                            {content ?
+                                            <div className="card-block px-0 py-3">
+                                        
+                                                        <div className="row d-flex" style={{margin:'auto',alignItems:'center',justifyContent:'center'}}>
 
-                                                            <div className="form-group">
-                                                                <label htmlFor="workerId">Worker ID</label>
-                                                                <input type="text" className="form-control" id="id" value={formik.values.id} placeholder="Worker ID" onChange={formik.handleChange} onBlur={formik.handleBlur} required/>
-                                                                {formik.errors.id && formik.touched.id ? <small id="nameError" className="error form-text text-muted error "> {formik.errors.id}</small>: null}
-                                                            </div> 
-                                                            <div className="form-group">
-                                                                <label htmlFor="phone">Phone Number</label>
-                                                                <input type="tel" className="form-control" value={formik.values.phone} id="phone" placeholder="Phone Number" onChange={formik.handleChange} onBlur={formik.handleBlur} required/>
-                                                                {formik.touched.phone && formik.errors.phone ? <small id="nameError" className="error form-text text-muted error "> {formik.errors.phone}</small>: null}
-                                                            </div>
-                                                            <div className="form-group">
-                                                                <label htmlFor="joinedDate">Joined Date</label>
-                                                                <input type='date'  className="form-control" id="date" value={formik.values.date} placeholder="DD/MM/YYYY" onChange={formik.handleChange} onBlur={formik.handleBlur} required/>
-                                                                {formik.touched.date && formik.errors.date ? <small id="nameError" className="error form-text text-muted error "> {formik.errors.date}</small>: null}
-                                                            </div>
-                                                            <div className="form-group">
-                                                                <label htmlFor="type">Designation</label>
-                                                                <input type='text'  className="form-control" id="type" value={formik.values.type} placeholder="Designation" onChange={formik.handleChange} onBlur={formik.handleBlur} required/>
-                                                                {formik.touched.type && formik.errors.type ? <small id="nameError" className="error form-text text-muted error "> {formik.errors.type}</small>: null}
-                                                            </div>
+                                                            { content[0] ? 
+
+                                                            content.map ((e) => {
                                                             
+                                                            return <ElementCard
+                                                                key = {e._id}
+                                                                content = {e}
+                                                                type = {type}
+                                                                childComponent = {
+                                                                    <PasswordChanger
+                                                                        id={id}
+                                                                    />    
+                                                                }
+                                                                    
+                                                            />})
+                                                            
+                                                            :
+                                                            <div style={{width:'100%'}}>
+                                                                <Empty/>
+                                                            </div>
+                                                            }
+
 
 
                                                         
-                                                    </div>
+                                                                                            
+                                                        </div>
 
-                                                    <div className="col-md-6">    
-                                                        <WorkerInfoCard id={id} />
-                                                    </div>
-
-                                                </div>
-                                                <button type="submit" className="btn btn-primary">Submit</button>
-                                                        
-                                            </form>
-                                            </div>
+                                            </div> :
+                                                <Loading/>
+                                            }
+                                                                        
                                         </div>
-                                 
                                     </div>
                                 </div>
-                                {/*<!-- [ Basic info ] end -->*/}
 
-                                {/*<!-- [ password update form ] start -->*/}
-                                <ChangeCard
+                                {/* <ChangeCard
                                     title ='Change Password'
                                     setID = {setID}
+                                    id ={id}
+                                    content = {content}
+                                    loading = {loading}
+                                    type = {type}
+                                    action = {action}
+                                    
+                                    
                                     childComponent ={
                                         <PasswordChanger
                                             id={id}
                                         />}
-                                />
+                                /> */}
                                 {/*<!-- [ password update form ] end -->*/}
 
                             </div>

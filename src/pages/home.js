@@ -1,33 +1,45 @@
+//components
 import Content from '../components/home';
 
-import {useQuery, gql} from '@apollo/client';
-import {VIEW_MODERATORS} from "../GraphQL/Queries";
-import { useEffect } from "react";
-import {useState} from "react";
 
-//components
-import Header from "../components/header";
-import Navbar from '../components/navbar';
-import Preloader from '../components/preloader';
+import { useEffect, useState } from 'react/cjs/react.development';
+import { useQuery } from '@apollo/client';
+import { SP_DASHBOARD } from '../GraphQL/Queries';
+
 
 
 function Home() {
 
+    const [content,setContent] = useState([]);
 
+    const {error,loading,data} = useQuery(SP_DASHBOARD,{
+        variables:{
+            offset:2,
+            page:1
+        }
+    });
+
+    useEffect(()=>{
+        console.log(data)
+        if(data){
+            console.log(data)
+            setContent(data)
+        }
+    },[data])
+
+    var refresh = window.localStorage.getItem('refresh');
+    if (refresh===null){
+        window.location.reload();
+        window.localStorage.setItem('refresh', "1");
+    }
 
     return (
         <div>
-                     {/* [ Pre-loader ] start */}
-                     {/* <Preloader/> */}
-            { /* [ Pre-loader ] End 
-            [ navigation menu ] start */}
-            <Navbar/>
-            {/* </div> [ navigation menu ] end 
-            [ Header ] start */}
-            <Header/>
-            {/*<!-- [ Header ] end --> */}   
         {/*<!-- [ Main Content ] start -->*/}
-        <Content/>
+          <Content 
+            content={content}
+            loading={loading}
+        /> 
         {/*<!-- [ Main Content ] end --> */}
         </div>
     );

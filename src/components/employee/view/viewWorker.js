@@ -3,58 +3,12 @@ import EmployeeCard from "../employeeCard";
 import PaginationBar from '../../pagination';
 import SearchBar from '../../searchBar';
 import BreadCrumb from '../../breadcrumb';
-
-import { useEffect } from 'react';
-import { useState } from 'react/cjs/react.development';
-
+import Loading from "../../loading";
+import Empty  from "../../empty"
 
 
 
-function ViewWorker({type}){
-
-    const [content,setContent] = useState([]);
-    const [id,setID] = useState('');
-    const [page,setPage] = useState(0);
-    const [offSet,setOffSet] = useState(1);
-
-
-    useEffect(()=>{
-
-        // fetch(`http://localhost:8000/serviceprovider/viewWorkersCount`)
-        //     .then(res => res.json())
-        //     .then(data => {
-        //         setOffSet(data/3);              
-        //     })
-        //     .catch(err => console.log(err));
-
-            
-        
-    },[]);
-
-    useEffect(()=>{
-
-        // fetch(`http://localhost:8000/serviceprovider/viewWorkers?pages=${page}`)
-        //     .then(res => res.json())
-        //     .then(data => {
-        //         setContent(data);               
-        //     })
-        //     .catch(err => console.log(err));
-        
-        // console.log(page);
-        // console.log(content)
-        // console.log(content.length)
-    },[page]);
-
-    const initialState = () => {
-
-        // fetch(`http://localhost:8000/serviceprovider/viewWorkers`)
-        //     .then(res => res.json())
-        //     .then(data => {
-        //         setContent(data);               
-        //     })
-        //     .catch(err => console.log(err));
-    }
-
+function ViewWorker({type,content,page,setID,setPage,offSet,id,loading}){
 
     return(  
         <div className="pcoded-main-container">
@@ -64,28 +18,36 @@ function ViewWorker({type}){
                         {/*<!-- [ breadcrumb ] start -->*/}
                         <BreadCrumb type={type} reason="View"/>
                         {/*<!-- [ breadcrumb ] end -->*/}
-                        <SearchBar  placeholder="Enter worker ID ..." setCardContent={setContent} setId={setID}/>
                         {/*<!-- [ search bar ] start -->*/}
-
+                        {/* <SearchBar  placeholder="Enter worker ID ..." setCardContent={setContents} setId={setID} id={id}/> */}
+                        <SearchBar placeholder="Enter worker ID ..." id={id} setId={setID}/>
+                                           
                         {/*<!-- [ search bar ] end -->*/}
                         
                         <div className="main-body">
                             <div className="page-wrapper">
                                 {/*<!-- [ Main Content ] start -->*/}
+                                {!loading ? 
                                 <div className="row">
 
                                     {
-                                        content ? content.map((e) => <EmployeeCard
+                                        content[0] ? content.map((e) => <EmployeeCard
+
                                                 content = {e}
-                                                key = {e._id}
-                                        />): null
+                                                key = {e.username}
+                                                type ={type}
+                                        />)
+                                        :
+                                        <div style={{width:'100%'}}>
+                                            <Empty/>
+                                        </div>
                                     }
 
-                                   {!content[0] ?
-                                       initialState():null
-                                   }
+
                                     
                                 </div>
+                                
+                                : <Loading/> }
                             </div>
                         </div>
                         

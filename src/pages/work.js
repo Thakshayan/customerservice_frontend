@@ -1,26 +1,32 @@
+import { useQuery } from "@apollo/client";
 import WorkProfile from "../components/work/work";
-
-//components
-import Header from "../components/header";
-import Navbar from '../components/navbar';
-import Preloader from '../components/preloader';
-
+import { WORK_PROFILE } from "../GraphQL/Queries";
+import { useParams } from 'react-router-dom';
+import { useEffect, useState } from "react";
 
 const Work = () => {
+
+    const {id} = useParams();
+    const [content,setContent] = useState();
+
+    const {error,loading,data} = useQuery(WORK_PROFILE,{
+        variables:{
+            id:id
+        }
+    })
+
+    useEffect(()=>{
+        if(data){
+            
+            setContent(data.UniqueSearchAppointment)
+        }
+    },[data])
+
     return ( 
-        <div>
-            {/* [ Pre-loader ] start */}
-            <Preloader/>
-            { /* [ Pre-loader ] End 
-            [ navigation menu ] start */}
-            <Navbar/>
-            {/* </div> [ navigation menu ] end 
-            [ Header ] start */}
-            <Header/>
-            {/*<!-- [ Header ] end --> */}
-            <WorkProfile/>
-        </div>
-        
+        <WorkProfile 
+            contents={content}
+            loading = {loading}
+        />
      );
 }
  

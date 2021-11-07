@@ -1,18 +1,25 @@
-const AssignForm = () => {
-    return ( 
-        <form>
-            <div className="form-group">
-                <label htmlFor="workerId">Work ID</label>
-                <input type="text" className="form-control" id="workerId"  placeholder="Worker ID" required/>
-                <small id="workerIdError" className="error form-text text-muted">Enter a workerId</small>
-            </div>
-            <div className="form-group">
-                <label htmlFor="workerId">Worker ID</label>
-                <input type="text" className="form-control" id="workerId" placeholder="Worker ID" required/>
-                <small id="workerIdError" className="error form-text text-muted">Enter a workerId</small>
-            </div>
-            <button type="submit" className="btn btn-primary">Submit</button>                                                    
-        </form>
+import { useMutation } from "@apollo/client";
+import { ASSIGN_WORKER } from "../../GraphQL/Mutations";
+
+
+const AssignForm = ({worker,appointment,action}) => {
+    
+    const assignWorkerClick = (e) =>{
+        e.preventDefault()
+
+        action({
+            variables:{
+                appointment,
+                worker
+            }
+        }).catch(err => {
+            alert("Error Occured")
+        })
+
+    }
+
+    return (        
+        <button type="submit" onClick={assignWorkerClick} className="btn btn-primary"> Add to the Work</button>                                                    
      );
 }
  

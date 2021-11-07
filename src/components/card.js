@@ -1,7 +1,7 @@
 
 function Card({title,symbol,count,button}){
     return(
-        <div className="col-sm-12 col-md-12 col-xl-4">
+       
             <div className="card yearly-sales">
                 <div className="card-block">
 
@@ -17,13 +17,13 @@ function Card({title,symbol,count,button}){
                             {/* <h3 className="f-w-300 d-flex align-items-center ">100</h3> */}
                         </div>
                         <div className="justify-content-end" style={{float:'right',marginTop:'20px'}}>
-                            <p className="">{count}</p>
+                            <p className="">&nbsp;{count}</p>
                         </div>
                     </div>
                     {button}
                  </div>
             </div>
-        </div>
+
     )
 }
 

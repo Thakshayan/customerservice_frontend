@@ -1,44 +1,39 @@
-import { useEffect } from "react";
-import { useState } from "react";
-import { Redirect } from "react-router"
+const FinishCard = ({title,action,workerId,leftDate,loading}) => {
 
-const FinishCard = ({title,button,icon,buttonClass,id,finish}) => {
+    // const {error,loading,data} = useQuery(GET_LEFTDATE,{
+    //     variables:{
+    //         workerId:workerId
+    //     }
+    // });
 
-    const [leftDate,setLeftDate] = useState(null);
+    // const [removeWorker,{loadingMutation,errorMutation}] = useMutation(REMOVE_EMPLOYEE,{
+    //     onCompleted:data=>{
+    //         setLeftDate(data.removeWorker)
+    //     }
+    // });
 
-    useEffect(()=>{
+    // const [leftDate,setLeftDate] = useState(null);
 
-        fetch(`http://localhost:8000/serviceprovider/checkFinish/${id}`)
-            .then((res)=>{
-                res.json()
-            })
-            .then(data => {
-                setLeftDate(data);
-                
-            })
-            .catch(err=>console.log)
+    // useEffect(()=>{
+    //     console.log(data)
+    //     if(data){
+    //         if(data.getWorker)
+    //         setLeftDate(data.getWorker.left_date)
+    //         console.log(data)
+    //     }
+        
 
-    },[])
+    // },[data])
 
 
 
     const deleteSubmit = ()=>{
-        
-            fetch(`http://localhost:8000/serviceprovider/deleteEmployee/${id}`,{
-                method: 'POST',
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({}),
-                
-            }).then((res)=>{
-                alert("Successfully submitted"); 
-                console.log(id)
-                if(res.ok){
-                    window.location=`/profile/${id}`
-                }
-            }).catch((err)=>{
-                console.log(err);
-            })
             
+            action({
+               variables:{
+                   workerId:workerId
+                }
+            })
     }
 
     return ( 
@@ -50,13 +45,17 @@ const FinishCard = ({title,button,icon,buttonClass,id,finish}) => {
                                             
                                             
                 <div style={{paddingTop:"20px",float:"right"}}>
-                    {leftDate?
-                    <button className= {`btn btn-mtd ${buttonClass}`} onClick={deleteSubmit} style={{width:"150px",height:"25px",padding:'0 0'}}> 
-                        {button}
-                        {icon}      
+                    {!leftDate?
+                    !loading ?<button className= "btn btn-mtd btn-danger" onClick={deleteSubmit} style={{width:"200px",height:"25px",padding:'0 0'}}> 
+                        Suspend Employee
+                        {<i className="fas fa-user-slash" style={{paddingLeft:'10px'}}></i>}                     
+                    </button>: 
+                    <button className= "btn btn-mtd btn-danger" onClick={deleteSubmit} style={{width:"200px",height:"25px",padding:'0 0'}}> 
+                        Loading ...
+                        {/* {<i className="fas fa-user-slash" style={{paddingLeft:'10px'}}></i>}                      */}
                     </button>:
-                    <button className= {`btn btn-mtd btn-success`} style={{width:"150px",height:"25px",padding:'0 0'}} disabled> 
-                        Already Finished &nbsp;
+                    <button className= "btn btn-mtd btn-success" style={{width:"200px",height:"25px",padding:'0 0'}} disabled> 
+                        Already Suspended &nbsp;
                         <i className="fas fa-check-circle"></i>
                     </button>}
                 </div>

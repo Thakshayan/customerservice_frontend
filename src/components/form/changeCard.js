@@ -1,10 +1,17 @@
 import SearchBar from "../searchBar";
 import EmployeeCard from "../employee/employeeCard";
-import { useState } from "react";
+import FinishCard from "../finishCard";
 
-const ChangeCard = ({title,childComponent,setID}) => {
+import { useState,useEffect } from "react";
 
-    const [cardContent,setCardContent] = useState(null);
+import { GET_WORKER } from "../../GraphQL/Queries";
+import { useQuery } from "@apollo/client";
+import ElementCard from "../employee/elementCard";
+import Loading from "../loading";
+import Empty from "../empty";
+
+const ChangeCard = ({title,content,setID,id,type,action,childComponent,loading}) => {
+
     
     return ( 
         <div className="row"> 
@@ -14,31 +21,46 @@ const ChangeCard = ({title,childComponent,setID}) => {
                         <h5>{title}</h5>
                     </div>
                     <div className="" style={{marginTop:'20px'}}>
-                        <SearchBar placeholder="Enter worker ID ..." setCardContent={setCardContent} setId={setID}/>
-                    </div>
-                    {cardContent ?
+                        {/* <SearchBar placeholder="Enter worker ID ..." setCardContent={setCardContent} setId={setID} id={id}/>
+                     */}
+                     <SearchBar placeholder="Enter worker ID ..." id={id} setId={setID}/>
+                                            
+                     </div>
+                    {content ?
                     <div className="card-block px-0 py-3">
                         <div className="">
                             <div className="">
-                                <div className="row d-flex" >
+                                <div className="row d-flex" style={{margin:'auto',alignItems:'center',justifyContent:'center'}}>
 
+                                    { content[0] ? 
+
+                                    content.map ((e) => {
                                     
-                                    {cardContent[0] ? 
-                                        <EmployeeCard content={cardContent[0]} type=""/>
-                                    : null} 
+                                    return <ElementCard
+                                        key = {e._id}
+                                        content = {e}
+                                        type = {type}
+                                        childComponent = {
+                                            childComponent}
+                                            
+                                    />})
+                                     
+                                    :
+                                    <div style={{width:'100%'}}>
+                                        <Empty/>
+                                    </div>
+                                    }
 
-                                    {cardContent[0] ?                             
-                                        <div className="col-10 col-sm-5 col-md-5 col-xl-7" style={{margin:'20px'}}>
-                        
-                                            {childComponent}
-                                        </div>
-                                    : null}  
+
+
                                    
                                                                        
                                 </div>
                             </div>
                         </div>
-                    </div> :null}
+                    </div> :
+                        <Loading/>
+                    }
                                                 
                 </div>
             </div>

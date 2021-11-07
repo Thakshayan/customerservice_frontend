@@ -1,29 +1,29 @@
 import React, { useEffect } from 'react';
 import { useMutation, useApolloClient } from '@apollo/client';
-import { Link } from 'react-router-dom'; 
+import { Link } from 'react-router-dom';
 
 
-import { SIGNIN_USER } from '../GraphQL/Mutations';
-import SignUpForm from '../components/form/signupForm';
+import { SIGN_INSP } from '../GraphQL/Mutations';
+import SignInForm from '../components/form/signInForm';
 
 const SignIn = (props) => {
 
     const client = useApolloClient();
-    const [signIn, { loading, error }] = useMutation(SIGNIN_USER, {
+    const [signINSP, { loading, error }] = useMutation(SIGN_INSP, {
       onCompleted: data => {
-
-        console.log(data)
-
-        // store the token
-        localStorage.setItem('token', data.signIn);
+        console.log(data.signINSP)
+        if(data.signINSP){
+          //store the token
+        localStorage.setItem('token', data.signINSP);
         // update the local cache
         client.writeData({ data: { isLoggedIn: true } });
         // redirect the user to the homepage
-        props.history.push('/');
+        props.history.push('/CSA');
+        }
       }
     });
 
-    return ( 
+    return (
         <div className="auth-wrapper">
         <div className="auth-content">
             <div className="auth-bg">
@@ -38,32 +38,28 @@ const SignIn = (props) => {
                         <i className="feather icon-unlock auth-icon"></i>
                     </div>
                     <h3 className="mb-4">Login</h3>
-                    {/* <form action={signIn}>
-                    <div className="input-group mb-3">
-                        <input type="text" className="form-control" placeholder="ID"/>
-                    </div>
-                    <div className="input-group mb-4">
-                        <input type="password" className="form-control" placeholder="password"/>
-                    </div>
-                    {/* <div className="form-group text-left">
-                        <div className="checkbox checkbox-fill d-inline">
-                            <input type="checkbox" name="checkbox-fill-1" id="checkbox-fill-a1" checked=""/>
-                            <label for="checkbox-fill-a1" className="cr"> Save Details</label>
-                        </div>
-                    </div> 
-                    <button className="btn btn-primary shadow-2 mb-4">Login</button>
-                    </form> */}
+                
 
-                    <SignUpForm action={signIn} formType="signin"/>
-
+                    <SignInForm action={signINSP} loading={loading} type="Moderator"/>
                     
-                    <p className="mb-2 text-muted">Forgot password? <Link to="">Reset</Link></p>
-                    <p className="mb-0 text-muted">Don’t have an account? <Link to="">Signup</Link></p>
+                    <p className="mb-2 text-muted" >
+                        Signin Worker? 
+                        <Link to="/signinWorker" style={{color:'#038fcf',fontStyle:'italic',textDecoration:'underline'}}>
+                            Worker
+                        </Link>
+                    </p>
+                    <p className="mb-0 text-muted" >
+                        Create a Service Provider? 
+                        <Link to="signup" style={{color:'#038fcf',fontStyle:'italic',textDecoration:'underline'}}>
+                            Signup
+                        </Link>
+                    </p>
+
                 </div>
             </div>
         </div>
     </div>
      );
 }
- 
+
 export default SignIn;
