@@ -47,7 +47,7 @@ function WorkImage({type}){
     // }, [id])
 
     // useEffect(()=>{
-    //     console.log(Id)
+    //     
     //     if(Id){
     //         setID(Id)
     //         fetchContent.refetch({

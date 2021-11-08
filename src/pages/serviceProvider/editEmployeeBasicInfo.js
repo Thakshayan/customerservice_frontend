@@ -55,13 +55,13 @@ function EditBasicInfo() {
 
 
     useEffect(()=>{
-        console.log(Id)
+        
         if(Id){
             if(type === "Worker"){
                 fetchSearchContent.refetch({
                     workerId:Id
                 }).then(data =>{
-                    console.log(data)
+                    
                     setContent(data.data.getWorker)
                 }).catch(err => {
 
@@ -88,7 +88,7 @@ function EditBasicInfo() {
 
                     workerId:id
                 }).then(data =>{
-                    console.log(data.data.UniqueSearchWorker)
+                    
                     setContent(data.data.UniqueSearchWorker)
                 }).catch(err => {
 
@@ -97,7 +97,7 @@ function EditBasicInfo() {
                 fetchModeratorContent.refetch({
                     workerId:id
                 }).then(data =>{
-                    console.log(data)
+                    
                     setContent(data.data.UniqueSearchModerator)
                 }).catch(err => {
 

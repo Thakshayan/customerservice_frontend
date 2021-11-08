@@ -14,6 +14,7 @@ const Work = () => {
     const {id} = useParams();
     const [content,setContent] = useState();
 
+    //retrieve work info
     const {error,loading,data} = useQuery(WORK_PROFILE,{
         variables:{
             id:id
@@ -28,7 +29,7 @@ const Work = () => {
     },[data])
 
     return ( 
-        <>
+        <div>
         {/* [ Pre-loader ] start */}
         <Preloader/>
         { /* [ Pre-loader ] End 
@@ -45,7 +46,7 @@ const Work = () => {
             loading = {loading}
             disable = {true}
         />
-        </>
+        </div>
      );
 }
  

@@ -3,7 +3,6 @@ import ViewNotifications from "../../components/notification/notifications";
 import { useState, useEffect } from 'react';
 import {useQuery} from "@apollo/client";
 import { GET_WORKER_NOTIFICATION } from "../../GraphQL/workerQueries";
-import { useParams } from "react-router";
 
 //components
 import Header from "../../components/headerWorker";
@@ -12,7 +11,7 @@ import Preloader from '../../components/preloader';
 
 const Notification = () => {
 
-    const [contents,setContents] = useState([]);
+    //const [contents,setContents] = useState([]);
     const [content,setContent] = useState([]);
     const [page,setPage] = useState(1);
     const [offSet,setOffSet] = useState();
@@ -32,31 +31,26 @@ const Notification = () => {
         for(var i=0;i<object.length;i++){
             count += object[i].Count
         }
-
-        console.log(count)
         return count
     }
 
+    //retrieve notifications
     useEffect(()=>{
 
-        console.log(data)
         if(error){
             console.log(error)
         }
         if(data){
-      
             setContent(data.worker_getMyNotification)
             setOffSet(count(data.getCountNotification)/2)
             
         }
-
-
     },[data])
 
 
 
     return ( 
-        <>
+        <div>
         {/* [ Pre-loader ] start */}
             <Preloader/>
         { /* [ Pre-loader ] End 
@@ -75,7 +69,7 @@ const Notification = () => {
             offSet={offSet}
             loading = {loading}
         />
-        </>
+        </div>
      );
 }
  

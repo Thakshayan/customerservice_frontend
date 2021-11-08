@@ -16,7 +16,7 @@ const ProviderRoute = ({ component: Component, ...rest }) => {
     if (loading) return <p>Loading...</p>;
     // if there is an error fetching the data, display an error message
     if (error) return <p>Error!</p>;
-    console.log(data)
+   
     return (
       <Route
         {...rest}

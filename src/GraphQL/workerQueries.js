@@ -46,6 +46,7 @@ query Query($offset: Int!, $page: Int!) {
     state
   }
   worker_me {
+    _id
     username
     name
     email
@@ -113,6 +114,7 @@ query Query($offset: Int!, $page: Int!) {
 const GET_WORKER_NOTIFICATION = gql`
 query Query($offset: Int!, $page: Int!) {
   worker_getMyNotification(offset: $offset, page: $page) {
+    
     message
     date
     state
@@ -128,6 +130,7 @@ query Query($offset: Int!, $page: Int!) {
 const WORK_PROFILE = gql`
 query Query($id: ID!) {
   UniqueSearchAppointment(appointment: $id) {
+    _id
     booking {
       by {
         username
@@ -266,7 +269,7 @@ const GET_ONGOINGWORK = gql`
     getMyOngoingWorks(
       offset: $offSet, 
       page: $page) {
-
+      _id
       appointment_id
       starting_date
       state

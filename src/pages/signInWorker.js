@@ -12,7 +12,7 @@ const SignIn = (props) => {
     const [signINWorker, { loading, error }] = useMutation(SIGNIN_WORKER, {
       onCompleted: data => {
 
-        console.log(data)
+        
           //store the token
         if ( data.signINWorker){
             localStorage.setItem('token', data.signINWorker);

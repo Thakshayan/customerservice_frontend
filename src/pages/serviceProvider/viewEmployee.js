@@ -38,7 +38,7 @@ const ViewEmployee = () => {
         if(data){
             setContent(data.getMyWorkers)
             setContents(data.getMyWorkers)
-            console.log(data)
+           
             setOffSet(data.getCountWorkers[0].Count/3)
         }
         

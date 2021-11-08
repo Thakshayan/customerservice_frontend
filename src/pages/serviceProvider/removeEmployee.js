@@ -15,7 +15,7 @@ const RemoveEmployee = () => {
 
     const [removeModerator,{loading,error}] = useMutation(REMOVE_WORKER,{
         onCompleted: res =>{
-            console.log(res)
+            
             if(res.removeWorker){
                 window.location.href="/success"
             }
@@ -34,14 +34,14 @@ const RemoveEmployee = () => {
   
 
     useEffect(()=>{
-        console.log(Id)
+        
         if(Id){
             
             fetchContent.refetch({
                 workerId:Id
             }).then( data => {
 
-                console.log(data)
+               
                 if(data){
                     setContent(data.data.getWorker)
                 }

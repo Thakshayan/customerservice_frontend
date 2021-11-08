@@ -60,7 +60,7 @@ const Message = (props) => {
     })
 
     useEffect(()=>{
-        console.log(To)
+     
         if(To){
             fetchContent.refetch({
                 username:To

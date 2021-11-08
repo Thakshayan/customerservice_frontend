@@ -2,7 +2,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import EditServiceInfo from "../../components/serviceprovider/edit/serviceInfo";
 import { ADD_DISTRICT, ADD_SERVICE, REMOVE_DISTRICT, REMOVE_SERVICE } from "../../GraphQL/Mutations";
-import { GET_SERVICE, GET_SPSERVICE } from "../../GraphQL/Queries";
+import { GET_SPSERVICE } from "../../GraphQL/Queries";
 
 //components
 import Header from "../../components/header";

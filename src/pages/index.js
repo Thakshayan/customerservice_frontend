@@ -50,12 +50,13 @@ import WorkerHome from "./worker/home";
 import WorkerMessage from "./worker/messages";
 import WorkerNotification from "./worker/notification";
 import WorkerViewWork from"./worker/viewWork"; 
-import WorkerViewFinishWork from "./worker/viewWork"; 
+import WorkerViewFinishWork from "./worker/viewFinishedWork";
 import WorkerWork from "./worker/work";
 import WorkerProfile from "./worker/profile";
 import WorkerWorkImage from "./worker/addWorkImage";
 import WorkerEditBasicInfo from "./worker/editEmployeeBasicInfo";
-import WorkerEditPassword from "./worker/editEmployeeWorkerInfo"
+import WorkerEditPassword from "./worker/editEmployeeWorkerInfo";
+
 import { GET_ROLE } from "../GraphQL/Queries";
 
 
@@ -89,7 +90,7 @@ const Pages = () => {
         <WorkerRoute exact path="/Worker/viewFinishWork" component={WorkerViewFinishWork}/> 
         <WorkerRoute exact path="/Worker/work/:id" component={WorkerWork}/> 
         <WorkerRoute exact path="/Worker/profile" component={WorkerProfile}/> 
-        <WorkerRoute exact path="/Worker/work/images" component={WorkerWorkImage}/> 
+        <WorkerRoute exact path="/Worker/work/images/:id" component={WorkerWorkImage}/> 
         <WorkerRoute exact path="/Worker/edit/basicInfo" component={WorkerEditBasicInfo}/> 
         <WorkerRoute exact path="/Worker/edit/password" component={WorkerEditPassword}/> 
 
@@ -139,63 +140,6 @@ const Pages = () => {
     </Router>
   );
 };
-
-// const ProviderRoute = ({ component: Component, ...rest }) => {
-//   const { loading, error, data } = useQuery(IS_LOGGED_IN);
-//   // if the data is loading, display a loading message
-//   if (loading) return <p>Loading...</p>;
-//   // if there is an error fetching the data, display an error message
-//   if (error) return <p>Error!</p>;
- 
-//   return (
-//     <Route
-//       {...rest}
-//       render={props =>
-        
-//         data.isLoggedIn === true ? (
-          
-//           <Component {...props} />
-//         ) : (
-//          <Redirect
-//             to={{
-//               pathname: '/signin',
-//               state: { from: props.location }
-//             }}
-//           /> 
-//         )
-//       }
-//     />
-//   );
-// };
-
-// const WorkerRoute = ({ component: Component, ...rest }) => {
-//   const { loading, error, data } = useQuery(GET_ROLE);
-//   // if the data is loading, display a loading message
-//   if (loading) return <p>Loading...</p>;
-//   // if there is an error fetching the data, display an error message
-//   if (error) return <p>Error!</p>;
-//   console.log(data.getMyRole)
-//   return (
-//     <Route
-//       {...rest}
-//       render={props =>
-        
-//         data.getMyRole === "Worker" ? (
-          
-//           <Component {...props} />
-//         ) : (
-//          <Redirect
-//             to={{
-//               pathname: '/signin',
-//               state: { from: props.location }
-//             }}
-//           /> 
-//         )
-//       }
-//     />
-//   );
-// };
-
 
 
 

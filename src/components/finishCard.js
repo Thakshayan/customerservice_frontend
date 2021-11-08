@@ -15,11 +15,11 @@ const FinishCard = ({title,action,workerId,leftDate,loading}) => {
     // const [leftDate,setLeftDate] = useState(null);
 
     // useEffect(()=>{
-    //     console.log(data)
+    //     
     //     if(data){
     //         if(data.getWorker)
     //         setLeftDate(data.getWorker.left_date)
-    //         console.log(data)
+    //        
     //     }
         
 

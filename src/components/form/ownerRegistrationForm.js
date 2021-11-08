@@ -20,7 +20,7 @@ const OwnerRegisterForm = ({services,districts,setContent,loading,myServiceArray
     const addToArray = (e,array,setArray,value,setValue)=>{
         e.preventDefault()
 
-        console.log(array,setArray,value,setValue)
+  
         if (array.indexOf(value) === -1 && value.length > 0){
             setArray([...array,value])
             setValue("");

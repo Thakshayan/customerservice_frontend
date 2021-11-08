@@ -38,15 +38,15 @@ const EditReviewDetail = ({type}) => {
             
             alert(work);
 
-            fetch('http://localhost:8000/serviceprovider/editBasicInfo/:id',{
-                method: 'POST',
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(work)
-            }).then(()=>{
-                alert("Successfully submitted"); 
-            }).catch((err)=>{
-                console.log(err);
-            })
+            // fetch('http://localhost:8000/serviceprovider/editBasicInfo/:id',{
+            //     method: 'POST',
+            //     headers: {"Content-Type": "application/json"},
+            //     body: JSON.stringify(work)
+            // }).then(()=>{
+            //     alert("Successfully submitted"); 
+            // }).catch((err)=>{
+            //     console.log(err);
+            // })
             }
     })
 

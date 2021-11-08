@@ -19,7 +19,7 @@ const AssignWorkerForm = ({type,ID,contents,workerContent,state,setAssignWorkerI
     const [content,setContent] = useState([])
 
     useEffect(()=>{
-        console.log(state)
+        
         if(contents){
             setContent(contents)
         }

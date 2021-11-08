@@ -1,8 +1,5 @@
-import { useEffect } from "react";
-import React, { useState } from "react";
+import React from "react";
 import { BrowserRouter as Router,Link } from "react-router-dom";
-import { useQuery } from "@apollo/client";
-import { GET_WORKER, WORKER_PERSONAL, WORK_PROFILE } from "../../GraphQL/Queries";
 
 const ProfileCard = ({id,edit,title,name,nic,contact,address}) => {
 

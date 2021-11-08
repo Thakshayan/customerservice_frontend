@@ -22,7 +22,7 @@ const ProviderProfile = () => {
     useEffect(()=>{
        
         if(data){
-            console.log(data)
+            
             setContent(data);
             
         }

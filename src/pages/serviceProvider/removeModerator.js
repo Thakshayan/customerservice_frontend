@@ -13,7 +13,7 @@ import Preloader from '../../components/preloader';
 const RemoveModerator = () => {
     const [removeModerator,{loading,error}] = useMutation(REMOVE_MODERATOR,{
         onCompleted: res =>{
-            console.log(res)
+            
             if(res.removeModerator){
                 window.location.href="/success"
             }
@@ -32,14 +32,13 @@ const RemoveModerator = () => {
   
 
     useEffect(()=>{
-        console.log(Id)
+       
         if(Id){
             
             fetchContent.refetch({
                 workerId:Id
             }).then( data => {
 
-                console.log(data)
                 if(data){
                     setContent(data.data.getModerator)
                 }

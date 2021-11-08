@@ -50,13 +50,13 @@ const WorkRequest = () => {
 
 
         if(data){
-            console.log(data)
+            
             setContent(data.getMyBooking)
             setContents(data.getMyBooking)
             var count = data.getCountBooking.filter(e => (e._id ==='open'))
            
             if(count[0]){
-                console.log(count)
+                
                 setOffSet(count[0].Count/3)
             }
         }

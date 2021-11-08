@@ -39,6 +39,7 @@ function Message({title,content,id,loading,type}){
                                         message = {e.message}
                                         read ={e.read}
                                         key={e._id}
+                                        object={e}
                                         /> 
                                     
                                 }):

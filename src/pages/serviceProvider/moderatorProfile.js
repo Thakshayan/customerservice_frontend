@@ -37,7 +37,7 @@ function ModeratorProfile() {
 
     useEffect(()=>{
         if(data){
-            console.log(data)
+  
             setContent(data.UniqueSearchModerator)
 
             setNotificationContent(data.getMyNotification)

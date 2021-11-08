@@ -48,7 +48,7 @@ const NewWorkRequest = ({id,setID,content,setPage,page,offSet,loading}) => {
                                                             
                                                            
                                                             {content[0] ? content.map((e)=>{
-                                                                console.log("Not an")
+                                                                
                                                                 return <RequestBar
                                                                     by={e.by.username} 
                                                                     workstation ={e.workStationDistrict}

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 
 
 import BreadCrumb from '../../breadcrumb';
@@ -8,7 +8,7 @@ import ChangeCard from '../../form/changeCard';
 
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
-import {useState,useLayoutEffect, useEffect} from 'react';
+import {useState, useEffect} from 'react';
 import { CHECK_USER } from '../../../GraphQL/Queries';
 import {useQuery} from '@apollo/client'
 
@@ -39,7 +39,7 @@ function AddWorkerForm({type,addEmployee,setID,Id,content,ID,photoFocus}){
             ChechUser.refetch({
                 username:username
             }).then((data) => {
-                console.log(data)
+                
                 if(data.data && data.data.CheckUsername){
                     setUserError('')
                     
@@ -53,7 +53,6 @@ function AddWorkerForm({type,addEmployee,setID,Id,content,ID,photoFocus}){
 
 
     const updateUser = (e) =>{
-        console.log(e.target.value)
         if(e.target.value){
            
             setUsername(e.target.value)

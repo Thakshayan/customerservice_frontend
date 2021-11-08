@@ -8,7 +8,7 @@ function MessageBar({message,By,received_date,read,object}){
 
     const [readMessage,{loading,error}] = useMutation(UPDATE_READ,{
         onCompleted: data=>{
-            console.log(data)
+         
             if(data.readMessage){
                 window.location.reload()
             }

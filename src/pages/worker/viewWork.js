@@ -14,11 +14,7 @@ const ViewWork = () => {
 
     const [id,setID] = useState('');
     // const [Id,setID] = useState(id);
-    const fetchContent = useQuery(GET_WORKER_SEARCH_ONGOINGWORK,{
-        variables:{ workId:id
-        }
-    });
-
+   
     const onGoingCount = (objects) => {
         if(!objects){
           return 0
@@ -37,6 +33,8 @@ const ViewWork = () => {
     const [page,setPage] = useState(1);
     const [offSet,setOffSet] = useState();
 
+
+    // workers ongoing work
     const {error,loading,data} = useQuery(GET_WORKER_ONGOINGWORK,{
         variables:{
             page:page,
@@ -46,12 +44,11 @@ const ViewWork = () => {
 
 
     useEffect(()=>{
-        console.log(data)
+       
         if(error){
             console.log(error)
         }
         if(data){
-            console.log(data)
             setContent(data.worker_getMyOngoingWorks)
             setContents(data.worker_getMyOngoingWorks)
             setOffSet(onGoingCount(data.getCountAssignedAppointments)/2)
@@ -61,6 +58,12 @@ const ViewWork = () => {
     },[data])
 
 
+    // search a worker assigned to a worker
+    const fetchContent = useQuery(GET_WORKER_SEARCH_ONGOINGWORK,{
+        variables:{ workId:id
+        }
+    });
+
 
     useEffect(() => {
     
@@ -69,7 +72,7 @@ const ViewWork = () => {
               workId:id
             
           }).then((data) =>{
-              console.log(data.data)
+              
                 setContent(data.data.worker_SearchMyOngoingWorks)
             
           })
@@ -80,7 +83,7 @@ const ViewWork = () => {
       }, [id])
 
     return ( 
-      <>
+      <div>
                {/* [ Pre-loader ] start */}
                <Preloader/>
         { /* [ Pre-loader ] End 
@@ -102,8 +105,9 @@ const ViewWork = () => {
             setID={setID}
             loading = {loading}
             role="Worker"
+            url={true}
         />
-        </>
+        </div>
      );
 }
  

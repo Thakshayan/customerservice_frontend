@@ -4,7 +4,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import { useEffect, useLayoutEffect, useState } from "react";
 import { ADD_OWNER, SIGNUP_SP } from "../GraphQL/Mutations";
 import { CHECK_USER, GET_SIGNUP } from "../GraphQL/Queries";
-import Loading from "../components/loading";
+
 
 
 const SignUp = (props) => {
@@ -58,7 +58,7 @@ const SignUp = (props) => {
             checkId.refetch({
                 username:username
             }).then(data =>{
-                console.log(data)
+               
                 if(data.data && data.data.CheckUsername){
                     setUserError("")
                 }else{

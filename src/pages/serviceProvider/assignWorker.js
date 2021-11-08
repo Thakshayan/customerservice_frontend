@@ -43,7 +43,7 @@ const AssignWorker = () => {
 
     useEffect(()=>{
 
-        console.log(workerId)
+  
         if(workerId){
             fetchContent.refetch({
                 workerId:workerId

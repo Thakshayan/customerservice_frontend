@@ -13,7 +13,7 @@ function AddEmployee() {
 
     const [addModerator,{loading,error}] = useMutation(ADD_MODERATOR,{
         onCompleted:data => {
-            console.log(data.addModerator.username)
+            
             setID(data.addModerator._id);     
           }
     });
@@ -56,7 +56,6 @@ function AddEmployee() {
             fetchContent.refetch({
                 workerId:id
             }).then(data =>{
-                console.log(data)
                 setContent([data.data.UniqueSearchModerator])
                 scrollToBottom()
             })

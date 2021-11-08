@@ -1,23 +1,20 @@
 import { useEffect, useState } from "react";
-import { BrowserRouter as Router,Link } from "react-router-dom";
 import {dateFormatter} from "../../formatter"; 
 
 const ViewCard = ({id,message,ratingValue,date}) => {
     
+
+    // logic to assign rating star
     var array = [false,false,false,false,false];
 
     const [rating,setRating] = useState()
 
     useEffect(()=>{
-
         array[ratingValue-1]=true
         setRating(array)
-        console.log(rating)
     },[ratingValue])
 
-    
-        
-   
+
 
     return ( 
         <div className="">

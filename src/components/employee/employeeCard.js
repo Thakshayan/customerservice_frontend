@@ -7,10 +7,6 @@ const EmployeeCard = ({content,type}) => {
         type=content.type;
     }
 
-    useEffect(()=>{
-        console.log(content)
-    },[])
-
     return ( 
      <div className="col-12 col-sm-6 col-md-6 col-xl-4">
         {content ?<div className="card-container ">

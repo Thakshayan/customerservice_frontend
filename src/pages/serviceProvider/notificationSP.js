@@ -36,7 +36,7 @@ const SPNotification = () => {
             console.log(error)
         }
         if(data){
-            console.log(data)
+            
             setContent(data.getMyNotification); //change
             setOffSet(data.getCountNotification.Count/1)
         }

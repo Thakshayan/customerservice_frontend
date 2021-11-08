@@ -49,7 +49,7 @@ function ViewReview() {
             fetchContent.refetch({
                 customerId:id
             }).then(res =>{
-                console.log(res)
+                
                 setContent(res.data.getCustomerReview)
             })
         }else if(contents){

@@ -62,7 +62,7 @@ const Messager = ({content,setPage,page,offSet,loading,action,toError,To,setTo,s
                     message: message
                 }
             }).then(res =>{
-                console.log(res)
+                
             })
             .catch(err =>{
                 alert("Error Occurred")
@@ -101,7 +101,7 @@ const Messager = ({content,setPage,page,offSet,loading,action,toError,To,setTo,s
                                                         <div className="">
 
                                                         {contents.map(e => {
-                                                            // console.log(e);
+                                                            
 
                                       
                                                             return <MessageBar

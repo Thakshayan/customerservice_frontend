@@ -15,7 +15,7 @@ const ViewRating = ({type,contents,page,setID,setPage,offSet,id,loading}) => {
 
     useEffect(()=>{
         if(contents){
-            console.log(contents)
+            
             setContent(contents)
         }
     },[contents])

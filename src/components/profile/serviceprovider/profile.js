@@ -4,16 +4,10 @@ import PhotoCard from "../profilephoto";
 import ProfileCard from "../profileCard";
 import ProviderInfoCard from "../providerInfoCard";
 import RatingList from "../../rating/ratingSection/ratingList";
-import FinishCard from "../../finishCard";
 import Notificator from "../../notification/notificator";
 import ServiceProviderCard from "./serviceProviderCard";
-import { useMutation, useQuery } from "@apollo/client";
 import { ArrayFormater } from "../../formatter";
-
-
 import { useEffect } from "react/cjs/react.development";
-import Message from "../../message/messages";
-import Empty from "../../empty";
 import Loading from "../../loading";
 
 const SpProfile = ({contents,loading}) => {

@@ -6,12 +6,11 @@ import Loading from '../loading';
 
 import {dateFormatter} from "../formatter";
 
-function Notificator({title,content,id,loading}){
+function Notificator({title,content,id,loading,type}){
 
     const [Notification,setNotification] = useState([]);
 
     useEffect(()=>{
-        console.log(id)
         if(content){
             setNotification(content)
         }
@@ -55,10 +54,18 @@ function Notificator({title,content,id,loading}){
                 </div>
                 
                 <div style={{padding:"0px 30px 10px 0px",float:"right"}}>
-                    <Link to={id?`/CSA/notifications/${id}`:`/CSA/notifications`} className="btn btn-mtd btn-primary" style={{width:"150px",height:"25px",padding:'0 0',float:'right',background: 'linear-gradient(-135deg, #1de9b6 0%, #1dc4e9 100%)'}}> 
+                    { !type ? <Link to={id?`/CSA/notifications/${id}`:`/CSA/notifications`} className="btn btn-mtd btn-primary" style={{width:"150px",height:"25px",padding:'0 0',float:'right',background: 'linear-gradient(-135deg, #1de9b6 0%, #1dc4e9 100%)'}}> 
                         View More 
                         <i className="far fa-eye" style={{paddingLeft:'10px'}}></i>
                     </Link>
+
+                    :
+
+                    <Link to={id?`/Worker/notifications/${id}`:`/Worker/notifications`} className="btn btn-mtd btn-primary" style={{width:"150px",height:"25px",padding:'0 0',float:'right',background: 'linear-gradient(-135deg, #1de9b6 0%, #1dc4e9 100%)'}}> 
+                        View More 
+                        <i className="far fa-eye" style={{paddingLeft:'10px'}}></i>
+                    </Link>
+                    }
                 </div>
                     
             

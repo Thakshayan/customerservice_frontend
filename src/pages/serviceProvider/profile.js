@@ -38,7 +38,7 @@ function Profile() {
 
     useEffect(()=>{
         if(data){
-            console.log(data)
+            
             setContent(data.UniqueSearchWorker)
 
             setNotificationContent(data.getWorkerNotification)

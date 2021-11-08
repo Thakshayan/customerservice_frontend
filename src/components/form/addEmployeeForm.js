@@ -37,17 +37,7 @@ const AddEmployee = () => {
         onSubmit: values => {
             alert(JSON.stringify(values,null,2))
             const employee = values
-            
-            fetch('http://localhost:8000/addEmployee',{
-                method: 'POST',
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(employee)
-            }).then(()=>{
-                alert("Successfully submitted"); 
-            }).catch((err)=>{
-                console.log(err);
-            })
-            }
+        }
     })
 
     return ( 

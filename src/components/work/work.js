@@ -19,7 +19,7 @@ const WorkProfile = ({contents,disable}) => {
     const [content,setContent] = useState()
 
     useEffect(() => {
-        console.log(contents)
+   
         setContent(contents)
     }, [contents])
 
@@ -296,10 +296,17 @@ const WorkProfile = ({contents,disable}) => {
                                     symbol = {<i className="far fa-images text-c-green f-30 m-r-10"></i>}
                                     count = ''
                                     button = {
-                                        <Link to={`/CSA/work/images/${Id}`} className="label theme-bg text-white f-12" style={{width:"100%",float:"right",textAlign:"center"}}>
+                                        !disable ?<Link to={`/CSA/work/images/${Id}`} className="label theme-bg text-white f-12" style={{width:"100%",float:"right",textAlign:"center"}}>
                                             View Images
                                             &nbsp; <i className="far fa-eye"></i>
                                         </Link>
+                                        :
+                                        <Link to={`/Worker/work/images/${Id}`} className="label theme-bg text-white f-12" style={{width:"100%",float:"right",textAlign:"center"}}>
+                                            View Images
+                                            &nbsp; <i className="far fa-eye"></i>
+                                        </Link>
+                                        
+
                                     }
                                 />
 

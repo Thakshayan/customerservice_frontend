@@ -20,7 +20,7 @@ const EditLogo = () => {
 
     useEffect(()=>{
         if(data){  
-            console.log(data)    
+           
             setContent([data.getMySP])
         }
     },[data])

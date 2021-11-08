@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { BrowserRouter as Router,Link } from "react-router-dom";
 import { useEffect } from "react";
-import { WORKER_PROFESSIONAL } from "../../GraphQL/Queries";
-import { useQuery } from "@apollo/client";
 import { dateFormatter } from "../formatter";
 
 const ProviderInfoCard = ({id,edit,title,content}) => {

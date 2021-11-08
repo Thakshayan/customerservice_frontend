@@ -18,7 +18,7 @@ const Message = () => {
 
     const {id} = useParams();
     const [content,setContent] = useState([]);
-    const [Id,setID] = useState('');
+    //const [Id,setID] = useState('');
 
     const [To,setTo] = useState('');
     const [toError,setToError] = useState('');
@@ -26,30 +26,32 @@ const Message = () => {
 
     const [page,setPage] = useState(1);
     const [offSet,setOffSet] = useState(1);
-    const limit = 10;
+    const limit = 3;
 
-    const {error,loading,data} = useQuery(GET_WORKER_MESSAGES,{
-        variables:{
-            offset:3,
-            page:page
-        }
-    });
-
+    
+    //send messages
     const [sendMessage,{loadingMessages,loadingError}] = useMutation(SEND_MESSAGE,{
         onCompleted:data => {
             window.location.href = '/success'
         }
     });
     
+    //retrive messages
+    const {error,loading,data} = useQuery(GET_WORKER_MESSAGES,{
+        variables:{
+            offset:limit,
+            page:page
+        }
+    });
+
     useEffect(()=>{
-        
         if(data){
-            console.log(data)
             setContent(data.getMyMessages)
-            setOffSet(sumArray(data.getCountMessages)/3)
+            setOffSet(sumArray(data.getCountMessages)/limit)
         }
     },[data])
     
+    //check whether user exist
     const fetchContent =useQuery(CHECK_USER,{
         variables:{
             username:To
@@ -57,7 +59,6 @@ const Message = () => {
     })
 
     useEffect(()=>{
-        console.log(To)
         if(To){
             fetchContent.refetch({
                 username:To
@@ -77,7 +78,7 @@ const Message = () => {
 
 
     return ( 
-        <>
+        <div>
         {/* [ Pre-loader ] start */}
             <Preloader/>
         { /* [ Pre-loader ] End 
@@ -102,7 +103,7 @@ const Message = () => {
             setTo = {setTo}
             loadingMessages = {loadingMessages}
         />
-        </>
+        </div>
      );
 }
  

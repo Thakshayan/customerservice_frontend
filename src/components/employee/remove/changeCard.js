@@ -12,9 +12,6 @@ import Loading from "../../loading";
 const ChangeCard = ({title,content,setID,id,type,action,childComponent,loading}) => {
 
 
-    useEffect(() => {
-        console.log(content)
-    }, [content])
     
     return ( 
         <div className=""> 
@@ -37,7 +34,7 @@ const ChangeCard = ({title,content,setID,id,type,action,childComponent,loading})
                                     { content[0] ? 
 
                                     content.map ((e) => {
-                                    console.log("object Id",e._id)
+                                   
                                     return <ElementCard
                                         key = {e._id}
                                         content = {e}

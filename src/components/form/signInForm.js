@@ -37,7 +37,7 @@ const SignInForm = props => {
       <form
         onSubmit={event => {
           event.preventDefault();
-          console.log(values)
+          
           props.action({
             variables: 
               values

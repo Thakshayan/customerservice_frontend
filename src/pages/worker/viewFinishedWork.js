@@ -84,7 +84,7 @@ const ViewFinishWork = () => {
 
     
     return ( 
-        <>
+        <div>
                  {/* [ Pre-loader ] start */}
                  <Preloader/>
         { /* [ Pre-loader ] End 
@@ -106,8 +106,9 @@ const ViewFinishWork = () => {
             setID={setID}
             loading ={loading}
             role="Worker"
+            url={true}
         />
-        </>
+        </div>
      );
 }
  

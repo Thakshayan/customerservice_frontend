@@ -527,53 +527,6 @@ const GET_SIGNUP = gql`
 `
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 const GET_ROLE = gql`
   query Query {
     getMyRole
@@ -590,10 +543,11 @@ const GET_SPME = gql`
 `
 
 const GET_ME = gql`
-query Query {
-  moderator_me {
+query GetMe {
+  getMe {
+    _id
     username
-    name
+    role
   }
 }
 `
@@ -615,56 +569,6 @@ query GetMySP {
 `
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// const GET_RATING = gql``
-
-// const CHECK_ID = gql` `
-
-
-
-
-
-// const GET_SP_MESSAGE  = gql``
-
-
-
-
-
-// const GET_MODERATOR_PROFILE = gql``
 
 
 
@@ -721,8 +625,6 @@ export {
   
     GET_ME,
 
-
-    // CHECK_ID,
     GET_MESSAGES,
 
 

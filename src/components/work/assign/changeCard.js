@@ -11,10 +11,6 @@ import Loading from "../../loading";
 const ChangeCard = ({title,content,setID,id,type,action,loading,ID}) => {
 
 
-    useEffect(() => {
-        console.log(content)
-    }, [content])
-    
     return ( 
         <div className=""> 
             <div className="col-xl-12">

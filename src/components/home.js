@@ -73,8 +73,7 @@ function Content({content,loading,type}){
             }
         })
         
-       
-        console.log(work)
+    
         return work
         
     }
@@ -145,7 +144,7 @@ function Content({content,loading,type}){
                                 }
                                 {/* <!--[ Recent Notification ] end-->*/}
                                 {/*<!--[ Recent Notification ] start-->*/}
-                                <Message title="Messages" content={content.getMyMessages}/>
+                                <Message title="Messages" content={content.getMyMessages} type={type}/>
                                 {/* <!--[ Recent Notification ] end-->*/}
                                 </div>
 

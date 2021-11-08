@@ -36,13 +36,13 @@ const ViewWork = () => {
     useEffect(()=>{
 
         if(data){
-            console.log(data)
+            
             setContent(data.getMyOngoingWorks)
             setContents(data.getMyOngoingWorks)
             var count = data.getCountAppointments.filter(e => (e._id ==='going'))
            
             if(count[0]){
-                console.log(count)
+                
                 setOffSet(count[0].Count/2)
             }
         }
@@ -61,7 +61,7 @@ const ViewWork = () => {
           
                 if(datas){
                     setContent(datas.data.searchOpenAppointment)
-                    console.log(datas.data.searchOpenAppointment)
+                    
                 }
     
             })

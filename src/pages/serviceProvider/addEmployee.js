@@ -13,7 +13,7 @@ function AddEmployee() {
 
     const [addWorker,{loading,error}] = useMutation(ADD_WORKER,{
         onCompleted:data => {
-            console.log(data.addWorker._id)
+           
             setID(data.addWorker._id);
               
           }
@@ -59,7 +59,7 @@ function AddEmployee() {
 
     useEffect(()=>{
         if(Id){
-            console.log(Id)
+            
             fetchSearchContent.refetch({
                 workerId:Id
             }).then(data =>{

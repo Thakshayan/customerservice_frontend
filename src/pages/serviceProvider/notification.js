@@ -35,7 +35,7 @@ const Notification = () => {
             console.log(error)
         }
         if(data){
-            console.log(data)
+          
             setContent(data.getWorkerNotification); 
             //setOffSet(data.getCountNotification.Count/1) //change
         }

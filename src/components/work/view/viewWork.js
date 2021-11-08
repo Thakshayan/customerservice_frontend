@@ -14,7 +14,7 @@ import Empty from '../../empty';
 import { dateFormatter } from '../../formatter';
 
 
-const ViewWorks = ({type,content,setPage,page,offSet,id,setID,loading}) => {  
+const ViewWorks = ({type,content,setPage,page,offSet,id,setID,loading,url}) => {  
     
     const [contents,setContent]=useState([])
 
@@ -60,7 +60,7 @@ const ViewWorks = ({type,content,setPage,page,offSet,id,setID,loading}) => {
                                                                 title = {e.appointment_id}
                                                                 time = {dateFormatter(e.starting_date)}
                                                                 description = {e.booking.description}
-                                                                viewURL = {`/CSA/work/${e._id}`}
+                                                                viewURL = {!url ? `/CSA/work/${e._id}`:`/Worker/work/${e._id}`}
                                                                 
                                                                 id = {e.appointment_id}
                                                                 key = {e.appointment_id}

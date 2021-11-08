@@ -2,11 +2,10 @@ import BreadCrumb from '../../breadcrumb';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
 import {useState, useEffect} from 'react';
-import ButtonCard from '../../buttonCard';
-import { useMutation,useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { useParams } from 'react-router';
 import { CHECK_WORK,CHECK_USER } from '../../../GraphQL/Queries';
-import Empty from "../../empty"
+
 
 
 function AddWorkerForm({type,action,workerId,setWorkerId,checkWorker}){
@@ -15,13 +14,11 @@ function AddWorkerForm({type,action,workerId,setWorkerId,checkWorker}){
 
     const [Id,setID] = useState('');
 
-    const [workerArray,setWorkerArray] = useState([]);
-    const [workerArrayError,setWorkerArrayError] = useState('');
-    const [worker,setWorker] = useState('');
-    const [workerError,setWorkerError] = useState('');
+    
     
 
 
+    // check for appointment id exist
     const [appointmentId,setappointmentId] = useState('')
     const [appointmentError,setAppointmentError] = useState()
     
@@ -32,15 +29,15 @@ function AddWorkerForm({type,action,workerId,setWorkerId,checkWorker}){
     })
 
     useEffect(()=>{
-        console.log(appointmentId)
+        
         if(appointmentId){
             ChechWork.refetch({
                 appointmentId:appointmentId
             }).then((data) => {
-                console.log(data)
+                
                 if(data.data && data.data.CheckAppointmentID){
                     setAppointmentError('')
-                    console.log(appointmentId)
+                  
                 }else{
                     setAppointmentError('choose another appointmentId')
                 }
@@ -48,6 +45,13 @@ function AddWorkerForm({type,action,workerId,setWorkerId,checkWorker}){
         }
     
     },[appointmentId]);
+
+    //check worker id exist --not implemented
+    const [workerArray,setWorkerArray] = useState([]);
+    const [workerArrayError,setWorkerArrayError] = useState('');
+    const [worker,setWorker] = useState('');
+    const [workerError,setWorkerError] = useState('');
+
 
     const ChechWorker = useQuery(CHECK_USER,{
         variables:{
@@ -60,10 +64,10 @@ function AddWorkerForm({type,action,workerId,setWorkerId,checkWorker}){
             ChechWorker.refetch({
                 username:worker
             }).then((data) => {
-                console.log(data)
+               
                 if(data.data && data.data.CheckUsername){
                     setWorkerError('')
-                    console.log(worker)
+                   
                 }else{
                     setWorkerError('choose a valid worker')
                 }
@@ -99,6 +103,8 @@ function AddWorkerForm({type,action,workerId,setWorkerId,checkWorker}){
         }
        
     }
+
+    //check worker id exist end --not implemented
     
     const formik = useFormik({
         initialValues:{

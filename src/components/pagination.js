@@ -18,7 +18,7 @@ const PaginationBar = ({page,setPage,offSet}) => {
     }
 
     const check = (page) =>{
-        console.log(page)
+     
         if(page<=1){
             setDisable(true); 
             

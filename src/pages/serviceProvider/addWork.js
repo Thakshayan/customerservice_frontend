@@ -17,7 +17,7 @@ const AddWork = (props) => {
 
     const [appointment,{loading,error}] = useMutation(ADD_WORK,{
         onCompleted: data =>{
-           console.log(data.appointment)
+           
             setID(data.appointment.appointment_id)
             setAppointmentID(data.appointment._id)
         }
@@ -32,7 +32,7 @@ const AddWork = (props) => {
     })
 
     useEffect(()=>{
-        console.log(ID)
+        
         if(ID){
             initiateAppointment({
                 variables:{

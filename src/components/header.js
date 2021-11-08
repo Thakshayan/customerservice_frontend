@@ -3,14 +3,12 @@ import { useEffect } from 'react/cjs/react.development';
 import { useQuery } from '@apollo/client';
 import { useState } from 'react';
 
-import { Redirect } from 'react-router';
-
-import {GET_SPME,GET_ME} from '../GraphQL/Queries'
+import {GET_ME} from '../GraphQL/Queries'
 
 function Header(){
 
-    const {error,loading,data} = useQuery(GET_SPME);
-    const {errorM,loadingM,dataM} = useQuery(GET_ME);
+
+    const {error,loading,data} = useQuery(GET_ME);
     const [userName,setUserName] = useState();
     const [id,setId] = useState();
     const [type,setType] = useState();
@@ -25,34 +23,23 @@ function Header(){
     useEffect(()=>{
         if(data){
             // if(data.moderator_me){
-            //     console.log(data)
+            //     
             //     setId(data.moderator_me.username)
             //     setUserName(data.moderator_me.name)
             //     setType("Moderator")
             // }
-            if(data.SP_me){
-                console.log(data)
-                setId(data.SP_me.username)
-                setUserName(data.SP_me.name)
-                setType("ServiceProvider")
-            }
-        }
-        
-    },[data])
-
-    useEffect(()=>{
-        console.log(errorM,loadingM,dataM)
-        if(dataM){
-            if(dataM.moderator_me){
-                console.log(data)
-                setId(data.moderator_me.username)
-                setUserName(data.moderator_me.name)
+            if(data.getMe){
+                
+                setId(data.getMe[0]._id)
+                setUserName(data.getMe[0].username)
+                setType(data.getMe[0].role)
             }
             
         }
         
-    },[dataM,loadingM,errorM])
+    },[data])
 
+   
 
     return(
         <header className="navbar pcoded-header navbar-expand-lg navbar-light">
@@ -100,7 +87,7 @@ function Header(){
                                 </div>
                                 <ul className="pro-body">
                                     {/* <li><Link to="#0" className="dropdown-item"><i className="feather icon-settings"></i> Settings</Link></li> */}
-                                    <li><Link to={type == "Moderator" ?`/CSA/profile/${id}?type=${type}`:`/CSA/profile`} className="dropdown-item"><i className="feather icon-user"></i> My Profile</Link></li>
+                                    <li><Link to={type == "moderator" ?`/CSA/profile/${id}?type=${type}`:`/CSA/profile`} className="dropdown-item"><i className="feather icon-user"></i> My Profile</Link></li>
                                     <li><Link to={"/CSA/messages"} className="dropdown-item"><i className="feather icon-mail"></i> Messages</Link></li>
                                     <li><button onClick={signOut} className="dropdown-item"><i className="feather icon-lock"></i> Log Out</button></li>
                                 </ul>

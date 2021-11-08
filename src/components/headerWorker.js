@@ -21,7 +21,7 @@ function Header(){
     useEffect(()=>{
         if(data){
             if(data.worker_me){
-                console.log(data)
+                
                 setId(data.worker_me._id)
                 setUserName(data.worker_me.name)
             }
