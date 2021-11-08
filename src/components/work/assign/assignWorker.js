@@ -19,7 +19,7 @@ const AssignWorkerForm = ({type,ID,contents,workerContent,state,setAssignWorkerI
     const [content,setContent] = useState([])
 
     useEffect(()=>{
-        
+        console.log(state)
         if(contents){
             setContent(contents)
         }
@@ -88,7 +88,7 @@ const AssignWorkerForm = ({type,ID,contents,workerContent,state,setAssignWorkerI
                                 </div>
 
                                     {/*<!-- [ Add-Worker-Card ] end -->*/}
-                                    {content[0] ?
+                                    {
                                         state !== 'finished'?
                                         <ChangeCard
                                             title ='Add Workers'
@@ -101,8 +101,7 @@ const AssignWorkerForm = ({type,ID,contents,workerContent,state,setAssignWorkerI
                                             
                                         />
                                     : null 
-                                        :
-                                        null
+                                        
                                     }
                                     {/*<!-- [ Add-worker-card ] end -->*/}
 

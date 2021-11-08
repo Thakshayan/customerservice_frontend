@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { BrowserRouter as Router, Link } from "react-router-dom";
 
 const BreadCrumb = ({type,reason}) => {
     return ( 

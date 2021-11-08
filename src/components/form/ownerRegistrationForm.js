@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 import ButtonCard from '../buttonCard';
 import Empty from '../empty'
 import React,{ useState } from 'react';
-import { Link } from 'react-router-dom';
+import { BrowserRouter as Router,Link } from 'react-router-dom';
 import Loading from '../loading';
 
 const OwnerRegisterForm = ({services,districts,setContent,loading,myServiceArray,setMyServiceArray,workRangeArray,setWorkRangeArray,memberships,setMembershipID,action}) => {

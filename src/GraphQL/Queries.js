@@ -601,7 +601,18 @@ query Query {
 
 
 
-
+const PROVIDER_CARD = gql`
+query GetMySP {
+  getMySP {
+    _id
+    username
+    address
+    name
+    contact_no
+    email
+  }
+}
+`
 
 
 
@@ -700,17 +711,7 @@ export {
     GET_REVIEW,
     GET_SEARCH_REVIEW,
 
-
-
-
-
-
-
-
-
-
-
-
+    PROVIDER_CARD,
 
 
     GET_ROLE,

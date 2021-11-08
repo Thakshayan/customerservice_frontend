@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { BrowserRouter as Router,Link } from "react-router-dom";
 import { useEffect } from "react";
 import { useState } from "react";
 
@@ -55,7 +55,7 @@ function RatingList({content,value}){
                 <div className="card-block">
                     <div className="row align-items-center justify-content-center m-b-20">
                         <div className="col-6">
-                            <h2 className="f-w-300 d-flex align-items-center float-left m-0">{rating(content)} <i className="fas fa-star f-10 m-l-10 text-c-yellow"></i></h2>
+                            <h2 className="f-w-300 d-flex align-items-center float-left m-0">{value ? value :rating(content)}  <i className="fas fa-star f-10 m-l-10 text-c-yellow"></i></h2>
                         </div>
                         <div className="col-6">
                             <h6 className="d-flex  align-items-center float-right m-0"> <i className="fas fa-caret-up text-c-green f-22 m-l-10"></i></h6>

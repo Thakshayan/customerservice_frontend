@@ -2,7 +2,7 @@
 import { useEffect,useState } from 'react/cjs/react.development';
 import { REJECT_BOOKING } from '../../../GraphQL/Mutations';
 import { useMutation } from '@apollo/client';
-import {Link} from 'react-router-dom'
+import {BrowserRouter as Router,Link} from 'react-router-dom'
 
 function RequestBar({workstation,by,description,date,id}){
 

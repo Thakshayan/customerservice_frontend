@@ -1,18 +1,18 @@
 import { useEffect } from 'react';
-import { useParams } from 'react-router';
+
 import { useState } from 'react';
 import FinishCard from '../../finishCard';
 import Notificator from '../../notification/notificator';
-import RatingList from "../../rating/ratingSection/ratingList";
+
 import ProfileCard from '../profileCard';
 import PhotoCard from '../profilephoto';
 import WorkerInfoCard from "../workerInfoCard";
 import Loading from '../../loading';
-import Content from '../../home';
 
 
 
-function ProfileContent({contents,notification,type,id}){
+
+function ProfileContent({contents,notification,type,id,edit}){
 
     
     
@@ -41,7 +41,7 @@ function ProfileContent({contents,notification,type,id}){
 
                                 {/*<!--[ profile section ] starts-->*/}
                                 <div className="col-md-12 col-xl-5">
-                                    <PhotoCard id={content._id} profile={content.profile} type={type}/>
+                                    <PhotoCard id={content._id} profile={content.profile} type={type} edit={edit}/>
                                 </div>
                                 
                                 {/*<!--[ profile section ] end-->
@@ -51,7 +51,7 @@ function ProfileContent({contents,notification,type,id}){
                                     {content ?
                                         <ProfileCard 
                                             id={content._id} 
-                                            edit={true} 
+                                            edit={edit}
                                             title="Personal Info" 
                                             name = {content.name}
                                             nic = {content.nic}
@@ -68,7 +68,7 @@ function ProfileContent({contents,notification,type,id}){
                                     {content ? 
                                         <WorkerInfoCard 
                                             id={contents._id} 
-                                            edit={true} 
+                                            edit={edit} 
                                             title="Worker Info" 
                                             content={content}
                                             type = {type}

@@ -1,11 +1,11 @@
 import { useQuery } from '@apollo/client';
 import { useState } from 'react';
-import {Link} from 'react-router-dom';
+import {BrowserRouter as Router,Link} from 'react-router-dom';
 import { useEffect } from 'react/cjs/react.development';
 
 
 
-function PhotoCard({id,profile,title,type}){
+function PhotoCard({id,profile,title,type,edit,provider}){
 
     const [image,setImage] = useState("/assets/images/user/profile.jpg");
 
@@ -24,17 +24,39 @@ function PhotoCard({id,profile,title,type}){
                         }
                     </div>
                     <hr/>
+                    {edit ?
                    <div style={{ margin:'15px',display:'flex'}}>
-                        <Link to={`/CSA/edit/workerInfo/${id}?type=${type}`} className="btn btn-primary" style={{width:'100%',height:'25px',padding:'0px 0px',background:'#5e8d25',borderColor:'#5e8d25'}} title="Edit Password">
+                     
+                      <Link to={`/Worker/edit/password`} className="btn btn-primary" style={{width:'100%',height:'25px',padding:'0px 0px',background:'#5e8d25',borderColor:'#5e8d25'}} title="Edit Password">
                            {/* <i className="fas fa-chevron-circle-left"></i> */}
                            <i className="fas fa-unlock-alt"></i>
                            Password  
                         </Link>
-                       <Link to={`/CSA/edit/basicInfo/${id}?type=${type}`} className="btn btn-primary" style={{width:'100%',height:'25px',padding:'0px 0px',background:'#038fcf'}} title="Edit Profile">
+                       <Link to={`/Worker/edit/basicInfo`} className="btn btn-primary" style={{width:'100%',height:'25px',padding:'0px 0px',background:'#038fcf'}} title="Edit Profile">
                            Edit
                            <i className="fas fa-edit" style={{paddingLeft:'10px'}}></i>
                         </Link>
                    </div>
+                  
+                   :
+                   null
+                    }
+                    {provider ?<div style={{ margin:'15px',display:'flex'}}>
+                     
+                     <Link to={`/CSA/edit/password`} className="btn btn-primary" style={{width:'100%',height:'25px',padding:'0px 0px',background:'#5e8d25',borderColor:'#5e8d25'}} title="Edit Password">
+                          {/* <i className="fas fa-chevron-circle-left"></i> */}
+                          <i className="fas fa-unlock-alt"></i>
+                          Password  
+                       </Link>
+                      <Link to={`/CSA/edit/basicInfo`} className="btn btn-primary" style={{width:'100%',height:'25px',padding:'0px 0px',background:'#038fcf'}} title="Edit Profile">
+                          Edit
+                          <i className="fas fa-edit" style={{paddingLeft:'10px'}}></i>
+                       </Link>
+                    </div>
+                    
+                    :
+                    null
+                    }
                  </div>
             </div>
         </div>

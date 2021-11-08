@@ -27,6 +27,26 @@ export const dateFormatter = (date) => {
     return dateFormat
 }
 
-export const idChecker = (id) => {
+export const sumArray = (object)=>{
+
     
+    if (!object){
+        return 0
+    }
+
+ 
+    if (!object.length){
+        
+        return 0
+    }
+
+    console.log("hi",object)
+
+    var total = 0;
+
+    for(var count=0;count<object.length;count++){
+       total +=object[count].Count
+    }
+    console.log(total)
+    return total
 }

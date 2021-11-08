@@ -25,7 +25,7 @@ function EditEmployee({type,action,content,id,loading}){
         initialValues:{
             name:'',
             nic:'',
-            //phone:'',
+            phone:'',
             email:'',
             address:''
         },validationSchema: Yup.object({
@@ -47,13 +47,14 @@ function EditEmployee({type,action,content,id,loading}){
             // values.workerId = id
             alert(JSON.stringify(values,null,2))
        
-            
-          
-
             action({
-                variables:
-                    values
-                
+                variables:{
+                    email: values.email, 
+                    contactNo: values.phone, 
+                    address: values.address
+                } 
+            }).catch(err =>{
+                alert(err)
             })
 
         }

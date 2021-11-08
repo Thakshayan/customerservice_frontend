@@ -1,8 +1,6 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { useEffect } from "react";
-import { WORKER_PROFESSIONAL } from "../../GraphQL/Queries";
-import { useQuery } from "@apollo/client";
+
+import { BrowserRouter as Router,Link } from "react-router-dom";
+
 
 const WorkerInfoCard = ({id,edit,title,content,type}) => {
 
@@ -75,10 +73,14 @@ const WorkerInfoCard = ({id,edit,title,content,type}) => {
 
                     {edit ? 
                         <div style={{paddingTop:"20px",float:"right"}}>
-                            <Link to={ `/CSA/edit/workerInfo/${id}?type=${type}`} className="btn btn-mtd btn-primary" style={{width:"100px",height:"25px",padding:'0 0'}}> 
+                            <Link to={ `/Worker/edit/password`} className="btn btn-mtd btn-primary" style={{width:"100px",height:"25px",padding:'0 0'}}> 
                                 Edit 
                                 <i className="fas fa-edit" style={{paddingLeft:'10px'}}></i>
                             </Link>
+                            {/* <Link to={ `/CSA/edit/workerInfo/${id}?type=${type}`} className="btn btn-mtd btn-primary" style={{width:"100px",height:"25px",padding:'0 0'}}> 
+                                Edit 
+                                <i className="fas fa-edit" style={{paddingLeft:'10px'}}></i>
+                            </Link> */}
                         </div>
                     :<br/>}
                    

@@ -1,5 +1,5 @@
 import NotificationBar from './notificationBar';
-import {Link} from "react-router-dom"
+import {BrowserRouter as Router,Link} from "react-router-dom"
 import { useEffect,useState } from 'react';
 import Empty from '../empty';
 import Loading from '../loading';

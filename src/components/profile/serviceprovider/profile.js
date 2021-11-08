@@ -59,6 +59,7 @@ const SpProfile = ({contents,loading}) => {
                                         profile={content.profile} 
                                         id={content.username}
                                         title={"Company Logo"}
+                                        provider ={true}
                                     />
                                 :
                                     <Loading/>
@@ -70,7 +71,7 @@ const SpProfile = ({contents,loading}) => {
                                 {/*<!--[ Worker info section ] starts-->*/}
                                 <ProviderInfoCard 
                                     id={id} 
-                                
+                                    
                                     content={content}
                                     title="Service Provider Info" />
                                 {/*<!--[ Worker info section ] end-->

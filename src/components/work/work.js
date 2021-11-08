@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { BrowserRouter as Router,Link } from "react-router-dom";
 import { useEffect, useLayoutEffect } from "react";
 import { useParams } from 'react-router';
 
@@ -11,7 +11,7 @@ import {dateFormatter} from '../formatter'
 import Loading from "../loading";
 
 
-const WorkProfile = ({contents}) => {
+const WorkProfile = ({contents,disable}) => {
 
     const {id} = useParams()
 
@@ -45,11 +45,11 @@ const WorkProfile = ({contents}) => {
                                 {/*<!--[ Messages section ] starts-->*/}
                                 <div className="col-sm-12 col-md-12 col-xl-4">
                                 <Card
-                                    title='Customer Messages'
+                                    title='Send Messages'
                                     symbol = {<i className="fas fa-comment-dots text-c-green f-30 m-r-10"></i>}
                                     count = ''
                                     button = {
-                                        content ?<Link to={`/CSA/messages/${content.booking.by._id}`} className="label theme-bg text-white f-12" style={{width:"100%",float:"right",textAlign:"center"}}>
+                                        content && !disable ?<Link to={`/CSA/messages/${Id}`} className="label theme-bg text-white f-12" style={{width:"100%",float:"right",textAlign:"center"}}>
                                             View Info
                                             &nbsp; <i className="far fa-eye"></i>
                                         </Link>
@@ -71,10 +71,16 @@ const WorkProfile = ({contents}) => {
                                     symbol = {<i className="fas fa-users text-c-green f-30 m-r-10"></i>}
                                     count = ''
                                     button = {
-                                        <Link to={`/CSA/assignWorker/${Id}`} className="label theme-bg text-white f-12" style={{width:"100%",float:"right",textAlign:"center"}}>
+                                        content && !disable ?<Link to={`/CSA/assignWorker/${Id}`} className="label theme-bg text-white f-12" style={{width:"100%",float:"right",textAlign:"center"}}>
                                             View Info
                                             &nbsp; <i className="far fa-eye"></i>
-                                        </Link>}
+                                        </Link>
+                                        :
+                                        <button className="label theme-bg text-white f-12" style={{width:"100%",float:"right",textAlign:"center",borderWidth:0}} disabled>
+                                            View Info
+                                            &nbsp; <i className="far fa-eye"></i>
+                                        </button>
+                                    }
                                 />
                                 </div>
                                 {/*<!--[ Workers detail link section ] end-->*/}

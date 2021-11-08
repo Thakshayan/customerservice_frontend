@@ -1,4 +1,4 @@
-import {Link} from "react-router-dom";
+import {BrowserRouter as Router,Link} from "react-router-dom";
 
 const AssignWorkerCard = ( {id,designation,email,phone,rating,viewURL,delURL} ) => {
     return ( 

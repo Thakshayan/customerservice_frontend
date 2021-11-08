@@ -106,7 +106,7 @@ function AddWorkerForm({type,action,workerId,setWorkerId,checkWorker}){
             workId:'',
             estimation:'',
             date:'',
-           
+            estimation_cost:''
         },validationSchema: Yup.object({
             
             
@@ -123,12 +123,12 @@ function AddWorkerForm({type,action,workerId,setWorkerId,checkWorker}){
         onSubmit: values => {
 
             
-            values.workers = workerArray;
+           //values.workers = workerArray;
             values.estimation = String(values.estimation)
-            values.estimation_cost = String(values.estimation_cost)
+            values.estimation_cost = parseFloat(String(values.estimation_cost))
             values.workId = appointmentId
                 
-            alert(JSON.stringify(values,null,2))
+           alert(values.estimation_cost)
 
             if(!appointmentError && appointmentId){
                 action({
@@ -208,7 +208,7 @@ function AddWorkerForm({type,action,workerId,setWorkerId,checkWorker}){
                                                         
                                                             
                                                  
-                                                            
+                                                        {/*                                                             
 
                                                             <div className="form-group">
                                                                 <label htmlFor="workerId">Worker ID</label>
@@ -245,7 +245,7 @@ function AddWorkerForm({type,action,workerId,setWorkerId,checkWorker}){
                                                                 
                                                             </div>
                                                         
-                                                            
+                                                             */}
 
 
                                                             

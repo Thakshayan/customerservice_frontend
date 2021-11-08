@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { BrowserRouter as Router,Link } from "react-router-dom";
 import { useEffect } from "react/cjs/react.development";
 
 const EmployeeCard = ({content,type}) => {

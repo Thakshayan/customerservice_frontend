@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { BrowserRouter as Router,Link } from "react-router-dom";
 import { useEffect } from "react";
 import { WORKER_PROFESSIONAL } from "../../GraphQL/Queries";
 import { useQuery } from "@apollo/client";

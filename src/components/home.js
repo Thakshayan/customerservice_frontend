@@ -9,7 +9,7 @@ import Empty from './empty';
 import Loading from './loading';
 
 
-function Content({content,loading}){
+function Content({content,loading,type}){
 
     const ArrayFormater = (object)=>{
 
@@ -63,7 +63,7 @@ function Content({content,loading}){
         var work  =[0,0,0]
   
         objects.map((object)=>{
-          console.log(object)
+         
             if(object._id === 'finished'){
               work[0] = object.Count
             }else if(object._id === 'going'){
@@ -81,9 +81,7 @@ function Content({content,loading}){
 
     
 
-    useEffect(() => {
-       console.log(content)
-    }, [content])
+
 
     return(
         <div className="pcoded-main-container">
@@ -140,7 +138,11 @@ function Content({content,loading}){
                               
                                 <div className="col-xl-8">
                                 {/*<!--[ Recent Notification ] start-->*/}
-                                <Notificator title="Notification" content={content.getMyNotification}/>
+                                {content.getMyNotification ?
+                                    <Notificator title="Notification" content={content.getMyNotification}/>
+                                :
+                                    <Notificator title="Notification" content={content.worker_getMyNotification}  type={type}/>
+                                }
                                 {/* <!--[ Recent Notification ] end-->*/}
                                 {/*<!--[ Recent Notification ] start-->*/}
                                 <Message title="Messages" content={content.getMyMessages}/>
@@ -171,10 +173,14 @@ function Content({content,loading}){
                                 />}
                                
                                 {/*<!-- [ rating list ] starts-->*/}
-                                { content.ratingStats  ?
+                                { !content.getMyRole  ?
                                      <RatingList content={ArrayFormater(content.ratingStats)} /> 
                                 :
-                                 <Loading/>
+                                    content.worker_me?
+                                        <RatingList value={content.worker_me.rating} /> 
+                                    :
+                                    <RatingList content={ArrayFormater(content.ratingStats)} />
+                                 
                                 }
                                 {/*<!-- [ rating list ] end-->*/}
                                 </div>

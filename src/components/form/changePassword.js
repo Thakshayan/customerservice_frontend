@@ -6,7 +6,7 @@ import { useMutation } from "@apollo/client";
 
 //import { passwordValidator } from "../formComponents/formValidator";
 
-const PasswordChanger = ({id}) => {
+const PasswordChanger = ({id,action}) => {
 
     const [password,setPassword] = useState("password");
     const [className, setClassName] = useState("fa fa-eye");
@@ -35,9 +35,9 @@ const PasswordChanger = ({id}) => {
         validationSchema: Yup.object({
             passwordUpdate: Yup.string()
                 .required('Please enter the password')
-                .min(4,"Password should be more than 3 letters")
-                .matches(/[A-Z]/,"Password should have a capital letter")
-                .matches(/[0-9]/,"Password should have numbers"),
+                .min(4,"Password should be more than 3 letters"),
+                // .matches(/[A-Z]/,"Password should have a capital letter")
+                // .matches(/[0-9]/,"Password should have numbers"),
             confirmPasswordUpdate: Yup.string()
                 .required("Please confirm the password")
                 .oneOf([Yup.ref('passwordUpdate'),null],"Password must match")
@@ -45,9 +45,16 @@ const PasswordChanger = ({id}) => {
         onSubmit: values => {
             alert(JSON.stringify(values));
 
-                // updatePassword({
-                //     variables:values
-                // })
+                action({
+                    variables:{
+                        password:values.passwordUpdate
+                    }
+                }).then(data=>{
+                    alert("Success")
+                    window.location.reload()
+                }).catch(err =>{
+                    alert("Error")
+                })
             }
     });
 

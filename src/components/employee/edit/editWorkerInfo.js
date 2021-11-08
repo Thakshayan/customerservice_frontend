@@ -13,48 +13,7 @@ import ElementCard from '../elementCard';
 
 function EditEmployeeInfo({type,content,loading,id,setID,action}){
 
-
-    useEffect(()=>{
-        console.log(loading)
-    },[])
-    
-    const formik = useFormik({
-        initialValues:{
-            id:id,
-            phone:'',
-            date:'',
-            email:'',
-            // type: type,
-        },validationSchema: Yup.object({
-
-            id: Yup.string()
-                .required('Please enter the Worker ID')
-                .matches(/^[\w\d]+$/,"can only have letters and digits"),
-            phone: Yup.number()
-                .required('Please enter the phone number'),
-            email: Yup.string()
-                .email('Invalid email Address')
-                .required('Please enter the email address'),
-            date:Yup.date()
-                .required("Please select a date"),
-            // type:Yup.string()
-            //     .required("Please select a type")
-            //     .matches(/\w+/,"cannot have special characters")  
-        }),
-        onSubmit: values => {
-            alert(JSON.stringify(values,null,2))
-            const employee = values
-            
-            console.log(employee)
-
-            
-            }
-    })
-
-
-
-
-
+   
     return(  
         <div className="pcoded-main-container">
             <div className="pcoded-wrapper">
@@ -95,6 +54,7 @@ function EditEmployeeInfo({type,content,loading,id,setID,action}){
                                                                 childComponent = {
                                                                     <PasswordChanger
                                                                         id={id}
+                                                                        action = {action}
                                                                     />    
                                                                 }
                                                                     

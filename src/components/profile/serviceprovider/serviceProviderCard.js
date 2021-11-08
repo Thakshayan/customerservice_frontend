@@ -1,5 +1,5 @@
 import Empty from '../../empty'
-import { Link } from "react-router-dom";
+import {BrowserRouter as Router, Link } from "react-router-dom";
 import React, { Fragment } from 'react';
 
 const ProviderCard = ({title,content}) => {

@@ -15,12 +15,14 @@ import { dateFormatter } from '../formatter';
 import Empty from '../empty';
 import Loading from '../loading';
 import SuccessPage from '../../pages/success';
+import { useParams } from 'react-router';
 
 
 
 const Messager = ({content,setPage,page,offSet,loading,action,toError,To,setTo,setToError,loadingMessages}) => {    
 
-    
+    const {id} = useParams()
+
     const [message,setMessage] = useState('');
     const [messageError,setMessageError] = useState('');
     
@@ -84,7 +86,7 @@ const Messager = ({content,setPage,page,offSet,loading,action,toError,To,setTo,s
                                     
                                     
                                     {/*<!-- [ view-table ] start -->*/}
-                                    <div className="col-xl-12">
+                                    {!id ? <div className="col-xl-12">
                                         <div className="card">
                                             <div className="card-header">
                                                 <h5>View Messages</h5>
@@ -128,6 +130,9 @@ const Messager = ({content,setPage,page,offSet,loading,action,toError,To,setTo,s
                                             </div>  
                                         </div>
                                     </div>
+                                    :
+                                    null
+                                        }
                                     {/*<!-- [ view-table ] end -->*/}
                                     
 

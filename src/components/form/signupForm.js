@@ -2,7 +2,7 @@ import {useFormik} from 'formik';
 import * as Yup from 'yup';
 
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { BrowserRouter as Router,Link } from 'react-router-dom';
 import Loading from '../loading';
 import ButtonCard from '../buttonCard';
 

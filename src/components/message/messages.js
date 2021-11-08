@@ -1,11 +1,11 @@
 import MessageBar from './messageBar';
-import {Link} from "react-router-dom"
+import {BrowserRouter as Router,Link} from "react-router-dom"
 import { useEffect,useState } from 'react';
 import Empty from '../empty';
 import Loading from '../loading';
 import { dateFormatter } from '../formatter';
 
-function Message({title,content,id,loading}){
+function Message({title,content,id,loading,type}){
 
     const [Notification,setNotification] = useState([]);
 
@@ -55,13 +55,21 @@ function Message({title,content,id,loading}){
                         </div>
                     </div>
                 </div>
-                
+                {type ?
+                <div style={{padding:"0px 30px 10px 0px",float:"right"}}>
+                    <Link to={id?`/Worker/messages/${id}`:`/Worker/messages`} className="btn btn-mtd btn-primary" style={{width:"150px",height:"25px",padding:'0 0',float:'right'}}> 
+                        View More 
+                        <i className="far fa-eye" style={{paddingLeft:'10px'}}></i>
+                    </Link>
+                </div>
+                :
                 <div style={{padding:"0px 30px 10px 0px",float:"right"}}>
                     <Link to={id?`/CSA/messages/${id}`:`/CSA/messages`} className="btn btn-mtd btn-primary" style={{width:"150px",height:"25px",padding:'0 0',float:'right'}}> 
                         View More 
                         <i className="far fa-eye" style={{paddingLeft:'10px'}}></i>
                     </Link>
                 </div>
+                }
                     
             
             </div>

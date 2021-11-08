@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { BrowserRouter as Router,Link } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { GET_WORKER, WORKER_PERSONAL, WORK_PROFILE } from "../../GraphQL/Queries";
 
@@ -62,13 +62,16 @@ const ProfileCard = ({id,edit,title,name,nic,contact,address}) => {
                    
 
                     {edit ?<div style={{paddingTop:"20px",float:"right"}}>
-                        <Link to={`/CSA/edit/basicInfo/${id}`} className="btn btn-mtd btn-primary" style={{width:"100px",height:"25px",padding:'0 0'}}> 
+                        <Link to={`/Worker/edit/basicInfo/`} className="btn btn-mtd btn-primary" style={{width:"100px",height:"25px",padding:'0 0'}}> 
                             Edit 
                             <i className="fas fa-edit" style={{paddingLeft:'10px'}}></i>
                         </Link>
                     </div>: 
                     <br/>}
+
                    
+                   
+
                  </div>
             </div>
         </div>

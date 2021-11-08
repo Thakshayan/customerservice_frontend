@@ -33,6 +33,17 @@ const SIGNUP_SP = gql`
   }
 `
 
+const SIGNIN_MOD_SP = gql`
+  mutation Mutation(
+    $workerId: String!, 
+    $password: String!) {
+
+    signINModSP(
+      username: $workerId, 
+      password: $password)
+  }
+`
+
 const ADD_OWNER = gql`
 mutation Mutation(
   $ownerName: String!, 
@@ -163,6 +174,7 @@ const ADD_WORK = gql`
     $workId: String!, 
     $date: Date!, 
     $estimation: String!, 
+    $estimation_cost:Float!,
     $workers: [ID]) {
 
     appointment(
@@ -170,8 +182,10 @@ const ADD_WORK = gql`
       appointment_id: $workId, 
       starting_date: $date, 
       duration: $estimation, 
-      worker: $workers) {
+      worker: $workers
+      cost:$estimation_cost) {
       _id
+      appointment_id
     }
     confirmBooking(id: $bookingID)
   }
@@ -205,11 +219,7 @@ const REMOVE_DISTRICT = gql`
   }
 `
 
-const UPDATE_PASSWORD = gql`
-  mutation Mutation($password: String!) {
-    setPassword(password: $password)
-  }
-`
+
 
 const EDIT_INFO = gql`
   mutation Mutation(
@@ -235,10 +245,23 @@ mutation Mutation(
 }
 `
 
+const EDIT_PASSWORD = gql`
+  mutation Mutation(
+      $password: String!) {
+
+    setPassword(password: $password)
+  }
+`
 
 
+const INITIATE_APPOINTMENT = gql`
+  mutation InitiateAppointment(
+    $ID: String!) {
 
-
+    initiateAppointment(
+      appointment_id: $ID)
+  }
+`
 
 
 
@@ -273,7 +296,7 @@ export {
     ADD_OWNER,
 
     SIGN_INSP,
-
+    SIGNIN_MOD_SP,
 
     ADD_MODERATOR,
     ADD_WORKER,
@@ -294,12 +317,14 @@ export {
     ADD_DISTRICT,
     REMOVE_DISTRICT,
     
-    UPDATE_PASSWORD,
+    EDIT_PASSWORD,
 
 
     EDIT_INFO,
 
     ASSIGN_WORKER,
+
+    INITIATE_APPOINTMENT,
 
 
     // UPLOAD_IMAGE,
