@@ -1,4 +1,8 @@
-const ServiceRow = ({service,action}) => {
+
+
+import swal from 'sweetalert';
+
+const ServiceRow = ({service,action,services,setServices}) => {
 
 
     const remove = (e)=>{
@@ -9,9 +13,29 @@ const ServiceRow = ({service,action}) => {
                 service:service
             }
         }).then(res=>{
+            setServices(services.filter(item => item !== service));
 
+                swal({
+                    title: "Success",
+                    text: "successfully deleted",
+                    icon: "success",
+                    button: {
+                      text: "Close",
+                      closeModal: true,
+                    }, 
+                })
+            
         }).catch(err => {
-            console.log(err)
+            swal({
+                title: "Error",
+                text: "Error occurred in remove",
+                icon: "warning",
+                button: {
+                  text: "Close",
+                  closeModal: true,
+                }, 
+                dangerMode: true  
+            })
         })
     }
 

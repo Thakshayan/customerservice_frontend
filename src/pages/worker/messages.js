@@ -6,6 +6,8 @@ import { useParams } from 'react-router';
 import { SEND_MESSAGE } from '../../GraphQL/Mutations';
 import {  GET_WORKER_MESSAGES} from '../../GraphQL/workerQueries';
 
+import swal from "sweetalert";
+
 import { CHECK_USER } from '../../GraphQL/Queries'
 //components
 import Header from "../../components/headerWorker";
@@ -50,6 +52,24 @@ const Message = () => {
             setOffSet(sumArray(data.getCountMessages)/limit)
         }
     },[data])
+
+        // error occurred
+        useEffect(()=>{
+        
+            if(error){
+                swal({
+                    title: "Error",
+                    text: "Error occurred in retrieving please refresh",
+                    icon: "warning",
+                    button: {
+                      text: "Close",
+                      closeModal: true,
+                    }, 
+                    dangerMode: true  
+                })
+            }
+    
+        },[error])
     
     //check whether user exist
     const fetchContent =useQuery(CHECK_USER,{

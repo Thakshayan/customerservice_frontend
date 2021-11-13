@@ -7,12 +7,9 @@ import ProfileCard from '../../profile/profileCard';
 
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
-import {useEffect, useState} from 'react';
-import { useParams } from 'react-router-dom';
-import { useMutation } from '@apollo/client';
+import { useState} from 'react';
 
-import AddEmployee from '../../form/addEmployeeForm';
-import Loading from '../../loading';
+import swal from 'sweetalert';
 
 function EditEmployee({type,action,content,id,loading}){
 
@@ -44,8 +41,7 @@ function EditEmployee({type,action,content,id,loading}){
         }),
         onSubmit: values => {
 
-            // values.workerId = id
-            alert(JSON.stringify(values,null,2))
+
        
             action({
                 variables:{
@@ -54,7 +50,16 @@ function EditEmployee({type,action,content,id,loading}){
                     address: values.address
                 } 
             }).catch(err =>{
-                alert(err)
+                swal({
+                    title: "Error",
+                    text: "Error occurred in initiating appointment",
+                    icon: "warning",
+                    button: {
+                      text: "Close",
+                      closeModal: true,
+                    }, 
+                    dangerMode: true  
+                })
             })
 
         }

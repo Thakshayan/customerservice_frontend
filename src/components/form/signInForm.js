@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import swal from 'sweetalert';
 
 const SignInForm = props => {
   // set the default state of the form
@@ -43,8 +44,16 @@ const SignInForm = props => {
               values
             
           }).catch(err =>{
-        
-            alert("Error Occurred")
+            swal({
+              title: "Error Occured",
+              text: "Please Check the username an password?",
+              icon: "warning",
+              button: {
+                text: "Close",
+                closeModal: true,
+              },
+              dangerMode: true,
+            })
           })
         }}
       >
@@ -71,7 +80,10 @@ const SignInForm = props => {
             onChange={onChange}
             style= {{paddingRight:30}}
           />
-        <i className={className} id="visibile" style={{float:"right",cursor:"pointer",transform:"translate(-10px,-28px)"}} onClick={togglePassword}></i>
+          <div className="tooltips" id="tooltips" style={{float:'right'}} >
+            <i className={className} id="visibile" style={{float:"right",cursor:"pointer",transform:"translate(-10px,-28px)"}} onClick={togglePassword}></i>
+            <span className="tooltiptext" style={{width:'150px',transform:"translate(-20px,-30px)"}}>{password=='password'?'view password':'hide password'}</span>
+          </div>
         </div>
         {!props.loading ? 
           <button className="btn btn-primary shadow-2 mb-4" type="submit">Submit</button>

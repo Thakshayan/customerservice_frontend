@@ -1,6 +1,5 @@
-import { useMutation } from "@apollo/client";
-import { ASSIGN_WORKER } from "../../GraphQL/Mutations";
 
+import swal from 'sweetalert';
 
 const AssignForm = ({worker,appointment,action}) => {
     
@@ -13,7 +12,16 @@ const AssignForm = ({worker,appointment,action}) => {
                 worker
             }
         }).catch(err => {
-            alert("Error Occured")
+            swal({
+                title: "Error",
+                text: "Error occurred in the search",
+                icon: "warning",
+                button: {
+                  text: "Close",
+                  closeModal: true,
+                }, 
+                dangerMode: true  
+            })
         })
 
     }

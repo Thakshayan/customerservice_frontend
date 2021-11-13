@@ -4,9 +4,16 @@ import * as Yup from 'yup';
 import { useEffect, useState } from 'react';
 import { BrowserRouter as Router,Link } from 'react-router-dom';
 import Loading from '../loading';
-import ButtonCard from '../buttonCard';
+import swal from 'sweetalert';
 
-const SignUpForm = ({error,loading,setUsername,username,workRangeArray,myServiceArray,ownerID,membershipID,action}) => {
+
+const SignUpForm = ({error,loading,setUsername,username,setUserError,workRangeArray,myServiceArray,ownerID,membershipID,action,loadingSignUp}) => {
+
+    
+   // password visibility code
+    
+    const [addPassword,setAddPassword] = useState("password");
+    const [addClassName, setAddClassName] = useState("fa fa-eye");
 
     const toggleAddPassword = (e) => {
         if (addPassword === "password"){
@@ -17,18 +24,8 @@ const SignUpForm = ({error,loading,setUsername,username,workRangeArray,myService
             setAddClassName('fa fa-eye');
         } 
     };
-
-    const [confirmError,setConfirmError] = useState(false);
-
-
-   
-   
     
-
-    const [addPassword,setAddPassword] = useState("password");
-    const [addClassName, setAddClassName] = useState("fa fa-eye");
-    
-    
+    // form validation
     const formik = useFormik({
         initialValues:{
             name:'',
@@ -37,7 +34,7 @@ const SignUpForm = ({error,loading,setUsername,username,workRangeArray,myService
             address:'',
             email:'',
             password:'',
-            confirm:'',
+            confirm:false
            
         },validationSchema: Yup.object({
             name: Yup.string()
@@ -52,8 +49,8 @@ const SignUpForm = ({error,loading,setUsername,username,workRangeArray,myService
             email: Yup.string()
                 .email('Invalid email Address')
                 .required('Please enter the email address'),
-            confirm: Yup.string()
-                .required("please confirm"),
+            confirm:Yup.bool()
+                .oneOf([true], 'Accept Terms & Conditions is required'),
             password:  Yup.string()
                 .required('Please enter the password')
                 .min(4,"Password should be more than 3 letters")
@@ -65,10 +62,8 @@ const SignUpForm = ({error,loading,setUsername,username,workRangeArray,myService
         }),
         onSubmit: values => {
             const phone = [values.phone]
-
-            if(values.confirm && username){
-                setConfirmError(false);
-
+            
+            if(username){
                 action({
                     variables:{
                         username: username, 
@@ -84,10 +79,23 @@ const SignUpForm = ({error,loading,setUsername,username,workRangeArray,myService
                         workingRange: workRangeArray
                     }
                 }).catch(err =>{
-                    alert("Error occurred")
+                    
+                    swal({
+                        title: "Error",
+                        text: "Error occurred in Registration (change the company name) ",
+                        icon: "warning",
+                        button: {
+                          text: "Close",
+                          closeModal: true,
+                        }, 
+                        dangerMode: true  
+                    })
+                    
                     
                 })
 
+            }else {
+                setUserError("Please enter the username")
             }
             
             
@@ -121,9 +129,6 @@ const SignUpForm = ({error,loading,setUsername,username,workRangeArray,myService
                                         <input type="text" className="form-control" value={formik.values.name} id="name" placeholder="Eg: Painting Pvt Ltd" onChange={formik.handleChange} onBlur={formik.handleBlur} required/>
                                         { formik.touched.name && formik.errors.name ? <small id="nameError" className="error form-text text-muted error "> {formik.errors.name}</small>: null}
                                     </div>
-
- 
-                                    
                                     <div className="form-group">
                                         <label htmlFor="phone">Phone Number</label>
                                         <input type="tel/number" className="form-control" value={formik.values.phone} id="phone" placeholder="Phone Number" onChange={formik.handleChange} onBlur={formik.handleBlur} required/>
@@ -153,35 +158,44 @@ const SignUpForm = ({error,loading,setUsername,username,workRangeArray,myService
                                     
                                     <div className="form-group">
                                         <label htmlFor="id">Username</label>
-                                        <input type="text" className="form-control" id="id" value={username} placeholder="Provider Username" onChange={(e)=>{setUsername(e.target.value)}}/>
+                                        <input type="text" className="form-control" id="id" value={username} placeholder="Provider Username" onChange={(e)=>{setUsername(e.target.value)}} onBlur={(e)=>{setUsername(e.target.value)}} required/>
                                         {error ? <small id="nameError" className="error form-text text-muted error "> {error}</small>: null}
                                     </div>                            
                                     <div className="form-group">
                                         <label htmlFor="password">Password</label>
                                         <input type={addPassword} className="form-control" value={formik.values.password} id="password" placeholder="Password" onChange={formik.handleChange} onBlur={formik.handleBlur} required/>
-                                        <i className={addClassName} id="visibile" style={{float:"right",cursor:"pointer",transform:"translate(-10px,-30px)"}} onClick={toggleAddPassword}></i>
+                                        <div className="tooltips" id="tooltips" style={{float:'right'}} >
+                                            <i className={addClassName} id="visibile" style={{float:"right",cursor:"pointer",transform:"translate(-10px,-30px)"}} onClick={toggleAddPassword}></i>
+                                        
+                                            <span className="tooltiptext" style={{width:'150px',transform:"translate(-20px,-30px)"}}>{addPassword=='password'?'view password':'hide password'}</span>
+                                        </div> 
                                         {formik.touched.password && formik.errors.password ? <small id="nameError" className="error form-text text-muted error "> {formik.errors.password}</small>: null}
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="confirmPassword">Confirm Password</label>
                                         <input type={addPassword} className="form-control" id="confirmPassword"  placeholder="Confirm Password" onChange={formik.handleChange} onBlur={formik.handleBlur} required/>
-                                        <i className={addClassName} id="visibile" style={{float:"right",cursor:"pointer",transform:"translate(-10px,-30px)"}} onClick={toggleAddPassword}></i>
-                                        {formik.touched.confirmPassword && formik.errors.confirmPassword ? <small id="nameError" className="error form-text text-muted error "> {formik.errors.confirmPassword}</small>: null}
+                                        <div className="tooltips" id="tooltips" style={{float:'right'}} >
+                                            <i className={addClassName} id="visibile" style={{float:"right",cursor:"pointer",transform:"translate(-10px,-30px)"}} onClick={toggleAddPassword}></i>
+                                        
+                                            <span className="tooltiptext" style={{width:'150px',transform:"translate(-20px,-30px)"}}>{addPassword=='password'?'view password':'hide password'}</span>
+                                        </div> {formik.touched.confirmPassword && formik.errors.confirmPassword ? <small id="nameError" className="error form-text text-muted error "> {formik.errors.confirmPassword}</small>: null}
                                     </div>
                                     
-
 
                                 </div>
                             </div>
                             <div className="form-group text-left" style={{marginTop:30}}>
                                 <div className="checkbox checkbox-fill d-inline">
-                                    <input type="checkbox" name="confirm" id="confirm" value={true} onChange={formik.handleChange} onBlur={formik.handleBlur} required/>
+                                    <input type="checkbox" name="confirm" id="confirm" value={true} onChange={formik.handleChange} onBlur={formik.handleBlur} checked={formik.values.confirm}/>
                                     <label htmlFor="confirm" className="cr"> Confirm Submission</label>
-                                    <small id="nameError" className="form-text text-muted">(Please confirm)</small>
+                                    { formik.touched.confirm && formik.errors.confirm ? <small id="nameError" className="form-text text-muted error">(Please confirm)</small>: null }
                                 </div>
                             </div>
-                            <button type="submit" className="btn btn-primary" style={{float:"right",marginTop:30}}>Submit</button>
-                                                            
+                            {!loadingSignUp ?
+                                <button type="submit" className="btn btn-primary" style={{float:"right",marginTop:30}}>Submit</button>
+                            :
+                                <button className="btn btn-primary" style={{float:"right",marginTop:30}} disabled> Loading... </button>
+                            }                               
                         </form>
                     </div>
                     
@@ -195,7 +209,7 @@ const SignUpForm = ({error,loading,setUsername,username,workRangeArray,myService
                     <div className="text-center" >
                         {/* <button className="btn btn-primary shadow-2 mb-4">Sign up</button> */}
                         <p className="mb-0 text-muted">Allready have an account? 
-                            <Link to="/siginin" style={{color:'#038fcf'}}> Log in</Link>
+                            <Link to="/signin" style={{color:'#038fcf'}}> Log in</Link>
                         </p>
                     </div>
                 </div>

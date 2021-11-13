@@ -33,8 +33,12 @@ const ProviderCard = ({title,content}) => {
                                 
                                 <div style={{paddingTop:"20px",float:"right"}}>
                                     <Link to="serviceInfo" className="btn btn-mtd btn-primary" style={{width:"100px",height:"25px",padding:'0 0'}}> 
-                                        Edit 
-                                        <i className="fas fa-edit" style={{paddingLeft:'10px'}}></i>
+                                        <div className="tooltips" id="tooltips">
+                                            Edit 
+                                            <i className="fas fa-edit" style={{paddingLeft:'10px'}}></i>
+                                            <span className="tooltiptext" >Click to edit</span>
+                                        </div> 
+                                        
                                     </Link>
                                 </div>
                             </div>
@@ -70,10 +74,15 @@ const ProviderCard = ({title,content}) => {
                                 }
                                 
                                 </div>
-                                <div style={{paddingTop:"20px",float:"right"}}>
+                                <div style={{float:"right"}}>
                                     <Link to="/CSA/serviceInfo/" className="btn btn-mtd btn-primary" style={{width:"100px",height:"25px",padding:'0 0'}}> 
-                                        Edit 
-                                        <i className="fas fa-edit" style={{paddingLeft:'10px'}}></i>
+                                        
+                                        <div className="tooltips" id="tooltips">
+                                            Edit 
+                                            <i className="fas fa-edit" style={{paddingLeft:'10px'}}></i>
+                                            <span className="tooltiptext" >Click to edit</span>
+                                        </div> 
+                                        
                                     </Link>
                                 </div>
                             </div>

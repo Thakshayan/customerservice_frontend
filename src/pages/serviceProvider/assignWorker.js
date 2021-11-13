@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@apollo/client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useLayoutEffect } from "react";
 import { useParams } from "react-router";
 import AssignWorkerForm from "../../components/work/assign/assignWorker";
 import { ASSIGN_WORKER } from "../../GraphQL/Mutations";
@@ -9,6 +9,8 @@ import { GET_ASSIGNWORKER, GET_SEARCH_WORKER } from "../../GraphQL/Queries";
 import Header from "../../components/header";
 import NavBar from '../../components/navbar';
 import Preloader from '../../components/preloader';
+
+import swal from "sweetalert";
 
 const AssignWorker = () => {
 
@@ -28,7 +30,7 @@ const AssignWorker = () => {
             }       
     });
 
-    const [assignWorker,{loadingAssign,errorAssign}] = useMutation(ASSIGN_WORKER,{
+    const [assignWorker,{loading:loadingAssign,error:errorAssign}] = useMutation(ASSIGN_WORKER,{
         onCompleted: data =>{
             window.location.reload()
         }
@@ -50,10 +52,16 @@ const AssignWorker = () => {
             }).then(data=>{
                 setWorkerContent(data.data.getWorker)
                 
+            }).catch(err =>{
+                
             })
         }
 
     },[workerId])
+
+    useLayoutEffect(() => {
+        window.scrollTo(0,0)
+    }, [])
 
     useEffect(()=>{
         if(data){
@@ -63,6 +71,23 @@ const AssignWorker = () => {
         }
     },[data])
 
+     // error occurred
+     useEffect(()=>{
+        
+        if(error || errorAssign){
+            swal({
+                title: "Error",
+                text: "Error occurred in retrieving please refresh",
+                icon: "warning",
+                button: {
+                  text: "Close",
+                  closeModal: true,
+                }, 
+                dangerMode: true  
+            })
+        }
+
+    },[error,errorAssign])
    
 
     return ( 
@@ -76,19 +101,21 @@ const AssignWorker = () => {
             [ Header ] start */}
             <Header/>
             {/*<!-- [ Header ] end --> */}
-        <AssignWorkerForm 
-            type = "Employee"
-            contents = {content}
-            action = {assignWorker}
-            setAssignWorkerID = {setAssignWorkerID}
-            workId = {id}
-            assignWorkerId = {workerId}
-            workerContent = {workerContent}
-            ID = {ID}
-            loading = {fetchContent.loading}
-            state = {state}
-            loadingWorker = {loading}
-        />
+            {/*<!-- [ Content ] start --> */}  
+            <AssignWorkerForm 
+                type = "Employee"
+                contents = {content}
+                action = {assignWorker}
+                setAssignWorkerID = {setAssignWorkerID}
+                workId = {id}
+                assignWorkerId = {workerId}
+                workerContent = {workerContent}
+                ID = {ID}
+                loading = {fetchContent.loading}
+                state = {state}
+                loadingWorker = {loading}
+            />
+            {/*<!-- [ Content ] start --> */}  
         </div>
      );
 }

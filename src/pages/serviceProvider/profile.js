@@ -9,7 +9,8 @@ import { useParams } from 'react-router';
 
 
 import React from "react";
-import Loading from '../../components/loading';
+import swal from 'sweetalert';
+
 
 //components
 import Header from "../../components/header";
@@ -21,6 +22,7 @@ function Profile() {
 
     const {id} = useParams()
 
+    //retrieve content
     const {error,loading,data} = useQuery(GET_WORKER_PROFILE,{
         variables:{
             worker:id,
@@ -40,18 +42,33 @@ function Profile() {
         if(data){
             
             setContent(data.UniqueSearchWorker)
-
             setNotificationContent(data.getWorkerNotification)
             
         }
-        
-
     },[data]);
+
+    // error occurred
+    useEffect(()=>{
+        
+        if(error){
+            swal({
+                title: "Error",
+                text: "Error occurred in retrieving please refresh",
+                icon: "warning",
+                button: {
+                  text: "Close",
+                  closeModal: true,
+                }, 
+                dangerMode: true  
+            })
+        }
+
+    },[error])
 
     return (
         <div>
              {/* [ Pre-loader ] start */}
-         <Preloader/>
+            <Preloader/>
             { /* [ Pre-loader ] End 
             [ navigation menu ] start */}
             <NavBar/>
@@ -59,14 +76,14 @@ function Profile() {
             [ Header ] start */}
             <Header/>
             {/*<!-- [ Header ] end --> */}
-        {/*<!-- [ Main Content ] start -->*/}
-         <ProfileContent 
-            contents={content} 
-            notification={notificationContent}
-            id = {id}
-            type="Worker"
-        />
-        {/*<!-- [ Main Content ] end --> */}
+            {/*<!-- [ Main Content ] start -->*/}
+            <ProfileContent 
+                contents={content} 
+                notification={notificationContent}
+                id = {id}
+                type="Worker"
+            />
+            {/*<!-- [ Main Content ] end --> */}
 
         </div>
     );

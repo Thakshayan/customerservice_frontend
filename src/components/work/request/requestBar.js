@@ -2,14 +2,25 @@
 import { useEffect,useState } from 'react/cjs/react.development';
 import { REJECT_BOOKING } from '../../../GraphQL/Mutations';
 import { useMutation } from '@apollo/client';
-import {BrowserRouter as Router,Link} from 'react-router-dom'
+import {BrowserRouter as Router,Link} from 'react-router-dom';
+import swal from 'sweetalert';
 
-function RequestBar({workstation,by,description,date,id}){
+function RequestBar({workstation,by,description,date,id,state,content,element,setContent,left_date}){
 
     const [ID,setID] = useState(id)
     const [cancelBooking,{loading,error}] = useMutation(REJECT_BOOKING,{
         onCompleted: data =>{
-            window.location.reload()
+            setContent(content.filter(item => item !== element));
+            swal({
+                title: "Success",
+                text: "Successfully cancelled",
+                icon: "success",
+                button: {
+                    text: "Close",
+                    closeModal: true,
+                }
+             })
+            
         }
     })
 
@@ -19,6 +30,18 @@ function RequestBar({workstation,by,description,date,id}){
             variables:{
                 ID:ID
             }
+        }).catch(err =>{
+            alert(err)
+            swal({
+                title: "Error",
+                text: "Error occurred in retrieving please refresh",
+                icon: "warning",
+                button: {
+                    text: "Close",
+                    closeModal: true,
+                }, 
+                dangerMode: true  
+             })
         })
     }
 
@@ -38,15 +61,23 @@ function RequestBar({workstation,by,description,date,id}){
             <h6 className="text-muted"><i className="fas fa-circle text-c-green f-10 m-r-15"></i> {date} </h6>
         </div>
         <div className="col-12 col-sm-5 col-md-12 col-xl-4" style={{margin:'10px'}}>
-            <button onClick={reject} className="label theme-bg2 text-white f-12" style={{float:'right',right:"20px"}}>
-                Reject
-                &nbsp; <i className="far fa-trash-alt"></i>
-            </button>
-            <Link to={`/CSA/addWork/${ID}`} className="label theme-bg text-white f-12" style={{float:'right',right:"20px"}}>
-                Confirm
-                &nbsp; <i className="far fa-eye"></i>
-            </Link>
+        {state =="open" ? 
+            <div> 
+                <button onClick={reject} className="label theme-bg2 text-white f-12" style={{float:'right',right:"20px",width:120,borderWidth:0}}>
+                        Reject
+                        &nbsp; <i className="far fa-trash-alt"></i>
+                    </button>
+                    <Link to={`/CSA/addWork/${ID}`} className="label theme-bg text-white f-12" style={{float:'right',right:"20px",width:120}}>
+                        Confirm
+                        &nbsp; <i className="far fa-eye"></i>
+                    </Link>
+            </div>
+            :
+                null
+            }
         </div>
+        
+
     </div>
     )
 }

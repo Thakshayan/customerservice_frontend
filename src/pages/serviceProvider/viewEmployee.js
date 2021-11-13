@@ -10,6 +10,8 @@ import Preloader from '../../components/preloader';
 
 import { GET_WORKERS,GET_SEARCH_WORKER } from "../../GraphQL/Queries";
 
+import swal from 'sweetalert';
+
 const ViewEmployee = () => {
 
     const [contents,setContents] = useState([]);
@@ -18,10 +20,8 @@ const ViewEmployee = () => {
     const [page,setPage] = useState(1);
     const [offSet,setOffSet] = useState();
 
-    const fetchContent = useQuery(GET_SEARCH_WORKER,{
-        variables:{ workerId:id }
-    });
-
+    
+    // retrieve content
     const {error,loading,data} = useQuery(GET_WORKERS,{
         variables:{
             page:page,
@@ -32,9 +32,6 @@ const ViewEmployee = () => {
 
     useEffect(()=>{
         
-        if(error){
-            console.log(error)
-        }
         if(data){
             setContent(data.getMyWorkers)
             setContents(data.getMyWorkers)
@@ -46,7 +43,28 @@ const ViewEmployee = () => {
     },[data])
 
 
+    useEffect(()=>{
+        
+        if(error){
+            swal({
+                title: "Error",
+                text: "Error occurred in the search",
+                icon: "warning",
+                button: {
+                  text: "Close",
+                  closeModal: true,
+                }, 
+                dangerMode: true  
+            })
+        }
+        
+    },[error])
 
+
+    //search
+    const fetchContent = useQuery(GET_SEARCH_WORKER,{
+        variables:{ workerId:id }
+    });
 
 
     useEffect(()=>{
@@ -60,6 +78,8 @@ const ViewEmployee = () => {
                     setContent(datas.data.getWorker)
                 }
     
+            }).catch(err=>{
+                
             })
         }else if(contents){
             setContent(contents)
@@ -79,6 +99,7 @@ const ViewEmployee = () => {
             [ Header ] start */}
             <Header/>
             {/*<!-- [ Header ] end --> */}
+            {/*<!-- [ Content ] start --> */}
             <ViewWorker 
                 type="Worker"
                 content = {content}
@@ -89,6 +110,7 @@ const ViewEmployee = () => {
                 id = {id}
                 loading = {loading}
             />
+            {/*<!-- [ Content ] end --> */}
         </div>
         
      );

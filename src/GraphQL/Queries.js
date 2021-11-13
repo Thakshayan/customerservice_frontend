@@ -115,6 +115,7 @@ const GET_ASSIGNWORKER = gql`
         name
         contact_no
         rating
+        left_date
       }
     }
   }
@@ -299,6 +300,7 @@ query Query($workId: String!) {
   searchOpenAppointment(id: $workId) {
     _id
     duration
+    
     starting_date
     appointment_id
     booking {
@@ -322,7 +324,9 @@ query Query($offset: Int!, $page: Int!) {
     description
     workStationDistrict
     _id
+    state
   }
+ 
   getCountBooking {
     Count
     _id

@@ -8,6 +8,8 @@ import Preloader from '../components/preloader';
 // Pages
 import SignIn from "./signin";
 import SignInWorker from "./signInWorker";
+import SignInCustomer from "./signInCustomer";
+import SignInAdmin from "./signInAdmin";
 import SignUp from "./singnup";
 
 import Home from './serviceProvider/home';
@@ -62,6 +64,21 @@ import { GET_ROLE } from "../GraphQL/Queries";
 
 import ProviderRoute from "../components/utils/providerRoute";
 import WorkerRoute from "../components/utils/workerRoute";
+import CustomerRoute from "../components/utils/customerRoute";
+
+
+import CustomerHomePage from "./customer/CustomerHomePage";
+import CustomerSPView from "./customer/CustomerSPView";
+import ScheduleWork from "./customer/scheduleWork";
+import CustomerSPReview from "./customer/CustomerSPReview";
+import CustomerWorkDetails from "./customer/CustomerWorkDetails";
+import CustomerWorkDetailsUnpaid from "./customer/CustomerWorkDetailsUnpaid";
+import CustomerWorkProgress from "./customer/CustomerWorkProgress";
+import AdminRoute from "../components/utils/adminRoute";
+import AdminHomePage from "./systemAdmin/AdminHomePage";
+import AdminRegList from "./systemAdmin/AdminRegList";
+import AdminUserList from "./systemAdmin/AdminUserList";
+import AdminRegView from "./systemAdmin/AdminRegView";
 
 const IS_LOGGED_IN = gql`
   {
@@ -81,6 +98,9 @@ const Pages = () => {
         <Route path="/signup" component={SignUp}/>
         <Route path="/success" component={SuccessPage}/> 
         <Route path="/signInWorker" component={SignInWorker}/> 
+        <Route path="/signInCustomer" component={SignInCustomer}/>
+        <Route path="/signInAdmin"  component={SignInAdmin}/>
+
 
 
         <WorkerRoute exact path="/Worker" component={WorkerHome}/> 
@@ -92,7 +112,20 @@ const Pages = () => {
         <WorkerRoute exact path="/Worker/profile" component={WorkerProfile}/> 
         <WorkerRoute exact path="/Worker/work/images/:id" component={WorkerWorkImage}/> 
         <WorkerRoute exact path="/Worker/edit/basicInfo" component={WorkerEditBasicInfo}/> 
-        <WorkerRoute exact path="/Worker/edit/password" component={WorkerEditPassword}/> 
+        <WorkerRoute exact path="/Worker/edit/password" component={WorkerEditPassword}/>
+
+        <CustomerRoute exact path="/Customer/CustomerHomePage" component={CustomerHomePage}/>
+        <CustomerRoute exact path="/Customer/CustomerSPView/:id"  component={CustomerSPView}/>
+        <CustomerRoute exact path="/Customer/scheduleWork/:id" component={ScheduleWork}/>
+        <CustomerRoute exact path="/Customer/CustomerSPReview/:id" component={CustomerSPReview}/>
+        <CustomerRoute exact path="/Customer/CustomerWorkDetails" component={CustomerWorkDetails}/>
+        <CustomerRoute exact path="/Customer/CustomerWorkDetailsUnpaid" component={CustomerWorkDetailsUnpaid}/>
+        <CustomerRoute exact path="/Customer/CustomerWorkProgress" component={CustomerWorkProgress}/>
+
+        <AdminRoute exact path="/Admin/AdminHomePage" component={AdminHomePage}/>
+        <AdminRoute exact path="/Admin/AdminRegList" component={AdminRegList}/>
+        <AdminRoute exact path="/Admin/AdminUserList" component={AdminUserList}/>
+        <AdminRoute exact path="/Admin/AdminRegView" component={AdminRegView}/>
 
 
         {/* <ProviderRoute exact path="/CSA" component={WorkerPages}/>   */}

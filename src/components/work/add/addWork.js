@@ -6,6 +6,7 @@ import { useQuery } from '@apollo/client';
 import { useParams } from 'react-router';
 import { CHECK_WORK,CHECK_USER } from '../../../GraphQL/Queries';
 
+import swal from 'sweetalert';
 
 
 function AddWorkerForm({type,action,workerId,setWorkerId,checkWorker}){
@@ -99,7 +100,16 @@ function AddWorkerForm({type,action,workerId,setWorkerId,checkWorker}){
             setArray([...array,value])
             setValue("");
         }else{
-            alert("Already Added to the list");
+            swal({
+                title: "Error",
+                text: "Already Added",
+                icon: "warning",
+                button: {
+                  text: "Close",
+                  closeModal: true,
+                }, 
+                dangerMode: true  
+            })
         }
        
     }
@@ -124,6 +134,7 @@ function AddWorkerForm({type,action,workerId,setWorkerId,checkWorker}){
             estimation_cost: Yup.number()
                 .required("Please enter the estimation cost")
                 
+                
             
         }),
         onSubmit: values => {
@@ -134,13 +145,22 @@ function AddWorkerForm({type,action,workerId,setWorkerId,checkWorker}){
             values.estimation_cost = parseFloat(String(values.estimation_cost))
             values.workId = appointmentId
                 
-           alert(values.estimation_cost)
+           
 
             if(!appointmentError && appointmentId){
                 action({
                     variables:values
                 }).catch(err =>{
-                    alert("Error occurred")
+                    swal({
+                        title: "Error",
+                        text: "Error occurred creation",
+                        icon: "warning",
+                        button: {
+                          text: "Close",
+                          closeModal: true,
+                        }, 
+                        dangerMode: true  
+                    })
                 })
             }else{
 
@@ -193,26 +213,26 @@ function AddWorkerForm({type,action,workerId,setWorkerId,checkWorker}){
                                                                 {appointmentError ? <small id="nameError" className="error form-text text-muted error "> { appointmentError }</small>:null} 
                                                             </div>
                                                             <div className="form-group">
-                                                                <label htmlFor="estimation">Estimation(In days)</label>
+                                                                <label htmlFor="estimation">Estimation Period(In days)</label>
                                                                 <input type="Number" className="form-control" value={formik.values.estimation} min="1" aria-label="Enter estimation in days" id="estimation" placeholder="Estimation" onChange={formik.handleChange} onBlur={formik.handleBlur} required/>
                                                                 {formik.touched.estimation && formik.errors.estimation ? <small id="nameError" className="error form-text text-muted error "> {formik.errors.estimation}</small>: null}
                                                             </div>
-                                                            <div className="form-group">
-                                                                <label htmlFor="date">Joined Date</label>
-                                                                <input type='date'  className="form-control" id="date" value={formik.values.date}  onChange={formik.handleChange} onBlur={formik.handleBlur} required/>
-                                                                {formik.touched.date && formik.errors.date ? <small id="nameError" className="error form-text text-muted error "> {formik.errors.date}</small>: null}
-                                                            </div> 
-                                                            <div className="form-group">
-                                                                <label htmlFor="estimation_cost">Estimation(Costs In Rs.)</label>
-                                                                <input type="Number" className="form-control" value={formik.values.estimation_cost} min="1" aria-label="Enter estimation in days" id="estimation_cost" placeholder="Estimation" onChange={formik.handleChange} onBlur={formik.handleBlur} required/>
-                                                                {formik.touched.estimation_cost && formik.errors.estimation_cost ? <small id="nameError" className="error form-text text-muted error "> {formik.errors.estimation_cost}</small>: null}
-                                                            </div>
+                                                           
 
                                                         
                                                     </div>
                                                     <div className="col-md-6">
                                                         
-                                                            
+                                                    <div className="form-group">
+                                                                <label htmlFor="date">Start Date</label>
+                                                                <input type='date'  className="form-control" id="date" value={formik.values.date}  onChange={formik.handleChange} onBlur={formik.handleBlur} required/>
+                                                                {formik.touched.date && formik.errors.date ? <small id="nameError" className="error form-text text-muted error "> {formik.errors.date}</small>: null}
+                                                            </div> 
+                                                            <div className="form-group">
+                                                                <label htmlFor="estimation_cost">Budget(Costs In Rs.)</label>
+                                                                <input type="Number" className="form-control" value={formik.values.estimation_cost} aria-label="Enter estimation in days" id="estimation_cost" placeholder="Estimation" onChange={formik.handleChange} onBlur={formik.handleBlur} required/>
+                                                                {formik.touched.estimation_cost && formik.errors.estimation_cost ? <small id="nameError" className="error form-text text-muted error "> {formik.errors.estimation_cost}</small>: null}
+                                                            </div>
                                                  
                                                         {/*                                                             
 

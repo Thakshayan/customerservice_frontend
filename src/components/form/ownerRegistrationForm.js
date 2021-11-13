@@ -6,8 +6,9 @@ import Empty from '../empty'
 import React,{ useState } from 'react';
 import { BrowserRouter as Router,Link } from 'react-router-dom';
 import Loading from '../loading';
+import swal from 'sweetalert';
 
-const OwnerRegisterForm = ({services,districts,setContent,loading,myServiceArray,setMyServiceArray,workRangeArray,setWorkRangeArray,memberships,setMembershipID,action}) => {
+const OwnerRegisterForm = ({services,districts,setContent,loading,myServiceArray,setMyServiceArray,workRangeArray,setWorkRangeArray,memberships,setMembershipID,action,loadingAddOwner}) => {
 
 
 
@@ -20,12 +21,31 @@ const OwnerRegisterForm = ({services,districts,setContent,loading,myServiceArray
     const addToArray = (e,array,setArray,value,setValue)=>{
         e.preventDefault()
 
-  
-        if (array.indexOf(value) === -1 && value.length > 0){
+        if (!value.length){
+            swal({
+                title: "Nothing selected",
+                text: "Please select an option",
+                icon:'warning',
+                button: {
+                  text: "Close",
+                  closeModal: true,
+                },  
+                dangerMode: true
+              })
+        }
+        else if (array.indexOf(value) === -1 && value.length > 0){
             setArray([...array,value])
             setValue("");
         }else{
-            alert("Already Added to the list");
+            swal({
+                title: "Already selected",
+                text: "Check your selection",
+                icon: "success",
+                button: {
+                  text: "Ok",
+                  closeModal: true,
+                },   
+            })
         }
        
     }
@@ -64,8 +84,30 @@ const OwnerRegisterForm = ({services,districts,setContent,loading,myServiceArray
                         contactNo: values.phone
                     }
                 }).catch(err => {
-                    alert("Owner Already Exists")
+                    console.log(err)
+                    swal({
+                        title: "Error",
+                        text: "Duplicate Owner details",
+                        icon:'warning',
+                        button: {
+                          text: "Close",
+                          closeModal: true,
+                        },  
+                        dangerMode: true
+                      })
                 })
+            }else{
+                swal({
+                    title: "Error",
+                    text: "Please select service and districts",
+                    icon: "warning",
+                    button: {
+                      text: "Close",
+                      closeModal: true,
+                    }, 
+                    dangerMode: true  
+                })
+                window.scrollTo(0,0)
             }
 
 
@@ -88,9 +130,9 @@ const OwnerRegisterForm = ({services,districts,setContent,loading,myServiceArray
                     <div className="row">
                         <div className="col-sm-12 col-md-6 col-xl-6">
                         <div className="form-group">
-                            <label htmlFor="workerId">Work Range</label>
+                            <label htmlFor="workerId">Services</label>
                                 <div className="input-group mb-3">
-                                    < select className="form-control" id="service" defaultValue={service} onChange={(e) => {setService(e.target.value)}} >
+                                    < select className="form-control" id="service" data-testid="services" value={service}  onChange={(e) => {setService(e.target.value)}} >
                                         <option  value="" disabled></option>
                                             
                                         {services[0] ?
@@ -107,7 +149,13 @@ const OwnerRegisterForm = ({services,districts,setContent,loading,myServiceArray
                                                 }
                                         </select><div className="input-group-append">
                                             <button onClick={(e) => {addToArray(e,myServiceArray,setMyServiceArray,service,setService)}}
-                                                className="btn btn-primary" type="button" aria-label="Click to Add district" title="Click to Add">Add Services</button>
+                                                className="btn btn-primary" type="button" aria-label="Click to Add district" data-testid="service-button">
+                                                    
+                                                    <div className="tooltips" id="tooltips" >
+                                                        Add Services
+                                                        <span className="tooltiptext" style={{transform:"translate(20px,0px)"}}>click to add</span>
+                                                    </div> 
+                                                </button>
                                         </div>
                                         </div>
                                         {error ? <small id="nameError" className="error form-text text-muted error "> { error }</small>:null}    
@@ -137,10 +185,10 @@ const OwnerRegisterForm = ({services,districts,setContent,loading,myServiceArray
                         </div>
                         <div className="col-sm-12 col-md-6 col-xl-6">
                                     <div className="form-group">
-                                        <label htmlFor="workerId">Services</label>
+                                        <label htmlFor="workerId">Districts</label>
                                         <div className="input-group mb-3">
                                             
-                                                <select className="form-control" id="service"  defaultValue={district} onChange={(e) => {setDistrict(e.target.value)}}>
+                                                <select className="form-control" id="service" value={district}  onChange={(e) => {setDistrict(e.target.value)}}>
                                                     <option  value="" disabled></option>
                                                     
                                                     {districts[0] ?
@@ -159,7 +207,13 @@ const OwnerRegisterForm = ({services,districts,setContent,loading,myServiceArray
                                             
                                             <div className="input-group-append">
                                             <button onClick={(e) => {addToArray(e,workRangeArray,setWorkRangeArray,district,setDistrict)}}
-                                                className="btn btn-primary" type="button" aria-label="Click to Add district" title="Click to Add">Add District</button>
+                                                className="btn btn-primary" type="button" aria-label="Click to Add district" >
+                                                    
+                                                    <div className="tooltips" id="tooltips" >
+                                                        Add District
+                                                        <span className="tooltiptext" style={{transform:"translate(20px,0px)"}}>click to add</span>
+                                                    </div> 
+                                                </button>
                                             </div>
                                         </div>
                                         {error ? <small id="nameError" className="error form-text text-muted error "> { error }</small>:null}    
@@ -212,7 +266,7 @@ const OwnerRegisterForm = ({services,districts,setContent,loading,myServiceArray
                                     
                                     <div className="form-group">
                                         <label htmlFor="phone">Phone Number</label>
-                                        <input type="tel" className="form-control" value={formik.values.phone} pattern="[0-9]{10}" id="phone" placeholder="Phone Number" onChange={formik.handleChange} onBlur={formik.handleBlur} required/>
+                                        <input type="tel" className="form-control" value={formik.values.phone} pattern="[0-9]{10}" id="phone" placeholder="Eg: 0758994321" onChange={formik.handleChange} onBlur={formik.handleBlur} required/>
                                         {formik.touched.phone && formik.errors.phone ? <small id="nameError" className="error form-text text-muted error "> {formik.errors.phone}</small>: null}
                                     </div>
                                     
@@ -228,7 +282,7 @@ const OwnerRegisterForm = ({services,districts,setContent,loading,myServiceArray
                                     Choose the Membership
                                 </div>
                                 <hr/>
-                                {!loading ? memberships ? memberships.map((e)=>{
+                                {!loading ? memberships[0] ? memberships.map((e)=>{
 
 
                                     return (
@@ -271,7 +325,9 @@ const OwnerRegisterForm = ({services,districts,setContent,loading,myServiceArray
                                     )
 
                                 }):
-                                    <Empty/>
+                                    <Empty
+                                        message="Network Issues"
+                                    />
                                 :<Loading/>
                                 }
                                 {formik.touched.membership && formik.errors.membership ? <small id="nameError" className="error form-text text-muted error "> {formik.errors.membership}</small>: null}
@@ -280,10 +336,16 @@ const OwnerRegisterForm = ({services,districts,setContent,loading,myServiceArray
                                     
                             </div>
                         </div>
-                        
-                        <div className="text-right">
-                            <button type="submit" className="btn btn-primary shadow-2 mb-4"> Next </button>
-                        </div>
+                        {
+                        !loadingAddOwner ?
+                            <div className="text-right">
+                                <button type="submit" className="btn btn-primary shadow-2 mb-4"> Next </button>
+                            </div>
+                        :
+                            <div className="text-right">
+                                <button className="btn btn-primary shadow-2 mb-4" disabled> Loading... </button>
+                            </div>
+                        }
                                 
                     </form>
 
@@ -291,7 +353,7 @@ const OwnerRegisterForm = ({services,districts,setContent,loading,myServiceArray
                     <div className="text-center">
                         
                         <p className="mb-0 text-muted" style={{fontStyle:'italic',textDecoration:'underline'}}>Allready have an account? 
-                            <Link to="/siginin" style={{color:'#038fcf',fontStyle:'italic',textDecoration:'underline'}}> Log in</Link>
+                            <Link to="/signin" style={{color:'#038fcf',fontStyle:'italic',textDecoration:'underline'}}> Log in</Link>
                         </p>
                     </div>
                 </div>

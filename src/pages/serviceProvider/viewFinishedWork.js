@@ -6,6 +6,8 @@ import {useQuery} from "@apollo/client";
 import {GET_FINISHEDWORK, GET_WORK} from "../../GraphQL/Queries";
 import {GET_FINISHEDWORKS} from "../../GraphQL/Queries";
 
+import swal from "sweetalert";
+
 //components
 import Header from "../../components/header";
 import NavBar from '../../components/navbar';
@@ -14,10 +16,7 @@ import Preloader from '../../components/preloader';
 const ViewFinishWork = () => {
     const [id,setID] = useState('');
     // const [Id,setID] = useState(id);
-    const fetchContent = useQuery(GET_FINISHEDWORK,{
-        variables:{ workId:id
-        }
-    });
+    
 
 
     const [contents,setContents] = useState([]);
@@ -25,17 +24,20 @@ const ViewFinishWork = () => {
     const [page,setPage] = useState(1);
     const [offSet,setOffSet] = useState();
 
+   
+
+    useLayoutEffect(()=>{
+        window.scrollTo(0,0)
+    },[page])
+
+
+    //retrieving works
     const {error,loading,data} = useQuery(GET_FINISHEDWORKS,{
         variables:{
             page:page,
             offset:2
         }
     });
-
-    useLayoutEffect(()=>{
-        window.scrollTo(0,0)
-    },[page])
-
 
     useEffect(()=>{
 
@@ -58,7 +60,30 @@ const ViewFinishWork = () => {
 
     },[data])
 
+      // error occurred
+      useEffect(()=>{
+        
+        if(error){
+            swal({
+                title: "Error",
+                text: "Error occurred in retrieving please refresh",
+                icon: "warning",
+                button: {
+                  text: "Close",
+                  closeModal: true,
+                }, 
+                dangerMode: true  
+            })
+        }
 
+    },[error])
+
+
+    //search
+    const fetchContent = useQuery(GET_FINISHEDWORK,{
+        variables:{ workId:id
+        }
+    });
 
     useEffect(()=>{
         
@@ -72,6 +97,17 @@ const ViewFinishWork = () => {
 
                 }
     
+            }).catch(err =>{
+                swal({
+                    title: "Error",
+                    text: "Error occurred in retrieving please refresh",
+                    icon: "warning",
+                    button: {
+                      text: "Close",
+                      closeModal: true,
+                    }, 
+                    dangerMode: true  
+                })
             })
         }else if(contents){
             setContent(contents)
@@ -90,16 +126,18 @@ const ViewFinishWork = () => {
             [ Header ] start */}
             <Header/>
             {/*<!-- [ Header ] end --> */}
-        <ViewWorks 
-            type="finished" 
-            content={content} 
-            setPage={setPage} 
-            page={page}
-            offSet={offSet}
-            id={id}
-            setID={setID}
-            loading = {loading}
-        />
+             {/*<!-- [ Content ] start --> */}
+            <ViewWorks 
+                type="finished" 
+                content={content} 
+                setPage={setPage} 
+                page={page}
+                offSet={offSet}
+                id={id}
+                setID={setID}
+                loading = {loading}
+            />
+             {/*<!-- [ Content ] end --> */}
         </div>
      );
 }

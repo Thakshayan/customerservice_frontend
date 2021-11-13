@@ -2,6 +2,7 @@ import { useQuery,useMutation } from "@apollo/client";
 import { useEffect,useState } from "react";
 import EditEmployeeInfo from "../../components/employee/edit/editWorkerInfo";
 
+import swal from "sweetalert";
 //components
 import Header from "../../components/headerWorker";
 import NavBarWorker from '../../components/navbarWorker';
@@ -11,6 +12,7 @@ import { WORKER_CARD } from "../../GraphQL/workerQueries";
 
 function EditWorkerInfo() {
 
+    //retrieve
     const {error,loading,data} = useQuery(WORKER_CARD)
     const [content,setContent] = useState()
 
@@ -19,6 +21,24 @@ function EditWorkerInfo() {
             setContent([data.worker_me])
         }
     },[data])
+
+        // error occurred
+        useEffect(()=>{
+        
+            if(error){
+                swal({
+                    title: "Error",
+                    text: "Error occurred in retrieving please refresh",
+                    icon: "warning",
+                    button: {
+                      text: "Close",
+                      closeModal: true,
+                    }, 
+                    dangerMode: true  
+                })
+            }
+    
+        },[error])
 
     const [setPassword,{loadingPaddwordEdit,errorPasswordEdit}] = useMutation(EDIT_PASSWORD,{
         

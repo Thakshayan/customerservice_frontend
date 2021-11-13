@@ -52,3 +52,18 @@ export const sumArray = (object)=>{
    
     return total
 }
+
+export const Count = (objects) => {
+    if(!objects){
+      return 0
+    }
+
+    var count = 0
+
+    for(var i=0;i<objects.length;i++){
+      
+        count += objects[i].Count 
+      }
+
+      return count
+    }

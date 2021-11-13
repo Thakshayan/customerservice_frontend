@@ -6,7 +6,7 @@ import Empty from "../../empty";
 
 
 
-const RemoveEmployeeCard = ({type,action,content,id,setID,loading}) => {
+const RemoveEmployeeCard = ({type,action,content,id,setID,loading,fetchloading }) => {
     
 
     return ( 
@@ -30,7 +30,7 @@ const RemoveEmployeeCard = ({type,action,content,id,setID,loading}) => {
                                 type={type}
                                 action = {action}
                                 loading = {loading}
-                                
+                                fetchloading ={fetchloading}
                                      
                                    
                                 

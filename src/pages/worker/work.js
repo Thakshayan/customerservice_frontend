@@ -5,6 +5,7 @@ import { WORK_PROFILE } from "../../GraphQL/workerQueries";
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from "react";
 
+import swal from "sweetalert";
 //components
 import Header from "../../components/headerWorker";
 import NavBarWorker from '../../components/navbarWorker';
@@ -27,6 +28,23 @@ const Work = () => {
             setContent(data.UniqueSearchAppointment)
         }
     },[data])
+
+    useEffect(()=>{
+        
+        if(error){
+            swal({
+                title: "Error",
+                text: "Error occurred in the search",
+                icon: "warning",
+                button: {
+                  text: "Close",
+                  closeModal: true,
+                }, 
+                dangerMode: true  
+            })
+        }
+        
+    },[error])
 
     return ( 
         <div>

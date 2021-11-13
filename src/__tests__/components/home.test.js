@@ -6,9 +6,11 @@ import '@testing-library/jest-dom';
 import { BrowserRouter } from 'react-router-dom';
 import Content from '../../components/home';
 
+window.scrollTo = jest.fn()
 
 describe("Home component tests",()=>{
     it("It renders without crashing", ()=>{
+        
         render(
             <BrowserRouter>
                 <Content content={null}/>

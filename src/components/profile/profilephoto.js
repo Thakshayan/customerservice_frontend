@@ -1,13 +1,39 @@
-import { useQuery } from '@apollo/client';
+
 import { useState } from 'react';
 import {BrowserRouter as Router,Link} from 'react-router-dom';
-import { useEffect } from 'react/cjs/react.development';
+import Loading from "../loading"
 
-
+ 
 
 function PhotoCard({id,profile,title,type,edit,provider}){
 
-    const [image,setImage] = useState("/assets/images/user/profile.jpg");
+    //const [image,setImage] = useState("/assets/images/user/profile.jpg");
+
+    const styles ={
+        button:{
+            width:'100%',
+            height:'25px',
+            padding:'0px 0px',
+            background:'#038fcf'
+        },
+        image:{
+            display:'block',
+            height:'200px',
+            width:'250px',
+            margin:'auto',
+            paddingTop:'15px',
+            justifyContent:'center',
+            textAlign:'center',
+            alignItems:'center'
+        },
+        passwordButton:{
+            width:'100%',
+            height:'25px',
+            padding:'0px 0px',
+            background:'#5e8d25',
+            borderColor:'#5e8d25'
+        }
+    }
 
     return(
         <div className="">
@@ -18,22 +44,32 @@ function PhotoCard({id,profile,title,type,edit,provider}){
                     </div>
                     <div>
                         {profile ? 
-                            <img src={image} alt="" style={{display:'block',height:'200px',width:'250px',margin:'auto',paddingTop:'15px',justifyContent:'center',textAlign:'center',alignItems:'center'}}/> 
+                            <img src={"/assets/images/user/profile.jpg"} alt="" style={styles.image}/> 
                         :
-                            <img src="" alt="Image is loading"/>
+                        
+                            <Loading/>
+                       
                         }
                     </div>
                     <hr/>
-                    {edit ?
+                 {edit ?
                    <div style={{ margin:'15px',display:'flex'}}>
                      
-                      <Link to={`/Worker/edit/password`} className="btn btn-primary" style={{width:'100%',height:'25px',padding:'0px 0px',background:'#5e8d25',borderColor:'#5e8d25'}} title="Edit Password">
-                           {/* <i className="fas fa-chevron-circle-left"></i> */}
+                        <Link to={`/Worker/edit/password`} className="btn btn-primary" id="password" name="password" style={styles.passwordButton} >
+                           
                            <i className="fas fa-unlock-alt"></i>
-                           Password  
+                           <div className="tooltips" id="tooltips">
+                                Password
+                                <span className="tooltiptext" >Click to edit password</span>
+                            </div> 
+
                         </Link>
-                       <Link to={`/Worker/edit/basicInfo`} className="btn btn-primary" style={{width:'100%',height:'25px',padding:'0px 0px',background:'#038fcf'}} title="Edit Profile">
-                           Edit
+
+                        <Link to={`/Worker/edit/basicInfo`} className="btn btn-primary"  style={styles.button}>
+                            <div className="tooltips" id="tooltips">
+                                Edit
+                                <span className="tooltiptext" >Click to personal info</span>
+                            </div> 
                            <i className="fas fa-edit" style={{paddingLeft:'10px'}}></i>
                         </Link>
                    </div>
@@ -41,17 +77,24 @@ function PhotoCard({id,profile,title,type,edit,provider}){
                    :
                    null
                     }
-                    {provider ?<div style={{ margin:'15px',display:'flex'}}>
+                    {provider ? <div style={{ margin:'15px',display:'flex'}}>
                      
-                     <Link to={`/CSA/edit/password`} className="btn btn-primary" style={{width:'100%',height:'25px',padding:'0px 0px',background:'#5e8d25',borderColor:'#5e8d25'}} title="Edit Password">
-                          {/* <i className="fas fa-chevron-circle-left"></i> */}
-                          <i className="fas fa-unlock-alt"></i>
-                          Password  
-                       </Link>
-                      <Link to={`/CSA/edit/basicInfo`} className="btn btn-primary" style={{width:'100%',height:'25px',padding:'0px 0px',background:'#038fcf'}} title="Edit Profile">
-                          Edit
+                        <Link to="/CSA/edit/password" className="btn btn-primary" style={styles.passwordButton} >
+              
+                            <i className="fas fa-unlock-alt"></i>
+                          
+                            <div className="tooltips" id="tooltips">
+                                Password
+                                <span className="tooltiptext" >Click to edit password</span>
+                            </div>  
+                        </Link>
+                        <Link to="/CSA/edit/basicInfo" className="btn btn-primary"  style={styles.button} >
+                            <div className="tooltips" id="tooltips">
+                                Edit
+                                <span className="tooltiptext" >Click to personal info</span>
+                            </div> 
                           <i className="fas fa-edit" style={{paddingLeft:'10px'}}></i>
-                       </Link>
+                        </Link> 
                     </div>
                     
                     :

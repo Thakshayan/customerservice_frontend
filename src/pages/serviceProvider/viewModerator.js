@@ -11,6 +11,8 @@ import Preloader from '../../components/preloader';
 
 import { GET_SEARCH_MODERATOR, GET_MODERATORS } from "../../GraphQL/Queries";
 
+import swal from "sweetalert";
+
 
 const ViewModerator = () => {
 
@@ -21,25 +23,19 @@ const ViewModerator = () => {
     const [page,setPage] = useState(1);
     const [offSet,setOffSet] = useState();
 
-    const fetchContent = useQuery(GET_SEARCH_MODERATOR,{
-        variables:{ workerId:id }
-    });
+   
 
+
+
+    // retrieve all moderators
+    
     const {error,loading,data} = useQuery(GET_MODERATORS,{
         variables:{
             page:page,
             offSet:3
         }
     });
-
-
-
-
     useEffect(()=>{
-        
-        if(error){
-            console.log(error)
-        }
         if(data){
             setContent(data.getMyModerators);
             setContents(data.getMyModerators)
@@ -51,8 +47,31 @@ const ViewModerator = () => {
     },[data])
 
 
+    // error occurred
+    useEffect(()=>{
+        
+        if(error){
+            swal({
+                title: "Error",
+                text: "Error occurred in retrieving please refresh",
+                icon: "warning",
+                button: {
+                  text: "Close",
+                  closeModal: true,
+                }, 
+                dangerMode: true  
+            })
+        }
+
+    },[error])
 
 
+
+
+    // get a specific moderator search
+     const fetchContent = useQuery(GET_SEARCH_MODERATOR,{
+        variables:{ workerId:id }
+    });
 
     useEffect(()=>{
         if(id){
@@ -65,6 +84,17 @@ const ViewModerator = () => {
                     setContent(datas.data.getModerator)
                 }
     
+            }).catch(err =>{
+                swal({
+                    title: "Error",
+                    text: "Error occurred in retrieving please refresh",
+                    icon: "warning",
+                    button: {
+                      text: "Close",
+                      closeModal: true,
+                    }, 
+                    dangerMode: true  
+                })
             })
         }else if(contents){
             setContent(contents)
@@ -85,6 +115,7 @@ const ViewModerator = () => {
             [ Header ] start */}
             <Header/>
             {/*<!-- [ Header ] end --> */}
+             {/*<!-- [ Content ] start --> */}
             <ViewWorker 
                 type="Moderator"
                 content = {content}
@@ -95,6 +126,7 @@ const ViewModerator = () => {
                 id = {id}
                 loading = {loading}
                 />
+             {/*<!-- [ Content ] end --> */}
         </div>
         
      );

@@ -66,6 +66,7 @@ const AssignWorkerForm = ({type,ID,contents,workerContent,state,setAssignWorkerI
                                                                             email = {e.email}
                                                                             viewURL={`/CSA/profile/${e._id}`}
                                                                             delURL=""
+                                                                            left = {e.left_date}
                                                                             key = {e._id}
                                                                         />  
                                                             })

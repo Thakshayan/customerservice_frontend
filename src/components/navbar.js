@@ -1,11 +1,16 @@
 import { useEffect,useState } from 'react';
 import {BrowserRouter as Router,Link} from 'react-router-dom';
-
+import {useQuery} from '@apollo/client';
+import {GET_ME} from '../GraphQL/Queries'
 
 function NavBar(){
 
-    
+    const {error,loading,data} = useQuery(GET_ME);
+    const [userName,setUserName] = useState();
+    const [id,setId] = useState();
+    const [type,setType] = useState('moderator');
 
+   
     return(
         <nav className="pcoded-navbar">
             <div className="navbar-wrapper">
@@ -30,14 +35,16 @@ function NavBar(){
                         <li className="nav-item pcoded-menu-caption">
                             <label>Employees</label>
                         </li>
-                        <li data-username="basic components Button Alert Badges breadcrumb Paggination progress Tooltip popovers Carousel Cards Collapse Tabs pills Modal Grid System Typography Extra Shadows Embeds" className="nav-item pcoded-hasmenu">
-                            <Link to="" className="nav-link" style={{pointerEvents:"none"}}><span className="pcoded-micon"><i className="far fa-id-card"></i></span><span className="pcoded-mtext">Moderators</span></Link>
-                            <ul className="pcoded-submenu">
-                                <li className=""><Link to="/CSA/addModerator" className="">Add Moderator</Link></li>
-                                <li className=""><Link to="/CSA/viewModerator" className="">View Moderator</Link></li>
-                                <li className=""><Link to="/CSA/removeModerator" className="">Remove Moderator</Link></li>
-                            </ul>
-                        </li>
+                        
+                            <li data-username="basic components Button Alert Badges breadcrumb Paggination progress Tooltip popovers Carousel Cards Collapse Tabs pills Modal Grid System Typography Extra Shadows Embeds" className="nav-item pcoded-hasmenu">
+                                <Link to="" className="nav-link" style={{pointerEvents:"none"}}><span className="pcoded-micon"><i className="far fa-id-card"></i></span><span className="pcoded-mtext">Moderators</span></Link>
+                                <ul className="pcoded-submenu">
+                                    <li className=""><Link to="/CSA/addModerator" className="">Add Moderator</Link></li>
+                                    <li className=""><Link to="/CSA/viewModerator" className="">View Moderator</Link></li>
+                                    <li className=""><Link to="/CSA/removeModerator" className="">Remove Moderator</Link></li>
+                                </ul>
+                            </li>
+                      
                         <li data-username="basic components Button Alert Badges breadcrumb Paggination progress Tooltip popovers Carousel Cards Collapse Tabs pills Modal Grid System Typography Extra Shadows Embeds" className="nav-item pcoded-hasmenu">
                             <Link to="#" className="nav-link" style={{pointerEvents:"none"}}><span className="pcoded-micon"><i className="fas fa-users"></i></span><span className="pcoded-mtext">Workers</span></Link>
                             <ul className="pcoded-submenu">

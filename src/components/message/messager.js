@@ -2,19 +2,16 @@ import BreadCrumb from '../breadcrumb';
 //import SearchBar from '../searchBar';
 import PaginationBar from '../pagination';
 import MessageBar from './messageBar';
+import swal from 'sweetalert';
 
 
 
 import { useState, useEffect } from "react"
-import { useFormik } from 'formik';
-import * as Yup from "yup";
-import { useMutation } from '@apollo/client';
-import { SEND_MESSAGE } from '../../GraphQL/Mutations';
+
 
 import { dateFormatter } from '../formatter';
 import Empty from '../empty';
 import Loading from '../loading';
-import SuccessPage from '../../pages/success';
 import { useParams } from 'react-router';
 
 
@@ -29,9 +26,11 @@ const Messager = ({content,setPage,page,offSet,loading,action,toError,To,setTo,s
     const [contents,setContent] = useState();
 
     useEffect(() => {
-        
         setContent(content)
+        
     }, [content])
+
+
 
     const messageValidate = (e)=>{
         e.preventDefault()
@@ -61,11 +60,18 @@ const Messager = ({content,setPage,page,offSet,loading,action,toError,To,setTo,s
                     to: To,
                     message: message
                 }
-            }).then(res =>{
-                
             })
             .catch(err =>{
-                alert("Error Occurred")
+                swal({
+                    title: "Error",
+                    text: "Error occurred in confimation",
+                    icon: "warning",
+                    button: {
+                      text: "Close",
+                      closeModal: true,
+                    }, 
+                    dangerMode: true  
+                })
             })
         }
     }
@@ -91,9 +97,6 @@ const Messager = ({content,setPage,page,offSet,loading,action,toError,To,setTo,s
                                             <div className="card-header">
                                                 <h5>View Messages</h5>
                                             </div>
-                                            {/* <div className="" style={{marginTop:'20px'}}>
-                                                <SearchBar placeholder="Enter worker ID ..." setCardContent={setContent} setId={setID} URL="getMessages"/>
-                                            </div> */}
                                             { !loading ?
                                             contents ? <div className="card-block px-0 py-3">
                                                 <div className="">
@@ -158,7 +161,11 @@ const Messager = ({content,setPage,page,offSet,loading,action,toError,To,setTo,s
                                                     <textarea className="form-control" id="description" rows="5"  aria-label="Enter description" onChange={(e) =>{messageValidate(e)}} ></textarea>
                                                     {messageError ? <small id="nameError" className="error form-text text-muted error "> {messageError}</small>: null}
                                                 </div>
-                                                <button type="submit" className="btn btn-primary" >Submit</button>
+                                                {!loadingMessages ?
+                                                    <button type="submit" className="btn btn-primary" >Submit</button>
+                                                :
+                                                    <button  className="btn btn-primary" disabled> Loading... </button>
+                                                }
                                             </form>
                                             </div>
                                         </div>

@@ -4,12 +4,14 @@ import { useMutation, useQuery } from '@apollo/client';
 import {useState,useRef,useEffect} from 'react';
 import { GET_MODERATOR, GET_SEARCH_MODERATOR } from '../../GraphQL/Queries';
 
+import swal from 'sweetalert';
+
 //components
 import Header from "../../components/header";
 import NavBar from '../../components/navbar';
 import Preloader from '../../components/preloader';
 
-function AddEmployee() {
+function AddModerator() {
 
     const [addModerator,{loading,error}] = useMutation(ADD_MODERATOR,{
         onCompleted:data => {
@@ -22,18 +24,19 @@ function AddEmployee() {
     const [id,setID] = useState('');
     const [content,setContent] = useState();
 
-
-    const fetchSearchContent = useQuery(GET_SEARCH_MODERATOR,{
-        variables:{
-            workerId:Id
-        }
-    })
-
+    
     const photoFocus = useRef(null)
 
     const scrollToBottom = ()=>{
         photoFocus.current?.scrollIntoView({behavior:'smooth'})
     }
+
+    //search
+    const fetchSearchContent = useQuery(GET_SEARCH_MODERATOR,{
+        variables:{
+            workerId:Id
+        }
+    })
 
     useEffect(()=>{
         if(Id){
@@ -41,10 +44,22 @@ function AddEmployee() {
                 workerId:Id
             }).then(data =>{
                 setContent(data.data.getModerator)
+            }).catch(err =>{
+                swal({
+                    title: "Error",
+                    text: "Error occurred in retrieving please refresh",
+                    icon: "warning",
+                    button: {
+                      text: "Close",
+                      closeModal: true,
+                    }, 
+                    dangerMode: true  
+                })
             })
         }
     },[Id])
 
+    //get the created moderator results
     const fetchContent = useQuery(GET_MODERATOR,{
         variables:{
             workerId:id
@@ -58,6 +73,17 @@ function AddEmployee() {
             }).then(data =>{
                 setContent([data.data.UniqueSearchModerator])
                 scrollToBottom()
+            }).catch(err =>{
+                swal({
+                    title: "Error",
+                    text: "Error occurred in retrieving please refresh",
+                    icon: "warning",
+                    button: {
+                      text: "Close",
+                      closeModal: true,
+                    }, 
+                    dangerMode: true  
+                })
             })
         }
     },[id])
@@ -88,5 +114,5 @@ function AddEmployee() {
     );
   }
   
-  export default AddEmployee;
+  export default AddModerator;
   

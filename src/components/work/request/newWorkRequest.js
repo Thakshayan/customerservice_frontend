@@ -11,7 +11,8 @@ import {dateFormatter} from "../../formatter";
 import Loading from '../../loading';
 import Empty from '../../empty';
 
-const NewWorkRequest = ({id,setID,content,setPage,page,offSet,loading}) => {    
+const NewWorkRequest = ({id,setID,content,setPage,page,offSet,loading,setContent}) => {    
+
 
 
     return(  
@@ -54,8 +55,12 @@ const NewWorkRequest = ({id,setID,content,setPage,page,offSet,loading}) => {
                                                                     workstation ={e.workStationDistrict}
                                                                     description ={e.description}
                                                                     key ={e._id}
+                                                                    state ={e.state}
                                                                     id = {e._id}
                                                                     date={dateFormatter(e.date)}
+                                                                    content = {content}
+                                                                    setContent= {setContent}
+                                                                    element = {e}
                                                             /> 
 
                                                             }):

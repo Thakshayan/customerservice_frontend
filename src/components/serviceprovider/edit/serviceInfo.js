@@ -7,9 +7,9 @@ import Empty from "../../empty";
 import Loading from "../../loading";
 import DistrictRow from "./districtRow";
 
+import swal from 'sweetalert';
 
-
-const EditServiceInfo = ({content,addService,addDistrict,SPloading,serviceList,delService,delDistrict}) => {
+const EditServiceInfo = ({content,addService,addDistrict,SPloading,serviceList,delService,delDistrict,loadingService,loadingDistrict,loadingRemoveDistrict,loadingRemoveService }) => {
 
     const [error,setErr] = useState();
 
@@ -18,8 +18,6 @@ const EditServiceInfo = ({content,addService,addDistrict,SPloading,serviceList,d
     const [services,setServices] = useState([]);
     const [SPServices,setMyServices] = useState([]);
     const [workRanges,setWorkRange] = useState([]);
-
-
 
 
 
@@ -32,16 +30,16 @@ const EditServiceInfo = ({content,addService,addDistrict,SPloading,serviceList,d
 
     useEffect(()=>{
         if(serviceList){
-            
             setServices(serviceList)
-
         }
     },[serviceList])
 
 
     
 
+    useEffect(()=>{
 
+    },[workRanges])
 
     
         
@@ -49,32 +47,101 @@ const EditServiceInfo = ({content,addService,addDistrict,SPloading,serviceList,d
     const submitDistrict = (e)=>{
         e.preventDefault()
         
+        if (!district){
+            return
+        }
         if (workRanges.indexOf(district) === -1){
             addDistrict({
                 variables:{
                     district:district
                 }
             }).then(res =>{
-                window.location.reload()
+                
+                swal({
+                    title: "Success",
+                    text: "Successfully Added",
+                    icon: "success",
+                    button: {
+                      text: "Close",
+                      closeModal: true,
+                    }, 
+                   
+                })
+                setDistrict('')
+                setWorkRange([...workRanges,district])
+            }).catch(err=>{
+                swal({
+                    title: "Error",
+                    text: "Error occurred in addition",
+                    icon: "warning",
+                    button: {
+                      text: "Close",
+                      closeModal: true,
+                    }, 
+                    dangerMode: true  
+                })
             })
         }else{
-            alert("Already Exist");
+            swal({
+                title: "Error",
+                text: "Already exist",
+                icon: "warning",
+                button: {
+                  text: "Close",
+                  closeModal: true,
+                }, 
+                dangerMode: true  
+            })
         }
     }
 
     const submitService = (e)=>{
         e.preventDefault()
         
+        if(!service){
+            return 
+        }
         if (SPServices.indexOf(service) === -1){
         addService({
             variables:{
                 service:service
             }
         }).then(res =>{
-            window.location.reload()
+            swal({
+                title: "Success",
+                text: "Successfully Added",
+                icon: "success",
+                button: {
+                  text: "Close",
+                  closeModal: true,
+                }, 
+               
+            })
+            setService('')
+            setMyServices([...SPServices,service])
+        }).catch(err =>{
+            swal({
+                title: "Error",
+                text: "Error occur in addition",
+                icon: "warning",
+                button: {
+                  text: "Close",
+                  closeModal: true,
+                }, 
+                dangerMode: true  
+            })
         })
         }else{
-            alert("Already exist")
+            swal({
+                title: "Error",
+                text: "Already Exist",
+                icon: "warning",
+                button: {
+                  text: "Close",
+                  closeModal: true,
+                }, 
+                dangerMode: true  
+            })
         }
     }
 
@@ -93,7 +160,7 @@ const EditServiceInfo = ({content,addService,addDistrict,SPloading,serviceList,d
                         <div className="page-wrapper">
                             {/*<!-- [ Main Content ] start -->*/}
 
-
+                            {/* {-----------------------[ Available services start ]---------------------} */}
                             <div className="card yearly-sales">
                                 <div className="card-block" style={{padding:'10px 30px 10px 30px'}}>
                                     <div className="card-header">
@@ -102,8 +169,6 @@ const EditServiceInfo = ({content,addService,addDistrict,SPloading,serviceList,d
                                     <hr/>
 
                                 {!SPloading ?
-
-                                    
                                     SPServices && SPServices[0] ?
                                         SPServices.map((e)=>{
                                             return (
@@ -112,39 +177,31 @@ const EditServiceInfo = ({content,addService,addDistrict,SPloading,serviceList,d
                                                 <ServiceRow
                                                     service={e}
                                                     action = {delService}
+                                                    services = {SPServices}
+                                                    setServices = {setMyServices}
                                                 />
                                                 <hr/>
                                             </React.Fragment>
                                             )
                                         })
                                     :
+                                    <div className="col-sm-12 col-md-7 col-xl-8" style={{width:150}}>
                                         <Empty
-                                            message = "No services found"
+                                            message = "No Service found"
                                         />
+                                    </div>
                                 :
                                 <Loading/>
                                 }
                                 
 
                                     <div className="col-md-12 col-xl-12" style={{marginBottom:"30px"}}>
-                                    {/* <form  style={{marginTop:"50px"}}>
-                                            <div className="form-group">
-                                                <label htmlFor="Title">Name</label>
-                                                <input type="text" className="form-control"  id="jobTitle" aria-label="Enter job title" placeholder="Job Title"  required/>
-                                                <small id="nameError" className="error form-text text-muted error "> </small>
-                                            </div>
-                                            <div className="form-group">
-                                                <label htmlFor="description">Description</label>
-                                                <textarea className="form-control" id="description" rows="5"  aria-label="Enter description"  required></textarea>
-                                                <small id="nameError" className="error form-text text-muted error "> </small>
-                                            </div>
-                                            <button type="submit" className="btn btn-primary">Submit</button>
-                                        </form> */}
+                                
                                         <form style={{marginTop:"50px"}}>
                                          <div className="form-group" >
                                                 <label htmlFor="service"> </label>
                                                
-                                                <select className="form-control" id="service" defaultValue={service} onChange={(e) => {setService(e.target.value)}}>
+                                                <select className="form-control" id="service" value={service} onChange={(e) => {setService(e.target.value)}}>
                                                     <option  value="" disabled></option>
                                                     
                                                     {services[0] ?
@@ -163,14 +220,24 @@ const EditServiceInfo = ({content,addService,addDistrict,SPloading,serviceList,d
                                                 </div>
                                                 { error ? <small id="districtError" className="error form-text text-muted error "> {error}</small>: null}
                                             <div style={{margin:'auto',alignItems:'center',justifyContent:'center',textAlign:'center'}}>
-                                                <button type="submit" onClick={submitService } className="btn btn-primary" style={{marginBottom:"30px",width:'150px'}}>Add Service</button>
+                                                {!loadingService ? 
+                                                    <button type="submit" onClick={submitService } className="btn btn-primary" style={{marginBottom:"30px",width:'150px'}}>
+                                                        Add Service
+                                                    </button>
+                                                :
+                                                    <button type="submit" className="btn btn-primary" style={{marginBottom:"30px",width:'150px'}} disabled>
+                                                        Loading
+                                                    </button>
+                                                }
                                             </div>
                                         </form>
                                         </div>
 
                                 </div>
                             </div>
+                            {/* {-----------------------[ Available services end ]---------------------} */}
 
+                            {/* {-----------------------[ Available districts start ]---------------------} */}
                             <div className="card yearly-sales">
                                 <div className="card-block" style={{padding:'10px 30px 10px 30px'}}>
                                     <div className="card-header">
@@ -190,18 +257,24 @@ const EditServiceInfo = ({content,addService,addDistrict,SPloading,serviceList,d
                                                 <DistrictRow
                                                     district={e}
                                                     action = {delDistrict}
+                                                    loading = {loadingRemoveDistrict} 
+                                                    workRanges = {workRanges}
+                                                    setWorkRange = {setWorkRange}
                                                 />
                                                 <hr/>
                                             </React.Fragment>
                                             )
                                         })
                                     :
-                                        <Empty
-                                            message = "No services found"
-                                        />
+                                        <div className="col-sm-12 col-md-7 col-xl-8" style={{width:150}}>
+                                            <Empty
+                                                message = "No workrange found"
+                                            />
+                                        </div>
+                                        
                                     :
                                     <div className="col-sm-12 col-md-7 col-xl-8">
-                                    <Loading/>
+                                        <Loading/>
                                     </div>
                                     }
                                     
@@ -212,7 +285,7 @@ const EditServiceInfo = ({content,addService,addDistrict,SPloading,serviceList,d
                                             <div className="form-group">
                                                 <label htmlFor="district"> Districts</label>
                                                
-                                                <select className="form-control" id="exampleFormControlSelect1" defaultValue={district} onChange={(e) => {setDistrict(e.target.value)}}>
+                                                <select className="form-control" id="exampleFormControlSelect1" value={district} onChange={(e) => {setDistrict(e.target.value)}}>
                                                     <option value="" disabled></option>
                                                     <option>Jaffna</option>
                                                     <option>Mannar</option>
@@ -243,7 +316,15 @@ const EditServiceInfo = ({content,addService,addDistrict,SPloading,serviceList,d
                                                 </div>
                                                 { error ? <small id="districtError" className="error form-text text-muted error "> {error}</small>: null}
                                            
-                                            <button type="submit" onClick={submitDistrict } className="btn btn-primary" style={{float:"right",marginBottom:"30px"}}>Add</button>
+                                                {!loadingDistrict ?
+                                                    <button type="submit" onClick={submitDistrict } className="btn btn-primary" style={{float:"right",marginBottom:"30px"}}>
+                                                        Add District
+                                                    </button>
+                                                :
+                                                    <button type="submit" className="btn btn-primary" style={{float:"right",marginBottom:"30px"}} disabled>
+                                                        Loading
+                                                    </button>
+                                                }
                                         </form>
                                     </div>
 
@@ -252,7 +333,7 @@ const EditServiceInfo = ({content,addService,addDistrict,SPloading,serviceList,d
                                     
                                 </div>
                             </div>
-
+                            {/* {-----------------------[ Available districts end ]---------------------} */}
                         </div>
                     </div>
                 </div>

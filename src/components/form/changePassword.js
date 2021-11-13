@@ -4,21 +4,22 @@ import * as Yup from 'yup';
 import {useFormik} from 'formik';
 import { useMutation } from "@apollo/client";
 
+import swal from 'sweetalert';
+
 //import { passwordValidator } from "../formComponents/formValidator";
 
 const PasswordChanger = ({id,action}) => {
 
-    const [password,setPassword] = useState("password");
-    const [className, setClassName] = useState("fa fa-eye");
+    const [addPassword,setAddPassword] = useState("password");
+    const [addClassName, setAddClassName] = useState("fa fa-eye");
 
-
-    const togglePassword = (e) => {
-        if (password == "password"){
-            setPassword("text");
-            setClassName('fa fa-eye-slash');
+    const toggleAddPassword = (e) => {
+        if (addPassword === "password"){
+            setAddPassword("text");
+            setAddClassName('fa fa-eye-slash');
         }else{
-            setPassword("password");
-            setClassName('fa fa-eye');
+            setAddPassword("password");
+            setAddClassName('fa fa-eye');
         } 
     };
 
@@ -27,33 +28,51 @@ const PasswordChanger = ({id,action}) => {
 
     
 
-    const passwordFormik = useFormik({
+    const formik = useFormik({
         initialValues:{
-            passwordUpdate:'',
-            confirmPasswordUpdate:''
+            password:'',
+            confirmPassword:''
         },
         validationSchema: Yup.object({
-            passwordUpdate: Yup.string()
+            password:  Yup.string()
                 .required('Please enter the password')
-                .min(4,"Password should be more than 3 letters"),
-                // .matches(/[A-Z]/,"Password should have a capital letter")
-                // .matches(/[0-9]/,"Password should have numbers"),
-            confirmPasswordUpdate: Yup.string()
+                .min(4,"Password should be more than 3 letters")
+                .matches(/[A-Z]/,"Password should have a capital letter")
+                .matches(/[0-9]/,"Password should have numbers"),
+            confirmPassword: Yup.string()
                 .required("Please confirm the password")
-                .oneOf([Yup.ref('passwordUpdate'),null],"Password must match")
+                .oneOf([Yup.ref('password'),null],"Password must match")
         }) ,
         onSubmit: values => {
-            alert(JSON.stringify(values));
+           
 
                 action({
                     variables:{
-                        password:values.passwordUpdate
+                        password:values.password
                     }
                 }).then(data=>{
-                    alert("Success")
-                    window.location.reload()
+                    swal({
+                        title: "Success",
+                        text: "successfully updated",
+                        icon: "success",
+                        button: {
+                          text: "Ok",
+                          closeModal: true,
+                        }, 
+                        
+                    })
+                    
                 }).catch(err =>{
-                    alert("Error")
+                    swal({
+                        title: "Error",
+                        text: "Error occurred in the update",
+                        icon: "warning",
+                        button: {
+                          text: "Close",
+                          closeModal: true,
+                        }, 
+                        dangerMode: true  
+                    })
                 })
             }
     });
@@ -61,18 +80,24 @@ const PasswordChanger = ({id,action}) => {
     
 
     return ( 
-        <form onSubmit={passwordFormik.handleSubmit}>
-            <div className="form-group" >
-                <label htmlFor="password">Password</label>    
-                <input type={password} className="form-control"  id="passwordUpdate" value={passwordFormik.values.passwordUpdate} placeholder="Password" onChange={passwordFormik.handleChange} onBlur={passwordFormik.handleBlur} required/>
-                <i className={className} id="visibile" style={{float:"right",cursor:"pointer",transform:"translate(-10px,-30px)"}} onClick={togglePassword}></i>
-                {passwordFormik.touched.passwordUpdate && passwordFormik.errors.passwordUpdate ? <small id="nameError" className="error form-text text-muted error "> {passwordFormik.errors.passwordUpdate}</small>:null}
+        <form onSubmit={formik.handleSubmit}>
+           <div className="form-group">
+                <label htmlFor="password">Password</label>
+                <input type={addPassword} className="form-control" value={formik.values.password} id="password" placeholder="Password" onChange={formik.handleChange} onBlur={formik.handleBlur} required/>
+                <div className="tooltips" id="tooltips" style={{float:'right'}} >
+                    <i className={addClassName} id="visibile" style={{float:"right",cursor:"pointer",transform:"translate(-10px,-30px)"}} onClick={toggleAddPassword}></i>
+                    <span className="tooltiptext" style={{width:'150px',transform:"translate(-20px,-30px)"}}>{addPassword=='password'?'view password':'hide password'}</span>
+                </div> 
+                {formik.touched.password && formik.errors.password ? <small id="nameError" className="error form-text text-muted error "> {formik.errors.password}</small>: null}
             </div>
             <div className="form-group">
                 <label htmlFor="confirmPassword">Confirm Password</label>
-                <input type={password} className="form-control" id="confirmPasswordUpdate" value={passwordFormik.values.confirmPasswordUpdate} placeholder="Confirm Password" onChange={passwordFormik.handleChange} onBlur={passwordFormik.handleBlur} required/>
-                <i className={className} id="visibile" style={{float:"right",cursor:"pointer",transform:"translate(-10px,-30px)"}} onClick={togglePassword}></i>
-                {passwordFormik.touched.confirmPasswordUpdate && passwordFormik.errors.confirmPasswordUpdate ? <small id="nameError" className="error form-text text-muted error ">{passwordFormik.errors.confirmPasswordUpdate}</small>:null}
+                <input type={addPassword} className="form-control" id="confirmPassword"  placeholder="Confirm Password" onChange={formik.handleChange} onBlur={formik.handleBlur} required/>
+                <div className="tooltips" id="tooltips" style={{float:'right'}} >
+                    <i className={addClassName} id="visibile" style={{float:"right",cursor:"pointer",transform:"translate(-10px,-30px)"}} onClick={toggleAddPassword}></i>
+                                        
+                    <span className="tooltiptext" style={{width:'150px',transform:"translate(-20px,-30px)"}}>{addPassword=='password'?'view password':'hide password'}</span>
+                </div> {formik.touched.confirmPassword && formik.errors.confirmPassword ? <small id="nameError" className="error form-text text-muted error "> {formik.errors.confirmPassword}</small>: null}
             </div>
             <button type="submit" className="btn btn-primary">Submit</button>
         </form>

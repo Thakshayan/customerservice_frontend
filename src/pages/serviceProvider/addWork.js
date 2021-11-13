@@ -2,8 +2,10 @@ import { useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import AddWorkForm from "../../components/work/add/addWork";
 import { ADD_WORK, INITIATE_APPOINTMENT } from "../../GraphQL/Mutations";
-//import { CHECK_USER, CHECK_WORK } from "../GraphQL/Queries";
+
 import { useEffect } from "react";
+
+import swal from 'sweetalert';
 
 //components
 import Header from "../../components/header";
@@ -23,7 +25,7 @@ const AddWork = (props) => {
         }
     })
 
-    const [initiateAppointment,{confirmLoading,errorLoading}] = useMutation(INITIATE_APPOINTMENT,{
+    const [initiateAppointment,{loading:confirmLoading,error:errorLoading}] = useMutation(INITIATE_APPOINTMENT,{
         onCompleted: data =>{
             if(data){
                 props.history.push(`/CSA/work/${appointment_id}`)
@@ -39,71 +41,21 @@ const AddWork = (props) => {
                     ID
                 }
             }).catch(err=>{
-                alert("Error");
-                console.log(err)
+                swal({
+                    title: "Error",
+                    text: "Error occurred in initiating appointment",
+                    icon: "warning",
+                    button: {
+                      text: "Close",
+                      closeModal: true,
+                    }, 
+                    dangerMode: true  
+                })
             })
         }
     },[ID])
 
-    // const [workerId,setWorkerId] = useState('');
-    // const [workerError,setWorkerError] = useState('')
-    // const [workId,setWorkId] = useState('');
-    // const [workError,setWorkError] = useState('')
-
-    // const fetchWorker = useQuery(CHECK_USER,{
-    //     variables:{
-    //         workerId:workerId
-    //     }
-    // })
-
-   
-
-    // useEffect(()=>{
-    //     if(workerId){
-    //         fetchWorker.refetch({
-    //             workerId:workerId
-    //         }).then(data =>{
-
-    //             if(data.CheckUsername){
-    //                 setWorkerError('')
-    //             }else{
-    //                 setWorkerError('Already reserved');
-    //             }
-
-    //         }).catch(err =>{
-    //             alert("Error Occured")
-    //         })
-    //     }
-    // },[workerId])
-
-
-
-    // const fetchWork = useQuery(CHECK_WORK,{
-    //     variables:{
-    //         workId:workId
-    //     }
-    // });
-
-    // useEffect(()=>{
-    //     if(workId){
-    //         fetchWork.refetch({
-    //             workId:workId
-    //         }).then(data =>{
-
-    //             if(data.CheckAppointmentID){
-    //                 setWorkerError('')
-    //             }else{
-    //                 setWorkerError('Already reserved');
-    //             }
-
-    //         }).catch(err =>{
-    //             alert("Error Occured")
-    //         })
-    //     }
-    // },[workId])
     
-
-
     return ( 
 
         <div>
@@ -116,7 +68,7 @@ const AddWork = (props) => {
         [ Header ] start */}
         <Header/>
         {/*<!-- [ Header ] end --> */}   
-            
+        {/*<!-- [ Content ] start --> */}  
         <AddWorkForm 
             type="Work"
             action={appointment}
@@ -129,6 +81,7 @@ const AddWork = (props) => {
             // checkWork = {fetchWork}
 
         />
+        {/*<!-- [ Content ] end --> */}  
         </div>
      );
 }

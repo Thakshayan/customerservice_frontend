@@ -46,11 +46,25 @@ const SignIn = (props) => {
                     <SignInForm action={signINModSP} loading={loading} type="Moderator"/>
                     
                     <p className="mb-2 text-muted" >
-                        Signin Worker? 
+                        Signin ?
+                        <Link to="/signInCustomer" style={{color:'#038fcf',fontStyle:'italic',textDecoration:'underline'}}>
+                            Customer 
+                        </Link>
+                        /
                         <Link to="/signinWorker" style={{color:'#038fcf',fontStyle:'italic',textDecoration:'underline'}}>
                             Worker
                         </Link>
                     </p>
+
+                    
+
+                    {/* <p className="mb-2 text-muted" >
+                        Signin Administrator? 
+                        <Link to="/signInAdmin" style={{color:'#038fcf',fontStyle:'italic',textDecoration:'underline'}}>
+                            Administrator
+                        </Link>
+                    </p> */}
+
                     <p className="mb-0 text-muted" >
                         Create a Service Provider? 
                         <Link to="signup" style={{color:'#038fcf',fontStyle:'italic',textDecoration:'underline'}}>

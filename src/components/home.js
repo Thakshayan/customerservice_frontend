@@ -1,6 +1,6 @@
 import Notificator from './notification/notificator';
 import RatingList from "./rating/ratingSection/ratingList";
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import Chart from "./chart";
 import SummaryChart from "./pieChart";
@@ -78,6 +78,14 @@ function Content({content,loading,type}){
         
     }
 
+    const [messages,setMessages] = useState([])
+
+    useEffect(()=>{
+        if(content){
+            setMessages(content.getMyMessages)
+        }
+    },[content])
+
     
 
 
@@ -112,9 +120,11 @@ function Content({content,loading,type}){
                                 />: 
                                     content.getMyRole === "Worker" ? null
                                     :
+                                    <div className="col-xl-6">
                                     <Empty
                                         message="No Bookings Yet"
-                                    />    
+                                    /> 
+                                    </div>   
                                 }
                                 {/*<!--[ New request section ] end-->
 
@@ -127,9 +137,11 @@ function Content({content,loading,type}){
                                 />:
                                     content.getMyRole === "Worker" ? null
                                     :
+                                    <div className="col-xl-6">
                                     <Empty
                                         message="No Finished works Yet"
-                                    />                                    
+                                    />   
+                                    </div>                                 
                                 }
 
                                 {/*<!--[ Ongoing Work section ] end-->*/}
@@ -144,7 +156,9 @@ function Content({content,loading,type}){
                                 }
                                 {/* <!--[ Recent Notification ] end-->*/}
                                 {/*<!--[ Recent Notification ] start-->*/}
-                                <Message title="Messages" content={content.getMyMessages} type={type}/>
+                                {messages[0] ? <Message title="Messages" content={messages} type={type}/>: 
+                                   null
+                                }
                                 {/* <!--[ Recent Notification ] end-->*/}
                                 </div>
 

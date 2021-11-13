@@ -12,11 +12,11 @@ import {useState, useEffect} from 'react';
 import { CHECK_USER } from '../../../GraphQL/Queries';
 import {useQuery} from '@apollo/client'
 
+import swal from 'sweetalert';
 
 
 
-
-function AddWorkerForm({type,addEmployee,setID,Id,content,ID,photoFocus}){
+function AddWorkerForm({type,addEmployee,setID,Id,content,ID,photoFocus,loading}){
 
 
     
@@ -99,8 +99,9 @@ function AddWorkerForm({type,addEmployee,setID,Id,content,ID,photoFocus}){
             //     .required('Please enter the Worker ID')
                 
             //     .matches(/^[\w\d]+$/,"can only have letters and digits"),
-            phone: Yup.number()
-                .required('Please enter the phone number'),
+            phone: Yup.string()
+                .required('Please enter the phone number')
+                .matches(/^([0-9]{9,10})$/,"Enter a valid phone number "),
             address: Yup.string()
                 .required('Please fill the address'),
             // date:Yup.date()
@@ -129,9 +130,29 @@ function AddWorkerForm({type,addEmployee,setID,Id,content,ID,photoFocus}){
                 addEmployee({
                     variables:values  
                   })
-                   
+                  .then(res=>{
+                    swal({
+                        title: "Success",
+                        text: "successfully created",
+                        icon: "success",
+                        button: {
+                          text: "Close",
+                          closeModal: true,
+                        }, 
+                        
+                    })
+                  })
                   .catch(err=>{
-                      alert("Error Occured")
+                    swal({
+                        title: "Error",
+                        text: "Error occurred in submission",
+                        icon: "warning",
+                        button: {
+                          text: "Close",
+                          closeModal: true,
+                        }, 
+                        dangerMode: true  
+                    })
                   })
                 
                 
@@ -179,7 +200,7 @@ function AddWorkerForm({type,addEmployee,setID,Id,content,ID,photoFocus}){
 
                                                             <div className="form-group">
                                                                 <label htmlFor="name">Full Name</label>
-                                                                <input type="text" className="form-control" value={formik.values.name} id="name" placeholder="Full Name" onChange={formik.handleChange} onBlur={formik.handleBlur} required/>
+                                                                <input type="text" className="form-control" value={formik.values.name} id="name" placeholder="Eg: Vijay Antony" onChange={formik.handleChange} onBlur={formik.handleBlur} required/>
                                                                 { formik.touched.name && formik.errors.name ? <small id="nameError" className="error form-text text-muted error "> {formik.errors.name}</small>: null}
                                                             </div>
                                                             <div className="form-group">
@@ -232,7 +253,11 @@ function AddWorkerForm({type,addEmployee,setID,Id,content,ID,photoFocus}){
                                                             </div>
                                                     </div>
                                                 </div>
-                                                <button type="submit" className="btn btn-primary" style={{float:"right"}}>Submit</button>
+                                                {!loading ?
+                                                    <button type="submit" className="btn btn-primary" style={{float:"right"}}>Submit</button>
+                                                :
+                                                    <button  className="btn btn-primary" style={{float:"right"}} disabled>loading ...</button>
+                                                }
                                                         
                                             </form>
                                             </div>

@@ -27,20 +27,43 @@ function NavBarWorker(){
                             <label>Works</label>
                         </li>
                         
-                        <li data-username="basic components Button Alert Badges breadcrumb Paggination progress Tooltip popovers Carousel Cards Collapse Tabs pills Modal Grid System Typography Extra Shadows Embeds" className="nav-item pcoded-hasmenu">
+                        {/* <li data-username="basic components Button Alert Badges breadcrumb Paggination progress Tooltip popovers Carousel Cards Collapse Tabs pills Modal Grid System Typography Extra Shadows Embeds" className="nav-item pcoded-hasmenu">
                             <Link to="#" className="nav-link" style={{pointerEvents:"none"}}><span className="pcoded-micon"><i className="fas fa-file-word"></i></span><span className="pcoded-mtext">Ongoing Work</span></Link>
                             <ul className="pcoded-submenu">
-                                <li className=""><Link to="/Worker/viewWork" className="">View Work</Link></li>
+                                <li className="">
+                                    <Link to="/Worker/viewWork" className="">
+                                    <i className="fas fa-file-word"></i>
+                                        View Work
+                                    </Link>
+                                </li>
                                 
                             </ul>
+                            
+                        </li> */}
+                        <li data-username="" className="nav-item" >
+                            <Link to="/Worker/viewWork" className="nav-link ">
+                                <span className="pcoded-micon"><i className="fas fa-file-word"></i> </span>
+                                <span className="pcoded-mtext">View Ongoing Works</span>
+                            </Link>
                         </li>
-                        <li data-username="basic components Button Alert Badges breadcrumb Paggination progress Tooltip popovers Carousel Cards Collapse Tabs pills Modal Grid System Typography Extra Shadows Embeds" className="nav-item pcoded-hasmenu">
+                        {/* <li data-username="basic components Button Alert Badges breadcrumb Paggination progress Tooltip popovers Carousel Cards Collapse Tabs pills Modal Grid System Typography Extra Shadows Embeds" className="nav-item pcoded-hasmenu">
                             <Link to="#" className="nav-link" style={{pointerEvents:"none"}}><span className="pcoded-micon"><i className="fas fa-edit"></i></span><span className="pcoded-mtext">Finished Work</span></Link>
                             <ul className="pcoded-submenu">
-                                <li className=""><Link to="/Worker/viewFinishWork" className="">View Work</Link></li>
-                                {/* <li className=""><Link to="editRating" className="">Edit Rating</Link></li>
-                                <li className=""><Link to="viewRating" className=""> View Rating</Link></li> */}
+                                <li className="">
+                                    <Link to="/Worker/viewFinishWork" className="">
+                                        <i className="fas fa-edit"></i>
+                                        View Work
+                                    </Link>
+                                    </li>
+                                
                             </ul>
+                            
+                        </li> */}
+                        <li data-username="" className="nav-item" >
+                            <Link to="/Worker/viewFinishWork" className="nav-link ">
+                                <span className="pcoded-micon"><i className="fas fa-edit"></i> </span>
+                                <span className="pcoded-mtext">View Finished Works</span>
+                            </Link>
                         </li>
                         <li className="nav-item pcoded-menu-caption">
                             <label>Worker</label>

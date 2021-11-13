@@ -5,6 +5,8 @@ import { PROFILE } from '../../GraphQL/workerQueries';
 import {useState} from 'react'
 import Loading from '../../components/loading';
 
+import swal from 'sweetalert';
+
 //components
 import Header from "../../components/headerWorker";
 import NavBarWorker from '../../components/navbarWorker';
@@ -35,9 +37,27 @@ function Profile() {
 
     },[data]);
 
+        // error occurred
+        useEffect(()=>{
+        
+            if(error){
+                swal({
+                    title: "Error",
+                    text: "Error occurred in retrieving please refresh",
+                    icon: "warning",
+                    button: {
+                      text: "Close",
+                      closeModal: true,
+                    }, 
+                    dangerMode: true  
+                })
+            }
+    
+        },[error])
+
     return (
         <div>
-                     {/* [ Pre-loader ] start */}
+        {/* [ Pre-loader ] start */}
          <Preloader/>
         { /* [ Pre-loader ] End 
 

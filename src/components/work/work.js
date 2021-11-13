@@ -95,7 +95,7 @@ const WorkProfile = ({contents,disable}) => {
                                 symbol =  {<i className="fas fa-check-circle text-c-green f-30 m-r-10"></i>}
                                 count = 'Finished'
                                 button = {
-                                    <button className="label theme-bg text-white f-12" style={{width:"100%",float:"right",textAlign:"center",borderWidth:0}}>
+                                    <button className="label theme-bg text-white f-12" style={{width:"100%",float:"right",textAlign:"center",borderWidth:0}} disabled>
                                         
                                         {content.paid ?
                                         <>

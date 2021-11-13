@@ -3,6 +3,7 @@
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
 
+import swal from 'sweetalert';
 
 const AddEmployee = () => {
 
@@ -35,7 +36,7 @@ const AddEmployee = () => {
         })
     ,
         onSubmit: values => {
-            alert(JSON.stringify(values,null,2))
+            //alert(JSON.stringify(values,null,2))
             const employee = values
         }
     })

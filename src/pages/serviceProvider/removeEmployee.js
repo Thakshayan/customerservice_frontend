@@ -3,6 +3,8 @@ import RemoveEmployeeCard from "../../components/employee/remove/removeEmployee"
 
 import {useQuery,useMutation} from '@apollo/client'
 
+import swal from "sweetalert";
+
 import { REMOVE_WORKER } from "../../GraphQL/Mutations";
 import { GET_SEARCH_WORKER } from "../../GraphQL/Queries";
 
@@ -13,12 +15,12 @@ import Preloader from '../../components/preloader';
 
 const RemoveEmployee = () => {
 
-    const [removeModerator,{loading,error}] = useMutation(REMOVE_WORKER,{
+    const [removeWorker,{loading,error}] = useMutation(REMOVE_WORKER,{
         onCompleted: res =>{
             
-            if(res.removeWorker){
-                window.location.href="/success"
-            }
+            //if(res.removeWorker){
+                //window.location.href="/success"
+            //}
         }
     });
 
@@ -27,6 +29,9 @@ const RemoveEmployee = () => {
     const [Id,setId] = useState('')
 
     const [content,setContent] = useState([]);
+
+
+    //search
     const fetchContent = useQuery(GET_SEARCH_WORKER,{
         variables:{ workerId:Id }
     });
@@ -40,12 +45,21 @@ const RemoveEmployee = () => {
             fetchContent.refetch({
                 workerId:Id
             }).then( data => {
-
-               
                 if(data){
                     setContent(data.data.getWorker)
                 }
     
+            }).catch(err=>{
+                swal({
+                    title: "Error",
+                    text: "Error occurred in retrieving please refresh",
+                    icon: "warning",
+                    button: {
+                      text: "Close",
+                      closeModal: true,
+                    }, 
+                    dangerMode: true  
+                })
             })
         }
         
@@ -62,14 +76,20 @@ const RemoveEmployee = () => {
             [ Header ] start */}
             <Header/>
             {/*<!-- [ Header ] end --> */}
-        <RemoveEmployeeCard 
-            type="Worker" 
-            action={removeModerator} 
-            content =  {content}
-            id ={Id}
-            setID = {setId}
-            loading = {loading}
-            />
+            {/*<!-- [ Content ] start --> */}
+
+            <RemoveEmployeeCard 
+                type="Worker" 
+                action={removeWorker} 
+                content =  {content}
+                id ={Id}
+                setID = {setId}
+                loading = {loading}
+                fetchloading = {fetchContent.loading}
+                />
+
+            {/*<!-- [ Content ] start --> */}
+            
         </div>
      );
 }

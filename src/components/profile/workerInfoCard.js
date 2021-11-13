@@ -74,7 +74,10 @@ const WorkerInfoCard = ({id,edit,title,content,type}) => {
                     {edit ? 
                         <div style={{paddingTop:"20px",float:"right"}}>
                             <Link to={ `/Worker/edit/password`} className="btn btn-mtd btn-primary" style={{width:"100px",height:"25px",padding:'0 0'}}> 
-                                Edit 
+                                <div className="tooltips" id="tooltips">
+                                    Edit
+                                    <span className="tooltiptext" >Edit Password</span>
+                                </div>
                                 <i className="fas fa-edit" style={{paddingLeft:'10px'}}></i>
                             </Link>
                             {/* <Link to={ `/CSA/edit/workerInfo/${id}?type=${type}`} className="btn btn-mtd btn-primary" style={{width:"100px",height:"25px",padding:'0 0'}}> 

@@ -11,6 +11,8 @@ import Header from "../../components/header";
 import NavBar from '../../components/navbar';
 import Preloader from '../../components/preloader';
 
+import swal from "sweetalert";
+
 import { sumArray } from "../../components/formatter";
 
 const Message = (props) => {
@@ -28,6 +30,7 @@ const Message = (props) => {
     const [offSet,setOffSet] = useState();
     const limit = 3;
 
+    //retrieve content
     const {error,loading,data} = useQuery(GET_MESSAGES,{
         variables:{
             offset:limit,
@@ -43,6 +46,25 @@ const Message = (props) => {
         }
     },[data])
     
+    //error
+    useEffect(()=>{
+
+        if(error){
+            swal({
+                title: "Error",
+                text: "Error occurred in retrieving",
+                icon: "warning",
+                button: {
+                text: "Close",
+                closeModal: true,
+                }, 
+                dangerMode: true  
+            })
+        }
+
+    },[error])
+
+    //send message
     const [sendMessage,{loadingMessages,loadingError}] = useMutation(SEND_MESSAGE,{
         onCompleted:data => {
             window.location.href = '/success'
@@ -90,20 +112,22 @@ const Message = (props) => {
             [ Header ] start */}
             <Header/>
             {/*<!-- [ Header ] end --> */}
-        <Messager
-            content={content}
-            setPage={setPage}
-            page= {page}
-            offSet = {offSet}
-            loading = {loading}
-            action = {sendMessage}
-            setToError = {setToError}
-            toError = {toError}
-            To = {To}
-            setTo = {setTo}
-            loadingMessages = {loadingMessages}
-            
-        />
+            {/*<!-- [ Main Content ] start -->*/}
+            <Messager
+                content={content}
+                setPage={setPage}
+                page= {page}
+                offSet = {offSet}
+                loading = {loading}
+                action = {sendMessage}
+                setToError = {setToError}
+                toError = {toError}
+                To = {To}
+                setTo = {setTo}
+                loadingMessages = {loadingMessages}
+                
+            />
+            {/*<!-- [ Main Content ] end -->*/}
         </div>
      );
 }

@@ -15,13 +15,17 @@ const ButtonCard = ({id,array,setArray}) => {
     return ( 
         <div className="col-6 col-xl-4" style={{padding:"10px",height:"100%"}}>
     
-            <button type="button" className="" title="click to remove" 
-                onClick={(e)=>{removeFromArray(e,array,setArray)}} 
-                aria-label="click to remove" 
-                style={{height:"100%",padding:"5px 5px",width:"100%",borderRadius:"17px"}}>
+            
+            <div className="tooltips" id="tooltips">
+                <button type="button" className="" 
+                    onClick={(e)=>{removeFromArray(e,array,setArray)}} 
+                    aria-label="click to remove" 
+                    style={{height:"100%",padding:"5px 5px",width:"100%",borderRadius:"17px"}}>
 
-                {id} <i className="fas fa-user-minus"></i>
-            </button>
+                    {id} <i className="fas fa-user-minus"></i>
+                </button>
+                <span className="tooltiptext" >Click to remove</span>
+            </div> 
             
         </div>
      );

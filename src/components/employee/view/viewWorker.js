@@ -8,7 +8,7 @@ import Empty  from "../../empty"
 
 
 
-function ViewWorker({type,content,page,setID,setPage,offSet,id,loading}){
+function ViewWorker({type,content,page,setID,setPage,offSet,id,loading,searchLoading}){
 
     return(  
         <div className="pcoded-main-container">
@@ -27,7 +27,7 @@ function ViewWorker({type,content,page,setID,setPage,offSet,id,loading}){
                         <div className="main-body">
                             <div className="page-wrapper">
                                 {/*<!-- [ Main Content ] start -->*/}
-                                {!loading ? 
+                                {!loading ?
                                 <div className="row">
 
                                     {

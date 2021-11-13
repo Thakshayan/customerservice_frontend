@@ -9,6 +9,8 @@ import Header from "../../components/headerWorker";
 import NavBarWorker from '../../components/navbarWorker';
 import Preloader from '../../components/preloader';
 
+import swal from 'sweetalert';
+
 const Notification = () => {
 
     //const [contents,setContents] = useState([]);
@@ -37,15 +39,31 @@ const Notification = () => {
     //retrieve notifications
     useEffect(()=>{
 
-        if(error){
-            console.log(error)
-        }
+
         if(data){
             setContent(data.worker_getMyNotification)
             setOffSet(count(data.getCountNotification)/2)
             
         }
     },[data])
+
+    // error occurred
+    useEffect(()=>{
+            
+        if(error){
+            swal({
+                title: "Error",
+                text: "Error occurred in retrieving please refresh",
+                icon: "warning",
+                button: {
+                text: "Close",
+                closeModal: true,
+                }, 
+                dangerMode: true  
+            })
+        }
+
+    },[error])
 
 
 
@@ -62,6 +80,8 @@ const Notification = () => {
         [ Header ] start */}
         <Header/>
         {/*<!-- [ Header ] end --> */}
+
+         {/*<!-- [ Content ] start --> */}
         <ViewNotifications 
             content={content}
             setPage={setPage} 
@@ -69,6 +89,7 @@ const Notification = () => {
             offSet={offSet}
             loading = {loading}
         />
+         {/*<!-- [ Content ] ends --> */}
         </div>
      );
 }

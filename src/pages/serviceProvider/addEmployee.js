@@ -4,6 +4,8 @@ import { useMutation, useQuery } from '@apollo/client';
 import {useEffect, useRef, useState} from 'react';
 import { GET_SEARCH_WORKER, GET_WORKER } from '../../GraphQL/Queries';
 
+import swal from 'sweetalert';
+
 //components
 import Header from "../../components/header";
 import NavBar from '../../components/navbar';
@@ -52,7 +54,16 @@ function AddEmployee() {
                 setContent([data.data.UniqueSearchWorker])
                 scrollToBottom()
             }).catch(err =>{
-                alert("Error")
+                swal({
+                    title: "Error",
+                    text: "Error occurred in the search",
+                    icon: "warning",
+                    button: {
+                      text: "Close",
+                      closeModal: true,
+                    }, 
+                    dangerMode: true  
+                })
             })
         }
     },[id])
@@ -64,6 +75,17 @@ function AddEmployee() {
                 workerId:Id
             }).then(data =>{
                 setContent(data.data.getWorker)
+            }).catch(err =>{
+                swal({
+                    title: "Error",
+                    text: "Error occurred in the search",
+                    icon: "warning",
+                    button: {
+                      text: "Close",
+                      closeModal: true,
+                    }, 
+                    dangerMode: true  
+                })
             })
         }
     },[Id])

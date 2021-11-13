@@ -104,6 +104,8 @@ const SignUp = (props) => {
                     myServiceArray = {myServiceArray}
                     membershipID = {membershipID}
                     ownerID = {ownerID}
+                    loadingSignUp = {loadingSignUp}
+                    setUserError = {setUserError}
                     />
 
                     :
@@ -120,6 +122,7 @@ const SignUp = (props) => {
                     memberships = {memberships}
                     setMembershipID = {setMembershipID}
                     action = {addOwner}
+                    loadingAddOwner = {loadingAddOwner}
                 />
                
                

@@ -7,14 +7,14 @@ import { dateFormatter } from '../formatter';
 
 function Message({title,content,id,loading,type}){
 
-    const [Notification,setNotification] = useState([]);
+    const [contents,setContents] = useState([]);
 
 
 
     useEffect(()=>{
-        console.log(content)
+       
         if(content){
-            setNotification(content)
+            setContents(content)
         }
         
     },[])
@@ -32,7 +32,7 @@ function Message({title,content,id,loading,type}){
                             {!loading ?
                             <div className="">
 
-                                {content && content[0]? content.map((e)=>{
+                                {contents && contents[0]? content.map((e)=>{
                                     return <MessageBar
                                         By = {e.by}
                                         received_date = {dateFormatter(e.received_date)}

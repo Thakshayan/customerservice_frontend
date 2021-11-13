@@ -45,7 +45,7 @@ const SignIn = (props) => {
                     <h3 className="mb-4">Login</h3>
                     
 
-                    <SignInForm action={signINWorker} formType="signin" type="Worker"/>
+                    <SignInForm action={signINWorker} formType="signin" type="Worker" loading={loading}/>
 
 
                     <p className="mb-2 text-muted">Signin Moderator/admin? 

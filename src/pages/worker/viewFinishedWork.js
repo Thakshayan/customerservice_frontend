@@ -5,6 +5,8 @@ import {useQuery} from "@apollo/client";
 
 import { GET_WORKER_FINISHEDWORK, GET_WORKER_SEARCH_FININISHEDWORK} from "../../GraphQL/workerQueries";
 
+import swal from 'sweetalert';
+
 //components
 import Header from "../../components/headerWorker";
 import NavBarWorker from '../../components/navbarWorker';
@@ -14,11 +16,7 @@ const ViewFinishWork = () => {
 
     const [id,setID] = useState('');
     // const [Id,setID] = useState(id);
-    const fetchContent = useQuery(GET_WORKER_SEARCH_FININISHEDWORK,{
-        variables:{ workId:id
-        }
-    });
-
+   
 
     const [contents,setContents] = useState([]);
     const [content,setContent] = useState([]);
@@ -48,19 +46,37 @@ const ViewFinishWork = () => {
 
     useEffect(()=>{
      
-        if(error){
-            console.log(error)
-        }
-        if(data){
-          
+        if(data){          
             setContent(data.worker_getMyFinishedWorks)
             setContents(data.worker_getMyFinishedWorks)
             setOffSet(finishCount(data.getCountAssignedAppointments)/2)
         }
 
-
     },[data])
 
+    // error occurred
+    useEffect(()=>{
+        
+        if(error){
+            swal({
+                title: "Error",
+                text: "Error occurred in retrieving please refresh",
+                icon: "warning",
+                button: {
+                  text: "Close",
+                  closeModal: true,
+                }, 
+                dangerMode: true  
+            })
+        }
+
+    },[error])
+    
+    //search
+    const fetchContent = useQuery(GET_WORKER_SEARCH_FININISHEDWORK,{
+        variables:{ workId:id
+        }
+    });
 
 
     useEffect(()=>{
@@ -75,6 +91,17 @@ const ViewFinishWork = () => {
                     
                 }
     
+            }).catch(err=>{
+                swal({
+                    title: "Error",
+                    text: "Error occurred in retrieving please refresh",
+                    icon: "warning",
+                    button: {
+                      text: "Close",
+                      closeModal: true,
+                    }, 
+                    dangerMode: true  
+                })
             })
         }else if(contents){
             setContent(contents)
@@ -96,6 +123,7 @@ const ViewFinishWork = () => {
         [ Header ] start */}
         <Header/>
         {/*<!-- [ Header ] end --> */}
+        {/*<!-- [ Main Content ] start -->*/}
         <ViewWorks 
             type="finished" 
             content={content} 
@@ -108,6 +136,8 @@ const ViewFinishWork = () => {
             role="Worker"
             url={true}
         />
+        {/*<!-- [ Main Content ] end -->*/}
+
         </div>
      );
 }

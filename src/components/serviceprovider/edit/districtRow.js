@@ -1,15 +1,47 @@
-const DistrictRow = ({district,action}) => {
-    
+import { useState } from 'react';
+import swal from 'sweetalert';
+
+
+const DistrictRow = ({district,action,loading,workRanges,setWorkRange}) => {
+
+   
+
     const remove = (e)=>{
         e.preventDefault()
         action({
             variables:{
                 district:district
             }
-        }).then(res=>{
+        }).then(async res=> {
+            
 
-        }).catch(err => {
+            setWorkRange(workRanges.filter(item => item !== district));
+
+                swal({
+                    title: "Success",
+                    text: "successfully deleted",
+                    icon: "success",
+                    button: {
+                      text: "Close",
+                      closeModal: true,
+                    }, 
+                })
+            }
+
+            
+
+        ).catch(err => {
             console.log(err)
+            swal({
+                title: "Error",
+                text: "Error occurred removing",
+                icon: "warning",
+                button: {
+                  text: "Close",
+                  closeModal: true,
+                }, 
+                dangerMode: true  
+            })
         })
     }
     
@@ -27,10 +59,17 @@ const DistrictRow = ({district,action}) => {
             </div>
             
             <div className="col-12 col-sm-3 col-md-4 col-xl-3" style={{margin:'10px'}}>
-                <button onClick={remove} className="label theme-bg2 text-white f-12" style={{float:'right',right:"20px"}}>
-                    Remove
-                    &nbsp; <i className="far fa-trash-alt"></i>
-                </button>
+                {!loading ?
+                    <button onClick={remove} className="label theme-bg2 text-white f-12" style={{float:'right',right:"20px"}}>
+                        Remove
+                        &nbsp; <i className="far fa-trash-alt"></i>
+                    </button>
+                :
+                    <button className="label theme-bg2 text-white f-12" style={{float:'right',right:"20px"}} disabled>
+                        Remove
+                        &nbsp; <i className="far fa-trash-alt"></i>
+                    </button>
+                }
             </div>
         </div>
     </div>

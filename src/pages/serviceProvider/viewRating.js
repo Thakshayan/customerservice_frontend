@@ -3,6 +3,8 @@ import { useEffect, useState,useLayoutEffect } from "react";
 import ViewRating from "../../components/rating/view/viewRating";
 import { GET_REVIEW, GET_SEARCH_REVIEW } from "../../GraphQL/Queries";
 
+import swal from "sweetalert";
+
 //components
 import Header from "../../components/header";
 import NavBar from '../../components/navbar';
@@ -17,18 +19,16 @@ function ViewReview() {
     const [offSet,setOffSet] = useState();
     const limit = 3
 
+    
+   
+
+    // retrieve content
     const {error,loading,data} = useQuery(GET_REVIEW,{
         variables:{
             offset:limit,
             page:page
         }
     });
-
-    const fetchContent = useQuery(GET_SEARCH_REVIEW,{
-        variables:{
-            customerId:id
-        }
-    })
 
     useEffect(()=>{
  
@@ -40,9 +40,34 @@ function ViewReview() {
 
     },[data]);
 
+    // error occurred
+    useEffect(()=>{
+        
+        if(error){
+            swal({
+                title: "Error",
+                text: "Error occurred in retrieving please refresh",
+                icon: "warning",
+                button: {
+                    text: "Close",
+                    closeModal: true,
+                }, 
+                dangerMode: true  
+             })
+        }
+    
+    },[error])
+
     useLayoutEffect(() => {
         window.scrollTo(0, 0)
     },[page]);
+
+    // search the content
+    const fetchContent = useQuery(GET_SEARCH_REVIEW,{
+        variables:{
+            customerId:id
+        }
+    })
 
     useEffect(() => {
         if(id){
@@ -51,6 +76,17 @@ function ViewReview() {
             }).then(res =>{
                 
                 setContent(res.data.getCustomerReview)
+            }).catch(err =>{
+                swal({
+                    title: "Error",
+                    text: "Error occurred in retrieving please refresh",
+                    icon: "warning",
+                    button: {
+                      text: "Close",
+                      closeModal: true,
+                    }, 
+                    dangerMode: true  
+                })
             })
         }else if(contents){
             setContent(contents)

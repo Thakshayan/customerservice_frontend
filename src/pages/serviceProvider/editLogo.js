@@ -8,6 +8,7 @@ import ElementCard from "../../components/employee/elementCard";
 
 import PhotoUpdate from "../../components/form/changePhoto";
 import {useEffect, useState} from 'react';
+import swal from "sweetalert";
 
 import { useQuery } from "@apollo/client";
 import { PROVIDER_CARD } from "../../GraphQL/Queries";
@@ -24,6 +25,24 @@ const EditLogo = () => {
             setContent([data.getMySP])
         }
     },[data])
+
+    //error
+    useEffect(()=>{
+
+        if(error){
+            swal({
+                title: "Error",
+                text: "Error occurred in retrieving",
+                icon: "warning",
+                button: {
+                text: "Close",
+                closeModal: true,
+                }, 
+                dangerMode: true  
+            })
+        }
+
+    },[error])
 
     return (
     <div>

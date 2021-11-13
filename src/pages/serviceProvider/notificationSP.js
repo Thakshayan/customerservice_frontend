@@ -10,6 +10,10 @@ import Header from "../../components/header";
 import NavBar from '../../components/navbar';
 import Preloader from '../../components/preloader';
 
+import { Count } from "../../components/formatter";
+import swal from 'sweetalert';
+
+
 const SPNotification = () => {
 
 
@@ -25,24 +29,41 @@ const SPNotification = () => {
         }
     });
 
+    //auto scroll to top
     useLayoutEffect(() => {
         window.scrollTo(0, 0)
     },[page]);
 
-
+    //retrieve data
     useEffect(()=>{
 
-        if(error){
-            console.log(error)
-        }
+ 
         if(data){
             
             setContent(data.getMyNotification); //change
-            setOffSet(data.getCountNotification.Count/1)
+            setOffSet(Count(data.getCountNotification)/1)
         }
 
 
     },[data])
+
+    //alert error
+    useEffect(()=>{
+
+        if(error){
+            swal({
+                title: "Error",
+                text: "Error occurred in retrieving",
+                icon: "warning",
+                button: {
+                  text: "Close",
+                  closeModal: true,
+                }, 
+                dangerMode: true  
+            })
+        }
+
+    },[error])
 
 
 
@@ -57,13 +78,18 @@ const SPNotification = () => {
             [ Header ] start */}
             <Header/>
             {/*<!-- [ Header ] end --> */}
-        <ViewNotifications 
-            content={content}
-            setPage={setPage} 
-            page={page} 
-            offSet={offSet}
-            loading={loading}
-        />
+            {/*<!-- [ Main Content ] start -->*/}
+
+            
+            <ViewNotifications 
+                content={content}
+                setPage={setPage} 
+                page={page} 
+                offSet={offSet}
+                loading={loading}
+            />
+            {/*<!-- [ Main Content ] end -->*/}
+
         </div>
      );
 }

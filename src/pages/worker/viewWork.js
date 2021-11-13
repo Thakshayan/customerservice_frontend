@@ -5,6 +5,8 @@ import {useQuery} from "@apollo/client";
 
 import { GET_WORKER_ONGOINGWORK, GET_WORKER_SEARCH_ONGOINGWORK} from "../../GraphQL/workerQueries";
 
+import swal from 'sweetalert';
+
 //components
 import Header from "../../components/headerWorker";
 import NavBarWorker from '../../components/navbarWorker';
@@ -21,7 +23,9 @@ const ViewWork = () => {
         }
     
         for(var i=0;i<objects.length;i++){
+          
           if (objects[i]._id ==="going"){
+            
             return objects[i].Count 
           }
         }
@@ -45,9 +49,7 @@ const ViewWork = () => {
 
     useEffect(()=>{
        
-        if(error){
-            console.log(error)
-        }
+      console.log(data)
         if(data){
             setContent(data.worker_getMyOngoingWorks)
             setContents(data.worker_getMyOngoingWorks)
@@ -56,6 +58,24 @@ const ViewWork = () => {
 
 
     },[data])
+
+    //error
+    useEffect(()=>{
+
+      if(error){
+          swal({
+              title: "Error",
+              text: "Error occurred in retrieving",
+              icon: "warning",
+              button: {
+              text: "Close",
+              closeModal: true,
+              }, 
+              dangerMode: true  
+          })
+      }
+
+    },[error])
 
 
     // search a worker assigned to a worker
@@ -95,6 +115,7 @@ const ViewWork = () => {
         [ Header ] start */}
         <Header/>
         {/*<!-- [ Header ] end --> */}
+         {/*<!-- [ Content ] start --> */}
         <ViewWorks 
             type="confirmed" 
             content={content} 
@@ -107,6 +128,7 @@ const ViewWork = () => {
             role="Worker"
             url={true}
         />
+         {/*<!-- [ Content ] end --> */}
         </div>
      );
 }

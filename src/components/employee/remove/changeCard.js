@@ -9,7 +9,7 @@ import ElementCard from "../elementCard";
 import Empty from "../../empty";
 import Loading from "../../loading";
 
-const ChangeCard = ({title,content,setID,id,type,action,childComponent,loading}) => {
+const ChangeCard = ({title,content,setID,id,type,action,childComponent,loading,fetchloading }) => {
 
 
     
@@ -25,7 +25,7 @@ const ChangeCard = ({title,content,setID,id,type,action,childComponent,loading})
                      <SearchBar placeholder="Enter worker ID ..." id={id} setId={setID}/>
                                             
                      </div>
-                    {!loading ?
+                    {!fetchloading ?
                     <div className="card-block px-0 py-3">
                         <div className="">
                             <div className="">

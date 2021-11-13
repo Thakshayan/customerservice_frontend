@@ -4,6 +4,8 @@ import { GET_NEWBOOKINGS, GET_SEARCH_BOOKING } from '../../GraphQL/Queries';
 import { useQuery } from '@apollo/client';
 import { useEffect , useState } from 'react';
 
+import swal from "sweetalert";
+
 //components
 import Header from "../../components/header";
 import NavBar from '../../components/navbar';
@@ -19,6 +21,7 @@ const WorkRequest = () => {
     const [page,setPage] = useState(1);
     const [offSet,setOffSet] = useState();
 
+    //retrieve booking
     const {error,loading,data} = useQuery(GET_NEWBOOKINGS,{
         variables:{
             page:page,
@@ -26,6 +29,43 @@ const WorkRequest = () => {
         }
     });
 
+    useEffect(()=>{
+
+        if(data){
+            
+            setContent(data.getMyBooking)
+            setContents(data.getMyBooking)
+            var count = data.getCountBooking.filter(e => (e._id ==='open'))
+           
+            if(count[0]){
+                
+                setOffSet(count[0].Count/3)
+            }
+        }
+
+
+    },[data])
+
+    // error occurred
+    useEffect(()=>{
+        
+        if(error){
+            swal({
+                title: "Error",
+                text: "Error occurred in retrieving please refresh",
+                icon: "warning",
+                button: {
+                    text: "Close",
+                    closeModal: true,
+                }, 
+                dangerMode: true  
+             })
+        }
+    
+    },[error])
+
+    
+    //search booking
     const fetchContent = useQuery(GET_SEARCH_BOOKING,{
         variables:{
             id:id
@@ -47,7 +87,6 @@ const WorkRequest = () => {
 
 
     useEffect(()=>{
-
 
         if(data){
             
@@ -75,15 +114,18 @@ const WorkRequest = () => {
             [ Header ] start */}
             <Header/>
             {/*<!-- [ Header ] end --> */}
-        <NewWorkRequest
-            id = {id}
-            setID = {setID}
-            content = {content}
-            setPage = {setPage}
-            page = {page}
-            offSet = {offSet}
-            loading = {loading}
-        />
+            {/*<!-- [ main content] start --> */}
+            <NewWorkRequest
+                id = {id}
+                setID = {setID}
+                content = {content}
+                setPage = {setPage}
+                page = {page}
+                offSet = {offSet}
+                loading = {loading}
+                setContent = {setContent}
+            />
+            {/*<!-- [ main content] end --> */}
         </div>
     );
 }

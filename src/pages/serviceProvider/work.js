@@ -4,6 +4,8 @@ import { WORK_PROFILE } from "../../GraphQL/Queries";
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from "react";
 
+import swal from "sweetalert";
+
 //components
 import Header from "../../components/header";
 import NavBar from '../../components/navbar';
@@ -14,6 +16,7 @@ const Work = () => {
     const {id} = useParams();
     const [content,setContent] = useState();
 
+    //retrieve content
     const {error,loading,data} = useQuery(WORK_PROFILE,{
         variables:{
             id:id
@@ -27,6 +30,24 @@ const Work = () => {
         }
     },[data])
 
+    // error occurred
+    useEffect(()=>{
+        
+        if(error){
+            swal({
+                title: "Error",
+                text: "Error occurred in retrieving please refresh",
+                icon: "warning",
+                button: {
+                    text: "Close",
+                    closeModal: true,
+                }, 
+                dangerMode: true  
+             })
+        }
+    
+    },[error])
+
     return ( 
         <div>
          {/* [ Pre-loader ] start */}
@@ -38,10 +59,12 @@ const Work = () => {
             [ Header ] start */}
             <Header/>
             {/*<!-- [ Header ] end --> */}
-        <WorkProfile 
-            contents={content}
-            loading = {loading}
-        />
+            {/*<!-- [ Content ] start --> */}
+            <WorkProfile 
+                contents={content}
+                loading = {loading}
+            />
+            {/*<!-- [ Content ] end --> */}
         </div>
      );
 }

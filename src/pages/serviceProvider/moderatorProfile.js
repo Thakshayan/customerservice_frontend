@@ -12,7 +12,7 @@ import NavBar from '../../components/navbar';
 import Preloader from '../../components/preloader';
 
 import React from "react";
-
+import swal from 'sweetalert';
 
 
 function ModeratorProfile() {
@@ -20,6 +20,7 @@ function ModeratorProfile() {
 
     const {id} = useParams()
 
+    //retrieve
     const {error,loading,data} = useQuery(GET_MODERATOR_PROFILE,{
         variables:{
             moderator:id,
@@ -29,23 +30,36 @@ function ModeratorProfile() {
     });
 
     
-
-
-    
     const [content,setContent] = useState()
     const [notificationContent,setNotificationContent] = useState([]);
 
     useEffect(()=>{
         if(data){
-  
             setContent(data.UniqueSearchModerator)
-
             setNotificationContent(data.getMyNotification)
             
         }
         
 
     },[data]);
+
+    //error
+    useEffect(()=>{
+
+        if(error){
+            swal({
+                title: "Error",
+                text: "Error occurred in retrieving",
+                icon: "warning",
+                button: {
+                text: "Close",
+                closeModal: true,
+                }, 
+                dangerMode: true  
+            })
+        }
+
+    },[error])
 
     return (
         <div>
@@ -58,13 +72,13 @@ function ModeratorProfile() {
             [ Header ] start */}
             <Header/>
             {/*<!-- [ Header ] end --> */}
-        {/*<!-- [ Main Content ] start -->*/}
-         <ProfileContent 
-            contents={content} 
-            notification={notificationContent}
-            type ={"Moderator"}
-        />
-        {/*<!-- [ Main Content ] end --> */}
+            {/*<!-- [ Main Content ] start -->*/}
+            <ProfileContent 
+                contents={content} 
+                notification={notificationContent}
+                type ={"Moderator"}
+            />
+            {/*<!-- [ Main Content ] end --> */}
 
         </div>
     );

@@ -71,9 +71,15 @@ function Header(){
                                 <div className="pro-head">
                                     <img src="/assets/images/user/avatar-1.jpg" className="img-radius" alt="User-Profile"/>
                                     <span>{userName}</span>
-                                    <button onClick={signOut} className="dud-logout" style={{backgroundColor:'#04a9f5',border:'none'}} title="Logout">
-                                        <i className="feather icon-log-out"></i>
+                                    <button onClick={signOut} className="dud-logout" style={{backgroundColor:'#04a9f5',border:'none'}} >
+                                    <i className="feather icon-log-out"></i>
+                                        <div className="tooltips" id="tooltips" >
+                                            
+                                            <span className="tooltiptext" style={{left:0}}>Logout</span>
+                                        </div> 
+                                        
                                     </button>
+                                    
                                 </div>
                                 <ul className="pro-body">
                                     {/* <li><Link to="#0" className="dropdown-item"><i className="feather icon-settings"></i> Settings</Link></li> */}

@@ -1,16 +1,26 @@
 import { useMutation } from '@apollo/client';
-import {button} from 'react-router-dom';
-import {useEffect} from 'react'
+import { useState } from 'react';
+import swal from 'sweetalert';
 
 import {UPDATE_READ} from '../../GraphQL/Mutations';
 
 function MessageBar({message,By,received_date,read,object}){
 
+
+    const [reads,setReads] = useState(read)
+    const styles = {
+        button:{
+            float:'right',
+            right:"20px",
+            width:125
+        }
+    }
+    
     const [readMessage,{loading,error}] = useMutation(UPDATE_READ,{
         onCompleted: data=>{
          
             if(data.readMessage){
-                window.location.reload()
+                setReads(true)
             }
         }
     })
@@ -18,10 +28,33 @@ function MessageBar({message,By,received_date,read,object}){
 
 
     const confirmRead = () => {
+        
         readMessage({
             variables:{
                 readMessageId:object._id
             }
+        }).then(res =>{
+            swal({
+                title: "Success",
+                text: "successfully confirm read",
+                icon: "success",
+                button: {
+                  text: "Close",
+                  closeModal: true,
+                }, 
+                
+            })
+        }).catch(err =>{
+            swal({
+                title: "Error",
+                text: "Error occurred in confimation",
+                icon: "warning",
+                button: {
+                  text: "Close",
+                  closeModal: true,
+                }, 
+                dangerMode: true  
+            })
         })
     }
 
@@ -40,12 +73,13 @@ function MessageBar({message,By,received_date,read,object}){
             <h6 className="text-muted"><i className="fas fa-circle text-c-green f-10 m-r-15"></i> {received_date} </h6>
         </div>
         <div className="col-12 col-sm-5 col-md-12 col-xl-4" style={{margin:'10px'}}>
-            {read?<button  className="label theme-bg2 text-white f-12" style={{float:'right',right:"20px"}}>
-                Already Read
-                &nbsp; <i className="far fa-trash-alt"></i>
+            {reads?<button  className="label theme-bg2 text-white f-12" style={styles.button} disabled>
+            
+                Already read
+                
             </button>:
-            <button onClick={confirmRead} className="label theme-bg text-white f-12" style={{float:'right',right:"20px"}}>
-                Confirm Read
+            <button onClick={confirmRead} className="label theme-bg text-white f-12" style={styles.button} title="click to confirm read">
+                 {!loading ? "Confirm Read" : "loading..." } 
                 &nbsp; <i className="far fa-eye"></i>
             </button>}
         </div>

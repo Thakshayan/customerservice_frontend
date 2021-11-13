@@ -1,4 +1,5 @@
 import { BrowserRouter as Router,Link } from "react-router-dom";
+import {useHistory} from "react-router-dom";
 
 const Success = () => {
 
@@ -33,9 +34,13 @@ const Success = () => {
             backgroundColor:'#1de9b6',
             width:'100px',
             margin:'auto',
-            padding:'5px 15px'
+            padding:'5px 15px',
+            borderWidth:0
         }
     }
+
+    const history = useHistory();
+
     return ( 
 
         <div style={styles.successContainer}>
@@ -43,15 +48,15 @@ const Success = () => {
             <div style={styles.successWrapper}>
                 <h1 style={styles.successElement}> 
                     Success 
-                    <i class="far fa-thumbs-up" style={{paddingLeft:10}}></i>
+                    <i className="far fa-thumbs-up" style={{paddingLeft:10}}></i>
                 </h1> 
                 <h6 style={styles.successElement}> 
                     Request is sucessfully submitted
                 </h6>
                 <div style={styles.successButtonContainer}>
-                    <Link to="/CSA"  style={styles.successButton}> 
-                        Home
-                    </Link>
+                    <button onClick={() => history.goBack()}  style={styles.successButton}> 
+                        Back
+                    </button>
                 </div>
             </div>
             

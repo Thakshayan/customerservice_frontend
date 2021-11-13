@@ -22,12 +22,6 @@ function Header(){
 
     useEffect(()=>{
         if(data){
-            // if(data.moderator_me){
-            //     
-            //     setId(data.moderator_me.username)
-            //     setUserName(data.moderator_me.name)
-            //     setType("Moderator")
-            // }
             if(data.getMe){
                 
                 setId(data.getMe[0]._id)
@@ -81,13 +75,18 @@ function Header(){
                                 <div className="pro-head">
                                     <img src="/assets/images/user/avatar-1.jpg" className="img-radius" alt="User-Profile"/>
                                     <span>{userName}</span>
-                                    <button onClick={signOut} className="dud-logout" style={{backgroundColor:'#04a9f5',border:'none'}} title="Logout">
-                                        <i className="feather icon-log-out"></i>
+                                    <button onClick={signOut} className="dud-logout" style={{backgroundColor:'#04a9f5',border:'none'}} >
+                                    <i className="feather icon-log-out"></i>
+                                        <div className="tooltips" id="tooltips" >
+                                            
+                                            <span className="tooltiptext" style={{left:0}}>Logout</span>
+                                        </div> 
+                                        
                                     </button>
                                 </div>
                                 <ul className="pro-body">
                                     {/* <li><Link to="#0" className="dropdown-item"><i className="feather icon-settings"></i> Settings</Link></li> */}
-                                    <li><Link to={type == "moderator" ?`/CSA/profile/${id}?type=${type}`:`/CSA/profile`} className="dropdown-item"><i className="feather icon-user"></i> My Profile</Link></li>
+                                    <li><Link to={type == "moderator" ?`/CSA/moderatorProfile/${id}`:`/CSA/profile`} className="dropdown-item"><i className="feather icon-user"></i> My Profile</Link></li>
                                     <li><Link to={"/CSA/messages"} className="dropdown-item"><i className="feather icon-mail"></i> Messages</Link></li>
                                     <li><button onClick={signOut} className="dropdown-item"><i className="feather icon-lock"></i> Log Out</button></li>
                                 </ul>

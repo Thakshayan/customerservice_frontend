@@ -60,7 +60,10 @@ const ProfileCard = ({id,edit,title,name,nic,contact,address}) => {
 
                     {edit ?<div style={{paddingTop:"20px",float:"right"}}>
                         <Link to={`/Worker/edit/basicInfo/`} className="btn btn-mtd btn-primary" style={{width:"100px",height:"25px",padding:'0 0'}}> 
-                            Edit 
+                            <div className="tooltips" id="tooltips">
+                               Edit
+                               <span className="tooltiptext" >Click to edit personal info</span>
+                            </div> 
                             <i className="fas fa-edit" style={{paddingLeft:'10px'}}></i>
                         </Link>
                     </div>: 

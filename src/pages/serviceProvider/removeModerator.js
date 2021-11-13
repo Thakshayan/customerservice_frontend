@@ -5,6 +5,8 @@ import {useQuery,useMutation} from '@apollo/client'
 import { REMOVE_MODERATOR } from "../../GraphQL/Mutations";
 import { GET_SEARCH_MODERATOR } from "../../GraphQL/Queries";
 
+import swal from "sweetalert";
+
 //components
 import Header from "../../components/header";
 import NavBar from '../../components/navbar';
@@ -14,9 +16,9 @@ const RemoveModerator = () => {
     const [removeModerator,{loading,error}] = useMutation(REMOVE_MODERATOR,{
         onCompleted: res =>{
             
-            if(res.removeModerator){
-                window.location.href="/success"
-            }
+            //if(res.removeModerator){
+                //window.location.href="/success"
+            //}
         }
     });
     const [leftDate,setLeftDate] = useState()
@@ -43,6 +45,17 @@ const RemoveModerator = () => {
                     setContent(data.data.getModerator)
                 }
     
+            }).catch (err=>{
+                swal({
+                    title: "Error",
+                    text: "Error occurred in retrieving please refresh",
+                    icon: "warning",
+                    button: {
+                      text: "Close",
+                      closeModal: true,
+                    }, 
+                    dangerMode: true  
+                })
             })
         }
         
@@ -59,14 +72,17 @@ const RemoveModerator = () => {
             [ Header ] start */}
             <Header/>
             {/*<!-- [ Header ] end --> */}
-        <RemoveEmployeeCard 
-            type="Moderator" 
-            action={removeModerator} 
-            content =  {content}
-            id ={Id}
-            setID = {setId}
-            loading = {fetchContent.loading}
-            />
+            {/*<!-- [ Content ] start --> */}
+            <RemoveEmployeeCard 
+                type="Moderator" 
+                action={removeModerator} 
+                content =  {content}
+                id ={Id}
+                setID = {setId}
+                fetchloading = {fetchContent.loading}
+                loading = {loading}
+                />
+            {/*<!-- [ Content ] end --> */}
         </div>
      );
 }

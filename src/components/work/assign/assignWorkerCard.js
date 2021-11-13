@@ -1,6 +1,6 @@
 import {BrowserRouter as Router,Link} from "react-router-dom";
 
-const AssignWorkerCard = ( {id,designation,email,phone,rating,viewURL,delURL} ) => {
+const AssignWorkerCard = ( {id,designation,email,phone,rating,viewURL,delURL,left} ) => {
     return ( 
     <div className="unread row align-items-center" style={{marginBottom:'15px'}}>
         <div className="col-sm-12 col-md-3 col-xl-2 d-flex " style={{margin:'10px'}}>
@@ -14,7 +14,12 @@ const AssignWorkerCard = ( {id,designation,email,phone,rating,viewURL,delURL} ) 
             <p className="m-0">Rating: &nbsp; {rating} <i className="fas fa-star text-c-yellow"></i> </p>
         </div>
         <div className="col-1 col-sm-1 col-md-1 col-xl-1 mr-auto" style={{margin:'10px'}}>
-            <h6 className="text-muted"><i className="fas fa-circle text-c-green f-10 m-r-15"></i>  </h6>
+            <h6 className="text-muted">
+                {!left ? <i className="fas fa-circle text-c-green f-10 m-r-15"></i>  
+                :
+                    <i className="fas fa-circle text-c-red f-10 m-r-15"></i>
+                }
+            </h6>
         </div>
         <div className="col-10 col-sm-12 col-md-12 col-xl-4" style={{margin:'10px'}}>
         {delURL?<Link to={delURL} className="label theme-bg2 text-white f-12" style={{float:'right',right:"20px"}}>

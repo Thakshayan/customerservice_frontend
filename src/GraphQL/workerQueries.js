@@ -74,6 +74,10 @@ query Query($offset: Int!, $page: Int!) {
       description
     }
   }
+  getCountAssignedAppointments {
+    _id
+    Count
+  }
 }
 `
 
@@ -89,6 +93,7 @@ query Query(
       starting_date
       duration
     }
+    
   }
 `
 
