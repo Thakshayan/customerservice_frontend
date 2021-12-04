@@ -1,88 +1,136 @@
-const SignUp = () => {
+import SignUpForm from "../components/form/signUpForm";
+import OwnerRegisterForm from "../components/form/ownerRegistrationForm";
+import { useMutation, useQuery } from "@apollo/client";
+import { useEffect, useLayoutEffect, useState } from "react";
+import { ADD_OWNER, SIGNUP_SP } from "../GraphQL/Mutations";
+import { CHECK_USER, GET_SIGNUP } from "../GraphQL/Queries";
+
+
+
+const SignUp = (props) => {
+
+
+    const [membershipID,setMembershipID] = useState();
+    const [ownerID,setOwnerID] = useState()
+
+    const [signUPSP,{loadingSignUp,errorSignUp}] = useMutation(SIGNUP_SP,{
+        onCompleted: data =>{
+           props.history.push('/success')
+        }
+    })
+
+    const [addOwner,{loadingAddOwner,errorAddOwner}] = useMutation(ADD_OWNER,{
+        onCompleted: data =>{
+            if(data.addOwner){
+                setOwnerID(data.addOwner._id)
+            }
+        }
+    })
+
+    useLayoutEffect(()=>{
+        window.scrollTo(0,0)
+    },[ownerID])
+
+    
+
+    const {error,loading,data} = useQuery(GET_SIGNUP);
+
+    const [username,setUsername] = useState('');
+    const [usererror,setUserError] = useState(false);
+
+    const [membership,setMembership] = useState('');
+    const [membershipError,setmembershipError] = useState(false);
+
+
+
+    const checkId = useQuery(CHECK_USER,{
+        variables:{
+            username:username
+        }
+    })
+
+    const [services,setService] = useState([]);
+    const [districts,setDistricts] = useState([]);
+    const [memberships,setMemberships] =useState([])
+
+    useEffect(() => {
+        if(username){
+            checkId.refetch({
+                username:username
+            }).then(data =>{
+               
+                if(data.data && data.data.CheckUsername){
+                    setUserError("")
+                }else{
+                    setUserError("Already Exist")
+                }
+                
+            })
+        }
+    }, [username]);
+
+
+    const [myServiceArray,setMyServiceArray] = useState([]);
+    const [workRangeArray,setWorkRangeArray] = useState([]);
+    const [content,setContent] = useState();
+
+    useEffect(()=>{
+        if(data){
+            setService(data.getServices)
+            setDistricts(data.showDistricts)
+            setMemberships(data.getMemberships)
+        }
+    },[data])
+
     return ( 
-    <div class="auth-wrapper">
-        <div class="auth-content">
-            <div class="auth-bg">
-                <span class="r"></span>
-                <span class="r s"></span>
-                <span class="r s"></span>
-                <span class="r"></span>
+    <div className="auth-wrapper">
+        <div className="auth-content" style={{width:'90%'}}>
+            <div className="auth-bg">
+                <span className="r"></span>
+                <span className="r s"></span>
+                <span className="r s"></span>
+                <span className="r"></span>
             </div>
-            <div class="card">
-                <div class="card-body text-center">
-                    <div class="mb-4">
-                        <i class="feather icon-user-plus auth-icon"></i>
-                    </div>
-                    <h3 class="mb-4">Sign up</h3>
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control" placeholder="Username"/>
-                    </div>
-                    <div class="input-group mb-3">
-                        <input type="email" class="form-control" placeholder="Email"/>
-                    </div>
-                    <div class="input-group mb-4">
-                        <input type="password" class="form-control" placeholder="password"/>
-                    </div>
-                    <div class="form-group text-left">
-                        <div class="checkbox checkbox-fill d-inline">
-                            <input type="checkbox" name="checkbox-fill-1" id="checkbox-fill-1" checked=""/>
-                            <label for="checkbox-fill-1" class="cr"> Save Details</label>
-                        </div>
-                    </div>
-                    <div class="form-group text-left">
-                        <div class="checkbox checkbox-fill d-inline">
-                            <input type="checkbox" name="checkbox-fill-2" id="checkbox-fill-2"/>
-                            <label for="checkbox-fill-2" class="cr">Send me the <a href="#!"> Newsletter</a> weekly.</label>
-                        </div>
-                    </div>
-                    <button class="btn btn-primary shadow-2 mb-4">Sign up</button>
-                    <p class="mb-0 text-muted">Allready have an account? <a href="auth-signin.html"> Log in</a></p>
-                </div>
-            </div>
+            {myServiceArray[0] && workRangeArray[0] && ownerID && membershipID ?
+
+                    <SignUpForm
+                   
+                    loading = {loading}
+                    setUsername = {setUsername}
+                    error = {usererror}
+                    username = {username}
+                    action = {signUPSP}
+                    workRangeArray = {workRangeArray}
+                    myServiceArray = {myServiceArray}
+                    membershipID = {membershipID}
+                    ownerID = {ownerID}
+                    loadingSignUp = {loadingSignUp}
+                    setUserError = {setUserError}
+                    />
+
+                    :
+
+                <OwnerRegisterForm
+                    services = {services}
+                    districts = {districts}
+                    loading = {loading}
+                    workRangeArray = {workRangeArray}
+                    setWorkRangeArray = {setWorkRangeArray}
+                    myServiceArray = {myServiceArray}
+                    setMyServiceArray = {setMyServiceArray}
+                    setContent = {setContent}
+                    memberships = {memberships}
+                    setMembershipID = {setMembershipID}
+                    action = {addOwner}
+                    loadingAddOwner = {loadingAddOwner}
+                />
+               
+               
+                
+            }
         </div>
     </div>
      );
 }
  
 export default SignUp;
-    <div class="auth-wrapper">
-        <div class="auth-content">
-            <div class="auth-bg">
-                <span class="r"></span>
-                <span class="r s"></span>
-                <span class="r s"></span>
-                <span class="r"></span>
-            </div>
-            <div class="card">
-                <div class="card-body text-center">
-                    <div class="mb-4">
-                        <i class="feather icon-user-plus auth-icon"></i>
-                    </div>
-                    <h3 class="mb-4">Sign up</h3>
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control" placeholder="Username"/>
-                    </div>
-                    <div class="input-group mb-3">
-                        <input type="email" class="form-control" placeholder="Email"/>
-                    </div>
-                    <div class="input-group mb-4">
-                        <input type="password" class="form-control" placeholder="password"/>
-                    </div>
-                    <div class="form-group text-left">
-                        <div class="checkbox checkbox-fill d-inline">
-                            <input type="checkbox" name="checkbox-fill-1" id="checkbox-fill-1" checked=""/>
-                            <label for="checkbox-fill-1" class="cr"> Save Details</label>
-                        </div>
-                    </div>
-                    <div class="form-group text-left">
-                        <div class="checkbox checkbox-fill d-inline">
-                            <input type="checkbox" name="checkbox-fill-2" id="checkbox-fill-2"/>
-                            <label for="checkbox-fill-2" class="cr">Send me the <a href="#!"> Newsletter</a> weekly.</label>
-                        </div>
-                    </div>
-                    <button class="btn btn-primary shadow-2 mb-4">Sign up</button>
-                    <p class="mb-0 text-muted">Allready have an account? <a href="auth-signin.html"> Log in</a></p>
-                </div>
-            </div>
-        </div>
-    </div>

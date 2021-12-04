@@ -47,7 +47,7 @@ function WorkImage({type}){
     // }, [id])
 
     // useEffect(()=>{
-    //     console.log(Id)
+    //     
     //     if(Id){
     //         setID(Id)
     //         fetchContent.refetch({
@@ -70,7 +70,7 @@ function WorkImage({type}){
                     <div className="pcoded-inner-content">
 
                         {/*<!-- [ breadcrumb ] start -->*/}
-                        <BreadCrumb type="Employee" reason="Edit" />
+                        <BreadCrumb type="Images" reason="Edit" />
                         {/*<!-- [ breadcrumb ] end -->*/}
 
                         <div className="main-body">

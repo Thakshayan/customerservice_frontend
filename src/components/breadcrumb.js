@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { BrowserRouter as Router, Link } from "react-router-dom";
 
 const BreadCrumb = ({type,reason}) => {
     return ( 
@@ -10,9 +10,9 @@ const BreadCrumb = ({type,reason}) => {
                             <h5 className="m-b-10">{type}</h5>
                         </div>
                             <ul className="breadcrumb">
-                                <li className="breadcrumb-item"><Link to="/"><i className="feather icon-home"></i></Link></li>
-                                <li className="breadcrumb-item"><Link to="/">{type}</Link></li>
-                                <li className="breadcrumb-item"><Link to="#0">{reason} {type}</Link></li>
+                                <li className="breadcrumb-item"><a href="/"><i className="feather icon-home"></i></a></li>
+                                <li className="breadcrumb-item"><a href="/">{type}</a></li>
+                                <li className="breadcrumb-item"><a href="#0">{reason} {type}</a></li>
                             </ul>
                     </div>
                 </div>

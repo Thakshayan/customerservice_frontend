@@ -1,4 +1,4 @@
-import {Link} from 'react-router-dom';
+import {BrowserRouter as Router,Link} from 'react-router-dom';
 
 function WorkBar({title,description,id,time,viewURL,delURL}){
     return(
@@ -15,14 +15,18 @@ function WorkBar({title,description,id,time,viewURL,delURL}){
             <h6 className="text-muted"><i className="fas fa-circle text-c-green f-10 m-r-15"></i> {time} </h6>
         </div>
         <div className="col-12 col-sm-5 col-md-12 col-xl-4" style={{margin:'10px'}}>
-            {delURL?<Link to={delURL} className="label theme-bg2 text-white f-12" style={{float:'right',right:"20px"}}>
-                Remove
+            {delURL?<a href={delURL} className="label theme-bg2 text-white f-12" style={{float:'right',right:"20px"}} >
+               
+                <div class="tooltip">Remove
+                    <span class="tooltiptext">Tooltip text</span>
+                </div> 
                 &nbsp; <i className="far fa-trash-alt"></i>
-            </Link>:null}
-            {viewURL?<Link to={viewURL} className="label theme-bg text-white f-12" style={{float:'right',right:"20px"}}>
+            </a>:null}
+            {viewURL?<a href={viewURL} className="label theme-bg text-white f-12" style={{float:'right',right:"20px"}} >
                 View Info
+                
                 &nbsp; <i className="far fa-eye"></i>
-            </Link>:null}
+            </a>:null}
         </div>
     </div>
     )

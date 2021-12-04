@@ -1,49 +1,105 @@
-import { useQuery } from '@apollo/client';
+
 import { useState } from 'react';
-import {Link} from 'react-router-dom';
-import { useEffect } from 'react/cjs/react.development';
+import {BrowserRouter as Router,Link} from 'react-router-dom';
+import Loading from "../loading"
 
-import {GET_PROFILE} from '../../GraphQL/Queries'
+ 
 
-function PhotoCard({id}){
+function PhotoCard({id,profile,title,type,edit,provider}){
 
+    //const [image,setImage] = useState("/assets/images/user/profile.jpg");
 
-    // const {error,loading,data} =  useQuery(GET_PROFILE,{
-    //     variables:{
-    //         id
-    //     }
-    // });
-
-    const [image,setImage] = useState("/assets/images/user/profile.jpg");
-
-    // useEffect(()=>{
-    //     if(data){
-    //         setImage(image);
-    //     }
-    // },[])
-
+    const styles ={
+        button:{
+            width:'100%',
+            height:'25px',
+            padding:'0px 0px',
+            background:'#038fcf'
+        },
+        image:{
+            display:'block',
+            height:'200px',
+            width:'250px',
+            margin:'auto',
+            paddingTop:'15px',
+            justifyContent:'center',
+            textAlign:'center',
+            alignItems:'center'
+        },
+        passwordButton:{
+            width:'100%',
+            height:'25px',
+            padding:'0px 0px',
+            background:'#5e8d25',
+            borderColor:'#5e8d25'
+        }
+    }
 
     return(
         <div className="">
             <div className="card yearly-sales">
-                <div className="card-block" style={{padding:'10px 30px 0px 30px'}}>
+                <div className="card-block" style={{padding:'10px 20px 0px 20px'}}>
                     <div className="card-header">
-                        <h5>Profile</h5>
+                        <h5>{title ? title:"Profile"}</h5>
                     </div>
                     <div>
-                        <img src={image} alt="" style={{display:'block',height:'200px',width:'250px',margin:'auto',paddingTop:'15px',justifyContent:'center'}}/> 
+                        {profile ? 
+                            <img src={"/assets/images/user/profile.jpg"} alt="" style={styles.image}/> 
+                        :
+                        
+                            <Loading/>
+                       
+                        }
                     </div>
                     <hr/>
+                 {edit ?
                    <div style={{ margin:'15px',display:'flex'}}>
-                        <Link to="/CSA" className="btn btn-primary" style={{width:'100%',height:'25px',padding:'0px 0px',background:'#5e8d25',borderColor:'#5e8d25'}}>
-                           <i className="fas fa-chevron-circle-left"></i>
-                           Back   
-                        </Link>
-                       <Link to={`/CSA/edit/basicInfo/${id}`} className="btn btn-primary" style={{width:'100%',height:'25px',padding:'0px 0px',background:'#038fcf'}}>
-                           Edit
+                     
+                        <a href={`/Worker/edit/password`} className="btn btn-primary" id="password" name="password" style={styles.passwordButton} >
+                           
+                           <i className="fas fa-unlock-alt"></i>
+                           <div className="tooltips" id="tooltips">
+                                Password
+                                <span className="tooltiptext" >Click to edit password</span>
+                            </div> 
+
+                        </a>
+
+                        <a href={`/Worker/edit/basicInfo`} className="btn btn-primary"  style={styles.button}>
+                            <div className="tooltips" id="tooltips">
+                                Edit
+                                <span className="tooltiptext" >Click to personal info</span>
+                            </div> 
                            <i className="fas fa-edit" style={{paddingLeft:'10px'}}></i>
-                        </Link>
+                        </a>
                    </div>
+                  
+                   :
+                   null
+                    }
+                    {provider ? <div style={{ margin:'15px',display:'flex'}}>
+                     
+                        <a href="/CSA/edit/password" className="btn btn-primary" style={styles.passwordButton} >
+              
+                            <i className="fas fa-unlock-alt"></i>
+                          
+                            <div className="tooltips" id="tooltips">
+                                Password
+                                <span className="tooltiptext" >Click to edit password</span>
+                            </div>  
+                        </a>
+                        <a href="/CSA/edit/basicInfo" className="btn btn-primary"  style={styles.button} >
+                            <div className="tooltips" id="tooltips">
+                                Edit
+                                <span className="tooltiptext" >Click to personal info</span>
+                            </div> 
+                          <i className="fas fa-edit" style={{paddingLeft:'10px'}}></i>
+                        </a> 
+                    </div>
+                    
+                    :
+                    null
+                    }
                  </div>
             </div>
         </div>

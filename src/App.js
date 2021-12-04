@@ -1,5 +1,3 @@
-import { Route, Switch } from "react-router-dom";
-
 import Pages from "./pages/"
 
 import { ApolloClient, ApolloProvider,  createHttpLink } from "@apollo/client";
@@ -26,7 +24,8 @@ const client = new ApolloClient({
 })
 
 const data = {
-  isLoggedIn: !!localStorage.getItem('token')
+  isLoggedIn: !!localStorage.getItem('token'),
+  isLoggedWorker : !!localStorage.getItem('role')
 }
 cache.writeData({data});
 client.onResetStore(()=>cache.writeData({data}))
@@ -37,10 +36,7 @@ function App() {
   
   return (
     <ApolloProvider client={client}>
-
-          
           <Pages />
-  
      </ApolloProvider>    
     
   );

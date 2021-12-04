@@ -1,12 +1,95 @@
 import Notificator from './notification/notificator';
 import RatingList from "./rating/ratingSection/ratingList";
+import { useEffect, useState } from 'react';
 
 import Chart from "./chart";
 import SummaryChart from "./pieChart";
 import Message from './message/messages';
+import Empty from './empty';
+import Loading from './loading';
 
 
-function Content({content}){
+function Content({content,loading,type}){
+
+    const ArrayFormater = (object)=>{
+
+        if (!object){
+            return [0,0,0,0,0]
+        }
+
+        if(!object[0]){
+            return [0,0,0,0,0]
+        }
+       
+        var rating =[]
+        var count = 0;
+
+        for(var count=0;count<object.length;count++){
+            rating[count]=object[count].Count
+        }
+        
+        return rating
+    }
+
+    const dayFormater = (object)=>{
+
+        if (!object){
+            return ['','','','','']
+        }
+
+        if(!object[0]){
+            return [0,0,0,0,0]
+        }
+       
+        var day =[0,0,0,0,0,0]
+
+        for(var count=0;count<object.length;count++){
+            day[count]=object[count]._id
+        }
+
+        return day
+    }
+
+    const workCount = (objects) =>{
+
+        if (!objects){
+            return [0,0,0]
+        }
+
+        if (!objects[0]){
+            return [0,0,0]
+        }
+  
+        var work  =[0,0,0]
+  
+        objects.map((object)=>{
+         
+            if(object._id === 'finished'){
+              work[0] = object.Count
+            }else if(object._id === 'going'){
+              work[1] = object.Count
+            }else if(object._id === 'open'){
+              work[2] = object.Count
+            }
+        })
+        
+    
+        return work
+        
+    }
+
+    const [messages,setMessages] = useState([])
+
+    useEffect(()=>{
+        if(content){
+            setMessages(content.getMyMessages)
+        }
+    },[content])
+
+    
+
+
+
     return(
         <div className="pcoded-main-container">
             <div className="pcoded-wrapper">
@@ -16,10 +99,11 @@ function Content({content}){
                     //<!-- [ breadcrumb ] end -->
                     }
                     <div className="main-body">
+                        {!loading ?
                         <div className="page-wrapper">
                             {//<!-- [ Main Content ] start -->
                             }
-                            <div className="row">
+                            {content ?<div className="row">
                                 
                             
                                 {//<!--[ New request section ] start-->
@@ -29,30 +113,52 @@ function Content({content}){
                                     symbol ={<i class="fas fa-cart-plus text-c-green f-30 m-r-10"></i>}
                                     count = '0'
                                 /> */}
-                                <Chart 
-                                    ArrayX = {['Mon', 'Tue', 'Wed', 'Thu', 'Fri','Sat','Sun']}
+                                {content.bookingFeed ?<Chart 
+                                    ArrayX = {dayFormater(content.bookingFeed)}
                                     Request = 'New Requests'
-                                    ArrayY = {[6, 9, 8, 8, 6, 6,]}
-                                />
+                                    ArrayY = {ArrayFormater(content.bookingFeed)}
+                                />: 
+                                    content.getMyRole === "Worker" ? null
+                                    :
+                                    <div className="col-xl-6">
+                                    <Empty
+                                        message="No Bookings Yet"
+                                    /> 
+                                    </div>   
+                                }
                                 {/*<!--[ New request section ] end-->
 
-                                <!--[ Messages section ] starts-->*/}
+                                <!--[ Ongoing Work section ] starts-->*/}
                                 
-                                <Chart 
-                                    ArrayX = {['Mon', 'Tue', 'Wed', 'Thu', 'Fri','Sat','Sun']}
+                                {content.finishedWorkStats ?<Chart 
+                                    ArrayX = {dayFormater(content.finishedWorkStats)}
                                     Request = 'On Going Works'
-                                    ArrayY = {[6, 11, 8, 4, 6, 3,]}
-                                />
+                                    ArrayY = {ArrayFormater(content.finishedWorkStats)}
+                                />:
+                                    content.getMyRole === "Worker" ? null
+                                    :
+                                    <div className="col-xl-6">
+                                    <Empty
+                                        message="No Finished works Yet"
+                                    />   
+                                    </div>                                 
+                                }
 
-                                {/*<!--[ Messages section ] end-->*/}
+                                {/*<!--[ Ongoing Work section ] end-->*/}
 
                               
                                 <div className="col-xl-8">
                                 {/*<!--[ Recent Notification ] start-->*/}
-                                <Notificator title="Notification" content={null}/>
+                                {content.getMyNotification ?
+                                    <Notificator title="Notification" content={content.getMyNotification}/>
+                                :
+                                    <Notificator title="Notification" content={content.worker_getMyNotification}  type={type}/>
+                                }
                                 {/* <!--[ Recent Notification ] end-->*/}
                                 {/*<!--[ Recent Notification ] start-->*/}
-                                <Message title="Messages" content={null}/>
+                                {messages[0] ? <Message title="Messages" content={messages} type={type}/>: 
+                                   null
+                                }
                                 {/* <!--[ Recent Notification ] end-->*/}
                                 </div>
 
@@ -72,38 +178,23 @@ function Content({content}){
                                 {/* <Chart 
                                     Array = {['Mon', 'Tue', 'Wed', 'Thu', 'Fri','Sat','Sun']}
                                 /> */}
-                                <SummaryChart
-                                    value = {[2, 5, 6]}
-                                />
-                                {/*<!--[ On going work section ] end-->
-
-                                    
-                                    <div className="card">
-                                        <div className="card-block border-bottom">
-                                            <div className="row d-flex align-items-center">
-                                                <div className="col-auto">
-                                                    <i className="feather icon-zap f-30 text-c-green"></i>
-                                                </div>
-                                                <div className="col">
-                                                    <h3 className="f-w-300">235</h3>
-                                                    <span className="d-block text-uppercase">TOTAL BRANCHES</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="card-block">
-                                            <div className="row d-flex align-items-center">
-                                                <div className="col-auto">
-                                                    <i className="feather icon-map-pin f-30 text-c-blue"></i>
-                                                </div>
-                                                <div className="col">
-                                                    <h3 className="f-w-300">26</h3>
-                                                    <span className="d-block text-uppercase">TOTAL LOCATIONS</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                {content.workStats ? <SummaryChart
+                                    value = {workCount(content.workStats)}
+                                />:
+                                    <SummaryChart
+                                    value = {workCount(content.worker_workStats)}
+                                />}
+                               
                                 {/*<!-- [ rating list ] starts-->*/}
-                                    <RatingList content={[50,60,6,7,3]}/>    
+                                { !content.getMyRole  ?
+                                     <RatingList content={ArrayFormater(content.ratingStats)} /> 
+                                :
+                                    content.worker_me?
+                                        <RatingList value={content.worker_me.rating} /> 
+                                    :
+                                    <RatingList content={ArrayFormater(content.ratingStats)} />
+                                 
+                                }
                                 {/*<!-- [ rating list ] end-->*/}
                                 </div>
                                {/* <!-- [ statistics year chart ] end -->
@@ -111,9 +202,16 @@ function Content({content}){
                                 {<!-- [ Main Content ] end --> */}
                                 <br/>
                                 <br/>
-                            </div>
+                            </div>: 
+                                <Empty
+                                    message="Content Missing"
+                                />
+                            }
                             
                         </div>
+                        : 
+                        <Loading/>
+                        }
                     </div>
                 </div>
             </div>

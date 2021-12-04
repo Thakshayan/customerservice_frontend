@@ -7,7 +7,7 @@ const PaginationBar = ({page,setPage,offSet}) => {
     const [offDisable,setOffDisable] = useState(false);
 
     const decrement = ()=>{
-        if(page > 0){
+        if(page > 1){
         setPage(page-1)
         check(page)
         }else{
@@ -18,24 +18,24 @@ const PaginationBar = ({page,setPage,offSet}) => {
     }
 
     const check = (page) =>{
-        console.log(page)
-        if(page<=0){
+     
+        if(page<=1){
             setDisable(true); 
             
         }
-        if(page>=0 && page < offSet+1){
+        if(page>=1 && page < offSet+2){
             setDisable(false); 
             setOffDisable(false);
         }
 
-        if(page > offSet+1){
+        if(page > offSet+2){
             setOffDisable(true);
             
         }
     }
 
     const increment = ()=>{
-        if(page < offSet-1){ 
+        if(page < offSet){ 
         setPage(page+1)
         check(page)
         }else{
@@ -52,14 +52,14 @@ const PaginationBar = ({page,setPage,offSet}) => {
                 <span className="page-link" onClick={decrement}>Previous</span>
             </li>
             <li className={"page-item" + ( disable ?' disabled':'')}>
-                <button className="page-link" onClick={decrement}>{page>0?page:".."}</button>
+                <button className="page-link" onClick={decrement}>{page>1?page-1:".."}</button>
             </li>
             <li className="page-item active">
-                <span className="page-link">{page+1}
+                <span className="page-link">{page}
                     <span className="sr-only">(current)</span>
                 </span>
             </li>
-            <li className={"page-item" + ( offDisable ?' disabled':'')}><button className="page-link" onClick={increment} >{page < offSet-1 ? page+2:".."}</button></li>
+            <li className={"page-item" + ( offDisable ?' disabled':'')}><button className="page-link" onClick={increment} >{page < offSet ? page+1:".."}</button></li>
             <li className={"page-item" + ( offDisable ?' disabled':'')}><button className="page-link" onClick={increment}>Next</button></li>
         </ul>
     </div>

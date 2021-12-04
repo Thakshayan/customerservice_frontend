@@ -8,203 +8,573 @@ const IS_LOGGED_IN = gql`
   }
 `;
 
-// const GET_WORKERS = gql`
-// query Query {
-//   showWorkers {
-//     id
-//     username
-//     name
-//     email
-//     contact_no
-//   }
-// }
-// `
+const CHECK_USER = gql`
+query Query($username: String!) {
+  CheckUsername(username: $username)
+}
+`
 
-const GET_WORKERS = gql`
-query Query($page: Int, $offSet: Int, $type:String){
 
-  getWorkers(
-    page: $page, 
-    offSet: $offSet, 
-    type: $type) {
-      id
-      type
-      workerId
+
+
+const GET_WORKERS=gql`
+  query Query(
+    $offset: Int!, 
+    $page: Int!) {
+
+    getMyWorkers(
+      offset: $offset, 
+      page: $page) {
+
+      _id
+      username
       name
       email
-      phone
+      contact_no
       left_date
+    }
+
+    getCountWorkers {
+      Count
+    }
   }
-  getWorkerCount(type:$type)
-}
-  
+`
 
-`; 
-
-
-
-{/*
-
-query Query {
-  getMyWorkers {
-    id
+const GET_WORKER=gql`
+query Query($workerId: ID!) {
+  UniqueSearchWorker(worker: $workerId) {
+    nic
+    _id
     username
     name
     email
     contact_no
+    left_date
   }
 }
-
-
-
-*/}
-
-
-
-
-const GET_ME = gql`
-  query Query {
-    getMe{
-      type
-      workerId
-      name
-    }
-  }
 `
 
-
-
-const GET_WORKER = gql`
-  query Query($id:String) {
-    getWorker(workerId:$id){
-      id
-      type
-      workerId
-      name
-      email
-      phone
-      left_date
-    }
-  }
-`
-
-const WORKER_PERSONAL = gql`
-query Query($id: String) {
-  getWorker(workerId: $id) {
-    id
+const GET_SEARCH_WORKER = gql`
+query Query($workerId: String!) {
+  getWorker(username: $workerId) {
+    _id
+    username
     name
-    address
+    email
+    contact_no
+    left_date
+  }
+}
+`
+
+const GET_WORKER_PROFILE = gql`
+query Query($worker: ID!, $offset: Int!, $page: Int!) {
+  UniqueSearchWorker(worker: $worker) {
+    _id
+    username
+    name
+    contact_no
     email
     nic
-  }
-}
-`
-
-const WORKER_PROFESSIONAL=gql`
-query Query($id: String!) {
-  getWorker(workerId: $id) {
-    id
-    SpID
-    left_date
-    phone
+    address
     rating
-    workerId
+    profile
+    no_of_vote
+    left_date
+  }
+  getWorkerNotification(worker: $worker, offset: $offset, page: $page) {
+    _id
+    message
+    date
+    state
   }
 }
 `
 
-const GET_LEFTDATE = gql`
-query Query($workerId: String){
-  getWorker(workerId: $workerId) {
+const GET_WORKER_NOTIFICATION = gql`
+  query Query($worker: ID!, $offset: Int!, $page: Int!) {
+    getWorkerNotification(worker: $worker, offset: $offset, page: $page) {
+      message
+      date
+      state
+      _id
+    }
+  }
+`
+
+
+
+const GET_ASSIGNWORKER = gql`
+  query Query($id: ID!) {
+    UniqueSearchAppointment(appointment: $id) {
+      _id
+      state
+      worker {
+        _id
+        username
+        name
+        contact_no
+        rating
+        left_date
+      }
+    }
+  }
+`
+
+const GET_MODERATORS = gql`
+  query Query(
+    $offSet: Int!,
+     $page: Int!) {
+
+    getMyModerators(
+      offset: $offSet,
+       page: $page) {
+
+      _id
+      username
+      name
+      email
+      contact_no
+      left_date
+    }
+
+    getCountModerators {
+      Count
+    }
+  }
+`
+
+const GET_MODERATOR = gql`
+query Query($workerId: ID!) {
+  UniqueSearchModerator(moderator: $workerId) {
+    nic
+    _id
+    username
+    name
+    email
+    contact_no
     left_date
   }
 }
 `
 
-const GET_WORKS = gql`
-query Query(
-
-  $offSet: Int, 
-  $page: Int, 
-  $status: String) {
-
-  getWorks (
-    offSet: $offSet, 
-    page: $page, 
-    status: $status){
-      jobTitle
-      workId
-      description
-      date
+const GET_SEARCH_MODERATOR = gql`
+query Query($workerId: String!) {
+  getModerator(username: $workerId) {
+    _id
+    username
+    name
+    email
+    contact_no
+    left_date
   }
-
-  getWorkCount(status: $status)
 }
 `
 
-const GET_WORK = gql`
-query Query($workId: String) {
-  getWork(workId: $workId) {
-    jobTitle
-    workId
+const GET_MODERATOR_PROFILE = gql`
+query Query($moderator: ID!, $offset: Int!, $page: Int!) {
+  UniqueSearchModerator(moderator: $moderator) {
+    _id
+    username
+    name
+    email
+    nic
+    contact_no
+    address
+    rating
+    profile
+    no_of_vote
+    left_date
+  }
+  getMyNotification(offset: $offset, page: $page) {
+    _id
+    message
+    date
+    state
+  }
+}
+`
+
+const SP_DASHBOARD = gql`
+query Query($offset: Int!, $page: Int!) {
+  getMyMessages(offset: $offset, page: $page) {
+    _id
+    by
+    message
+    read
+    received_date
+  }
+  workStats {
+    _id
+    Count
+  }
+  getMyNotification(offset: $offset, page: $page) {
+    _id
+    message
+    date
+    state
+  }
+  bookingFeed {
+    _id
+    Count
+  }
+  ratingStats {
+    Count
+    _id
+  }
+  finishedWorkStats {
+    _id
+    Count
+  }
+  getMyRole
+}
+`
+
+const GET_FINISHEDWORK = gql`
+query Query($workId: String!) {
+  searchFinishAppointment(id: $workId) {
+        _id
+        starting_date
+        appointment_id
+        state
+        booking {
+          description
+          by {
+            username
+          }
+        }
+        duration
+  }
+}
+`
+const GET_FINISHEDWORKS = gql`
+  query Query(
+    $offset: Int!, 
+    $page: Int!) {
+
+    getMyFinishedWorks(
+      offset: $offset, 
+      page: $page) {
+        _id
+        starting_date
+        appointment_id
+        state
+        booking {
+          description
+          by {
+            username
+          }
+        }
+        duration
+    }
+    getCountAppointments {
+      Count
+      _id
+    }
+  }
+` 
+
+const GET_ONGOINGWORKS= gql`
+query Query($offset: Int!, $page: Int!) {
+  getMyOngoingWorks(offset: $offset, page: $page) {
+    _id
+    starting_date
+    appointment_id
+    booking {
+      description
+      by {
+        username
+      }
+    }
+    duration
+  }
+  getCountAppointments {
+    Count
+    _id
+  }
+}
+`
+
+const GET_ONGOINGWORK = gql`
+query Query($workId: String!) {
+  searchOpenAppointment(id: $workId) {
+    _id
+    duration
+    
+    starting_date
+    appointment_id
+    booking {
+      workStationAddress
+      description
+      by {
+        username
+      }
+    }
+  }
+}
+`
+
+const GET_NEWBOOKINGS = gql`
+query Query($offset: Int!, $page: Int!) {
+  getMyBooking(offset: $offset, page: $page) {
+    by {
+      username
+    }
     date
     description
+    workStationDistrict
+    _id
+    state
+  }
+ 
+  getCountBooking {
+    Count
+    _id
+  }
+}
+`
+
+const GET_SEARCH_BOOKING = gql`
+query Query($id: String!) {
+  searchBooking(username: $id) {
+    _id
+    workStationAddress
+    state
+    workStationDistrict
+    description
+    date
+    by {
+      username
+    }
   }
 }
 `
 
 const WORK_PROFILE = gql`
-query Query($id: String) {
-  getWork(workId: $id) {
-    jobTitle
-    workId
-    phone
-    date
-    Address
-    description
-    estimation
-    status
-    finishDate
-    customerId
-
-  }
-  
-}
-`
-
-const GET_BOOKINGS = gql`
-query Query(
-  $offSet: Int, 
-  $page: Int) {
-    
-  getBooking(
-    offSet: $offSet, 
-    page: $page) {
-      by
-      to
-      workStation
+query Query($id: ID!) {
+  UniqueSearchAppointment(appointment: $id) {
+    booking {
+      by {
+        username
+        name
+        contact_no
+        email
+        no_of_vote
+        rating
+      }
+      state
+      workStationDistrict
+      workStationAddress
       description
+      date
+    }
+    appointment_id
+    starting_date
+    state
+    paid
+    cost
   }
 }
 `
 
-// const GET_RATING = gql``
+const CHECK_WORK = gql`
+  query Query(
+    $appointmentId: String!) {
 
-// const CHECK_ID = gql` `
+    CheckAppointmentID(
+      appointment_id: $appointmentId)
+  }
+`
 
-// const GET_MESSAGES = gql``
+const GET_SPPROFILE = gql`
+query Query($offset: Int!, $page: Int!){
+  getMySP {
+    username
+    name
+    address
+    contact_no
+    email
+    no_of_vote
+    rating
+    service
+    bank_acc_no
+    owner {
+      owner_name
+      owner_NIC
+      contact_no
+      profile
+    }
+    membership {
+      membership_name
+      membership_period
+      membership_value
+      description
+    }
+    workingRange
+    joined_at
+    state
+    profile
+  }
+  ratingStats {
+    Count
+    _id
+  }
+  getMyNotification(offset: $offset, page: $page) {
+    _id
+    message
+    date
+    state
+  }
+}
+`
 
-// const GET_SP_NOTIFICATION = gql``
+const GET_SPSERVICE = gql`
+  query Query {
+    getMySP {
+      service
+      workingRange
+    }
+    getServices {
+      _id
+      service_name
+    }
+    showDistricts {
+      _id
+      districtName
+    }
+  }
+`
 
-// const GET_SP_MESSAGE  = gql``
+const GET_SPNOTIFICATION = gql`
+query Query($offset: Int!, $page: Int!) {
+  getMyNotification(offset: $offset, page: $page) {
+      _id
+      message
+      date
+      state
+    }
+    getCountNotification {
+      Count
+    }
+  }
+`
 
-// const GET_BOOKING = gql``
+const GET_MESSAGES = gql`
+query Query($offset: Int!, $page: Int!) {
 
-// const GET_SP_HOME = gql``
+  getMyMessages(offset: $offset, page: $page) {
+    _id
+    by
+    to
+    message
+    read
+    received_date
+  }
 
-// const GET_PROFILE = gql``
+  getCountMessages {
+  Count
+  }
+}
 
-// const GET_SERVICEPROVIDER = gql``
+`
+
+const GET_REVIEW = gql`
+  query Query($offset: Int!, $page: Int!) {
+    getMyReviews(offset: $offset, page: $page) {
+      _id
+      content
+      rating
+      by {
+        username
+      }
+      createdAt
+    }
+    getCountReviews {
+      Count
+      _id
+    }
+  }
+`
+
+const GET_SEARCH_REVIEW = gql`
+  query Query($customerId: String!) {
+    getCustomerReview(username: $customerId) {
+      _id
+      by {
+        username
+      }
+      createdAt
+      content
+      rating
+    }
+  }
+`
+
+const GET_SIGNUP = gql`
+  query Query {
+    showDistricts {
+      _id
+      districtName
+    }
+    getServices {
+      _id
+      service_name
+    }  
+    getMemberships {
+      _id
+      membership_name
+      membership_period
+      membership_value
+      description
+    }
+  }
+`
+
+
+const GET_ROLE = gql`
+  query Query {
+    getMyRole
+  }
+`
+
+const GET_SPME = gql`
+  query Query {
+    SP_me {
+      username
+      name
+    }
+  }
+`
+
+const GET_ME = gql`
+query GetMe {
+  getMe {
+    _id
+    username
+    role
+  }
+}
+`
+
+
+
+
+const PROVIDER_CARD = gql`
+query GetMySP {
+  getMySP {
+    _id
+    username
+    address
+    name
+    contact_no
+    email
+  }
+}
+`
+
+
+
+
 
 // const GET_WORKIMAGE = gql``
 
@@ -212,30 +582,56 @@ export {
     
     IS_LOGGED_IN,
 
+    GET_SIGNUP,
+    CHECK_USER,
+
+    GET_MODERATOR,
+    GET_MODERATORS,
+    GET_SEARCH_MODERATOR,
+    GET_MODERATOR_PROFILE,
+
     GET_WORKERS,
     GET_WORKER,
-    GET_LEFTDATE,
-    WORKER_PERSONAL,
-    WORKER_PROFESSIONAL,
+    GET_SEARCH_WORKER,
+    GET_WORKER_PROFILE,
+    GET_WORKER_NOTIFICATION,
+    GET_ASSIGNWORKER,
+    
+    SP_DASHBOARD,
 
-    GET_BOOKINGS,
+    CHECK_WORK,
 
-    GET_WORKS,
-    GET_WORK,
+    GET_FINISHEDWORK,
+    GET_FINISHEDWORKS,
+
+    GET_ONGOINGWORK,
+    GET_ONGOINGWORKS,
+
+    GET_NEWBOOKINGS,
+    GET_SEARCH_BOOKING,
+
     WORK_PROFILE,
 
+    GET_SPPROFILE,
+    GET_SPNOTIFICATION,
+    GET_SPSERVICE,
+
+    GET_REVIEW,
+    GET_SEARCH_REVIEW,
+
+    PROVIDER_CARD,
+
+
+    GET_ROLE,
+
+    GET_SPME,
+     
+  
     GET_ME,
 
-    // GET_RATING,
-    // CHECK_ID,
-    // GET_MESSAGES
-    // GET_SP_NOTIFICATION,
-    // GET_SP_MESSAGE,
-    // GET_NOTIFICATIONS,
-    // GET_BOOKING,
-    // GET_SP_HOME,
-    // GET_SP_MESSAGES,
-    // GET_PROFILE,
-    // GET_SERVICEPROVIDER,
+    GET_MESSAGES,
+
+
+   
     // GET_WORKIMAGE
 }

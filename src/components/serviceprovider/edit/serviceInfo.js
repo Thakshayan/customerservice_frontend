@@ -1,47 +1,153 @@
 import BreadCrumb from "../../breadcrumb";
 
-import {useState} from "react";
-import { useFormik } from "formik";
-import * as Yup from "yup"; 
+import React, {useEffect, useState} from "react";
 
-import { Link } from "react-router-dom";
+import ServiceRow from "./serviceRow";
+import Empty from "../../empty";
+import Loading from "../../loading";
+import DistrictRow from "./districtRow";
 
-const EditServiceInfo = () => {
+import swal from 'sweetalert';
 
-    const {error,setErr} = useState();
+const EditServiceInfo = ({content,addService,addDistrict,SPloading,serviceList,delService,delDistrict,loadingService,loadingDistrict,loadingRemoveDistrict,loadingRemoveService }) => {
 
-    const validate = (e)=>{
-        e.preventDefault()
-    }
+    const [error,setErr] = useState();
 
-    const submitDistrict = ()=>{
+    const [district,setDistrict] = useState('');
+    const [service,setService] = useState('');
+    const [services,setServices] = useState([]);
+    const [SPServices,setMyServices] = useState([]);
+    const [workRanges,setWorkRange] = useState([]);
 
-    }
 
-    const removeDistrict = ()=>{
 
-    }
+    useEffect(()=>{
+        if(content){
+            setMyServices(content.service)
+            setWorkRange(content.workingRange)
+        }
+    },[content])
+
+    useEffect(()=>{
+        if(serviceList){
+            setServices(serviceList)
+        }
+    },[serviceList])
+
 
     
-    const removeService = ()=>{
 
+    useEffect(()=>{
+
+    },[workRanges])
+
+    
+        
+   
+    const submitDistrict = (e)=>{
+        e.preventDefault()
+        
+        if (!district){
+            return
+        }
+        if (workRanges.indexOf(district) === -1){
+            addDistrict({
+                variables:{
+                    district:district
+                }
+            }).then(res =>{
+                
+                swal({
+                    title: "Success",
+                    text: "Successfully Added",
+                    icon: "success",
+                    button: {
+                      text: "Close",
+                      closeModal: true,
+                    }, 
+                   
+                })
+                setDistrict('')
+                setWorkRange([...workRanges,district])
+            }).catch(err=>{
+                swal({
+                    title: "Error",
+                    text: "Error occurred in addition",
+                    icon: "warning",
+                    button: {
+                      text: "Close",
+                      closeModal: true,
+                    }, 
+                    dangerMode: true  
+                })
+            })
+        }else{
+            swal({
+                title: "Error",
+                text: "Already exist",
+                icon: "warning",
+                button: {
+                  text: "Close",
+                  closeModal: true,
+                }, 
+                dangerMode: true  
+            })
+        }
     }
 
-    const formik = useFormik({
-        initialValues:{},validationSchema: Yup.object({
-            
-            
-            jobTitle:Yup.string()
-                .required("Please give a title"),
-            description: Yup.string()
-                .required("Please give a short description"),
-            
-        }),
-        onSubmit: values =>{
-
+    const submitService = (e)=>{
+        e.preventDefault()
+        
+        if(!service){
+            return 
         }
-    })
+        if (SPServices.indexOf(service) === -1){
+        addService({
+            variables:{
+                service:service
+            }
+        }).then(res =>{
+            swal({
+                title: "Success",
+                text: "Successfully Added",
+                icon: "success",
+                button: {
+                  text: "Close",
+                  closeModal: true,
+                }, 
+               
+            })
+            setService('')
+            setMyServices([...SPServices,service])
+        }).catch(err =>{
+            swal({
+                title: "Error",
+                text: "Error occur in addition",
+                icon: "warning",
+                button: {
+                  text: "Close",
+                  closeModal: true,
+                }, 
+                dangerMode: true  
+            })
+        })
+        }else{
+            swal({
+                title: "Error",
+                text: "Already Exist",
+                icon: "warning",
+                button: {
+                  text: "Close",
+                  closeModal: true,
+                }, 
+                dangerMode: true  
+            })
+        }
+    }
 
+
+
+    
     return ( 
         <div className="pcoded-main-container main-container">
         <div className="pcoded-wrapper">
@@ -54,51 +160,84 @@ const EditServiceInfo = () => {
                         <div className="page-wrapper">
                             {/*<!-- [ Main Content ] start -->*/}
 
-
+                            {/* {-----------------------[ Available services start ]---------------------} */}
                             <div className="card yearly-sales">
                                 <div className="card-block" style={{padding:'10px 30px 10px 30px'}}>
                                     <div className="card-header">
-                                        <h5>Services</h5>
+                                        <h5>Registered Services</h5>
                                     </div>
+                                    <hr/>
 
-
-                                    <div className="unread row align-items-center" style={{marginBottom:'15px 0 15px 0'}}>
-                                        
-                                        <div className="col-4 col-sm-4 col-md-3 col-xl-3" >
-                                            <h6 className="text-muted"><i className="fas fa-circle text-c-green f-10 m-r-15"></i> &nbsp; Name  </h6>
-                                        </div>
-
-                                        <div className="col-sm-8 col-md-5 col-xl-5" style={{margin:'10px'}}>
-                                            <p className="m-0">this is a sample service</p>
-                                        </div>
-                                        
-                                        <div className="col-12 col-sm-12 col-md-3 col-xl-3" style={{margin:'10px'}}>
-                                            <button onClick={removeService} className="label theme-bg2 text-white f-12" style={{float:'right',right:"20px"}}>
-                                                Remove
-                                                &nbsp; <i className="far fa-trash-alt"></i>
-                                            </button>
-                                        </div>
+                                {!SPloading ?
+                                    SPServices && SPServices[0] ?
+                                        SPServices.map((e)=>{
+                                            return (
+                                                
+                                            <React.Fragment key={e} >
+                                                <ServiceRow
+                                                    service={e}
+                                                    action = {delService}
+                                                    services = {SPServices}
+                                                    setServices = {setMyServices}
+                                                />
+                                                <hr/>
+                                            </React.Fragment>
+                                            )
+                                        })
+                                    :
+                                    <div className="col-sm-12 col-md-7 col-xl-8" style={{width:150}}>
+                                        <Empty
+                                            message = "No Service found"
+                                        />
                                     </div>
+                                :
+                                <Loading/>
+                                }
+                                
 
-                                    <div className="col-md-8 col-xl-6" style={{marginBottom:"30px"}}>
-                                    <form onSubmit={formik.handleSubmit} style={{marginTop:"50px"}}>
-                                            <div className="form-group">
-                                                <label htmlFor="Title">Name</label>
-                                                <input type="text" className="form-control" value={formik.values.jobTitle} id="jobTitle" aria-label="Enter job title" placeholder="Job Title" onChange={formik.handleChange} onBlur={formik.handleBlur} required/>
-                                                { formik.touched.jobTitle && formik.errors.jobTitle ? <small id="nameError" className="error form-text text-muted error "> {formik.errors.jobTitle}</small>: null}
+                                    <div className="col-md-12 col-xl-12" style={{marginBottom:"30px"}}>
+                                
+                                        <form style={{marginTop:"50px"}}>
+                                         <div className="form-group" >
+                                                <label htmlFor="service"> </label>
+                                               
+                                                <select className="form-control" id="service" value={service} onChange={(e) => {setService(e.target.value)}}>
+                                                    <option  value="" disabled></option>
+                                                    
+                                                    {services[0] ?
+
+                                                        services.map((e)=>{
+                                                            
+                                                            return <option key={e._id} value={e.service_name}> 
+                                                                        {e.service_name} 
+                                                                    </option>
+                                                        })
+
+                                                    :
+                                                        null
+                                                    }
+                                                </select>
+                                                </div>
+                                                { error ? <small id="districtError" className="error form-text text-muted error "> {error}</small>: null}
+                                            <div style={{margin:'auto',alignItems:'center',justifyContent:'center',textAlign:'center'}}>
+                                                {!loadingService ? 
+                                                    <button type="submit" onClick={submitService } className="btn btn-primary" style={{marginBottom:"30px",width:'150px'}}>
+                                                        Add Service
+                                                    </button>
+                                                :
+                                                    <button type="submit" className="btn btn-primary" style={{marginBottom:"30px",width:'150px'}} disabled>
+                                                        Loading
+                                                    </button>
+                                                }
                                             </div>
-                                            <div className="form-group">
-                                                <label htmlFor="description">Description</label>
-                                                <textarea className="form-control" id="description" rows="5" value={formik.values.description} aria-label="Enter description" onChange={formik.handleChange} onBlur={formik.handleBlur} required></textarea>
-                                                {formik.touched.description && formik.errors.description ? <small id="nameError" className="error form-text text-muted error "> {formik.errors.description}</small>: null}
-                                            </div>
-                                            <button type="submit" className="btn btn-primary">Submit</button>
                                         </form>
                                         </div>
 
                                 </div>
                             </div>
+                            {/* {-----------------------[ Available services end ]---------------------} */}
 
+                            {/* {-----------------------[ Available districts start ]---------------------} */}
                             <div className="card yearly-sales">
                                 <div className="card-block" style={{padding:'10px 30px 10px 30px'}}>
                                     <div className="card-header">
@@ -106,36 +245,48 @@ const EditServiceInfo = () => {
                                     </div>
                                     
                                     <div className="row">
+                                    
+                                    {!SPloading ?
 
                                     
-
-                                    <div className="col-sm-12 col-md-7 col-xl-8">
-
-                                        <div className="unread row align-items-center" style={{marginBottom:'15px'}}>
-                                            
-                                            <div className="col-1 col-sm-1 col-md-1 col-xl-1" >
-                                                <h6 className="text-muted"><i className="fas fa-circle text-c-green f-10 m-r-15"></i>  </h6>
-                                            </div>
-
-                                            <div className="col-8 col-sm-7 col-md-5 col-xl-5" style={{margin:'10px'}}>
-                                                <p className="m-0">Jaffna</p>
-                                            </div>
-                                            
-                                            <div className="col-12 col-sm-3 col-md-4 col-xl-3" style={{margin:'10px'}}>
-                                                <button onClick={removeDistrict} className="label theme-bg2 text-white f-12" style={{float:'right',right:"20px"}}>
-                                                    Remove
-                                                    &nbsp; <i className="far fa-trash-alt"></i>
-                                                </button>
-                                            </div>
+                                    workRanges && workRanges[0] ?
+                                    workRanges.map((e)=>{
+                                            return (
+                                                
+                                            <React.Fragment key={e} >
+                                                <DistrictRow
+                                                    district={e}
+                                                    action = {delDistrict}
+                                                    loading = {loadingRemoveDistrict} 
+                                                    workRanges = {workRanges}
+                                                    setWorkRange = {setWorkRange}
+                                                />
+                                                <hr/>
+                                            </React.Fragment>
+                                            )
+                                        })
+                                    :
+                                        <div className="col-sm-12 col-md-7 col-xl-8" style={{width:150}}>
+                                            <Empty
+                                                message = "No workrange found"
+                                            />
                                         </div>
+                                        
+                                    :
+                                    <div className="col-sm-12 col-md-7 col-xl-8">
+                                        <Loading/>
                                     </div>
+                                    }
+                                    
+                                    
+
                                     <div className="col-sm-8 col-md-5 col-xl-4">
                                         <form >
                                             <div className="form-group">
                                                 <label htmlFor="district"> Districts</label>
                                                
-                                                <select className="form-control" id="exampleFormControlSelect1">
-                                                    <option selected></option>
+                                                <select className="form-control" id="exampleFormControlSelect1" value={district} onChange={(e) => {setDistrict(e.target.value)}}>
+                                                    <option value="" disabled></option>
                                                     <option>Jaffna</option>
                                                     <option>Mannar</option>
                                                     <option>Ampara</option>
@@ -165,7 +316,15 @@ const EditServiceInfo = () => {
                                                 </div>
                                                 { error ? <small id="districtError" className="error form-text text-muted error "> {error}</small>: null}
                                            
-                                            <button type="submit" onClick={submitDistrict } className="btn btn-primary" style={{float:"right",marginBottom:"30px"}}>Add</button>
+                                                {!loadingDistrict ?
+                                                    <button type="submit" onClick={submitDistrict } className="btn btn-primary" style={{float:"right",marginBottom:"30px"}}>
+                                                        Add District
+                                                    </button>
+                                                :
+                                                    <button type="submit" className="btn btn-primary" style={{float:"right",marginBottom:"30px"}} disabled>
+                                                        Loading
+                                                    </button>
+                                                }
                                         </form>
                                     </div>
 
@@ -174,7 +333,7 @@ const EditServiceInfo = () => {
                                     
                                 </div>
                             </div>
-
+                            {/* {-----------------------[ Available districts end ]---------------------} */}
                         </div>
                     </div>
                 </div>

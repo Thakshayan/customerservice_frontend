@@ -1,8 +1,12 @@
 import NotificationBar from './notificationBar';
-import {Link} from "react-router-dom"
+import {BrowserRouter as Router,Link} from "react-router-dom"
 import { useEffect,useState } from 'react';
+import Empty from '../empty';
+import Loading from '../loading';
 
-function Notificator({title,content,id}){
+import {dateFormatter} from "../formatter";
+
+function Notificator({title,content,id,loading,type}){
 
     const [Notification,setNotification] = useState([]);
 
@@ -10,7 +14,7 @@ function Notificator({title,content,id}){
         if(content){
             setNotification(content)
         }
-    },[])
+    },[content])
 
 
     return(
@@ -20,46 +24,48 @@ function Notificator({title,content,id}){
                     <h5>{title}</h5>
                 </div>
                 <div className="card-block px-0 py-3">
-                    <div className="">
-                        <div className="">
-                            <div className="">
+                    <div >
+                        <div >
+                            { !loading ?
+                            <div>
 
                                 {Notification[0] ? Notification.map((e)=>{
 
-                                    <NotificationBar
-                                        title = "closed"
-                                        time = "21 July 12:56"
-                                        description = "This is a xample description about the booking"
-                                        workstation = "Jaffna"
+                                   return <NotificationBar
+                                        title = {e.state}
+                                        time = {dateFormatter(e.date)}
+                                        description = {e.message}
+                                        key={e._id}
                                     /> 
 
-                                }):null}
+                                }):
+                                    <Empty
+                                        message="No Notifications"
+                                    />
+                                }
                                 
-                                <NotificationBar
-                                    title = "closed"
-                                    time = "21 July 12:56"
-                                    description = "This is a xample description about the booking"
-                                    workstation = "Jaffna"
-                                
-                                />  
-                                <hr/>
-                                 <NotificationBar
-                                    title = "closed"
-                                    time = "21 July 12:56"
-                                    description = "This is a xample description about the booking"
-                                    workstation = "Kalutara"
-                                
-                                />        
+                                   
                             </div>
+                            : 
+                                <Loading/>
+                            }
                         </div>
                     </div>
                 </div>
                 
                 <div style={{padding:"0px 30px 10px 0px",float:"right"}}>
-                    <Link to={id?`/CSA/notifications/${id}`:`/CSA/notifications`} className="btn btn-mtd btn-primary" style={{width:"150px",height:"25px",padding:'0 0',float:'right',background: 'linear-gradient(-135deg, #1de9b6 0%, #1dc4e9 100%)'}}> 
+                    { !type ? <a href={id?`/CSA/notifications/${id}`:`/CSA/notifications`} className="btn btn-mtd btn-primary" style={{width:"150px",height:"25px",padding:'0 0',float:'right',background: 'linear-gradient(-135deg, #1de9b6 0%, #1dc4e9 100%)'}}> 
                         View More 
                         <i className="far fa-eye" style={{paddingLeft:'10px'}}></i>
-                    </Link>
+                    </a>
+
+                    :
+
+                    <a href={id?`/Worker/notifications/${id}`:`/Worker/notifications`} className="btn btn-mtd btn-primary" style={{width:"150px",height:"25px",padding:'0 0',float:'right',background: 'linear-gradient(-135deg, #1de9b6 0%, #1dc4e9 100%)'}}> 
+                        View More 
+                        <i className="far fa-eye" style={{paddingLeft:'10px'}}></i>
+                    </a>
+                    }
                 </div>
                     
             

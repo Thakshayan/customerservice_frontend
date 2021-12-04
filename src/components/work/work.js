@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
-import { useEffect } from "react";
+import { BrowserRouter as Router,Link } from "react-router-dom";
+import { useEffect, useLayoutEffect } from "react";
 import { useParams } from 'react-router';
 
 import Card from "../card";
@@ -7,39 +7,26 @@ import Card from "../card";
 import {WORK_PROFILE} from "../../GraphQL/Queries";
 import { useQuery } from "@apollo/client";
 import { useState } from "react/cjs/react.development";
+import {dateFormatter} from '../formatter'
+import Loading from "../loading";
 
 
-const WorkProfile = () => {
+const WorkProfile = ({contents,disable}) => {
 
+    const {id} = useParams()
 
-    const {id} = useParams();
-    
-
-    const [Id,setId] = useState(id);
-    const [content,setContent] = useState();
-    const {error,loading,data} = useQuery(WORK_PROFILE,{
-        variables:{
-            id:Id
-        }
-    });
-
-    useEffect(()=>{
-        if(Id){
-            setId(Id)
-        }
-        
-        console.log(Id)
-    },[Id])
+    const [Id,setID] = useState(id)
+    const [content,setContent] = useState()
 
     useEffect(() => {
-        console.log(data)
-        if(data){
-            setContent(data.getWork)
-            console.log(data)
+   
+        setContent(contents)
+    }, [contents])
 
-        }
-    }, [data])
-
+    useLayoutEffect(()=>{
+        window.scrollTo(0,0)
+    },[])
+    
 
     return ( 
 
@@ -58,14 +45,19 @@ const WorkProfile = () => {
                                 {/*<!--[ Messages section ] starts-->*/}
                                 <div className="col-sm-12 col-md-12 col-xl-4">
                                 <Card
-                                    title='New Messages'
+                                    title='Send Messages'
                                     symbol = {<i className="fas fa-comment-dots text-c-green f-30 m-r-10"></i>}
                                     count = ''
                                     button = {
-                                        <Link to={`/CSA/messages/${id}`} className="label theme-bg text-white f-12" style={{width:"100%",float:"right",textAlign:"center"}}>
+                                        content && !disable ?<a href={`/CSA/messages/${Id}`} className="label theme-bg text-white f-12" style={{width:"100%",float:"right",textAlign:"center"}}>
                                             View Info
                                             &nbsp; <i className="far fa-eye"></i>
-                                        </Link>
+                                        </a>
+                                        :
+                                        <button className="label theme-bg text-white f-12" style={{width:"100%",float:"right",textAlign:"center",borderWidth:0}} disabled>
+                                            View Info
+                                            &nbsp; <i className="far fa-eye"></i>
+                                        </button>
                                     }
                                 />
                                 </div>
@@ -79,10 +71,16 @@ const WorkProfile = () => {
                                     symbol = {<i className="fas fa-users text-c-green f-30 m-r-10"></i>}
                                     count = ''
                                     button = {
-                                        <Link to={`/CSA/assignWorker/${id}`} className="label theme-bg text-white f-12" style={{width:"100%",float:"right",textAlign:"center"}}>
+                                        content && !disable ?<a href={`/CSA/assignWorker/${Id}`} className="label theme-bg text-white f-12" style={{width:"100%",float:"right",textAlign:"center"}}>
                                             View Info
                                             &nbsp; <i className="far fa-eye"></i>
-                                        </Link>}
+                                        </a>
+                                        :
+                                        <button className="label theme-bg text-white f-12" style={{width:"100%",float:"right",textAlign:"center",borderWidth:0}} disabled>
+                                            View Info
+                                            &nbsp; <i className="far fa-eye"></i>
+                                        </button>
+                                    }
                                 />
                                 </div>
                                 {/*<!--[ Workers detail link section ] end-->*/}
@@ -90,28 +88,39 @@ const WorkProfile = () => {
                                 {/*<!-- [ work status ] starts-->*/}    
                                 {/* {content && content.finishDate?     */}
                                 <div className="col-sm-12 col-md-12 col-xl-4">
-                                {true?
+                                {content && content.state === 'finished' ?
                                 
                                 <Card
-                                title='Rating'
-                                symbol =  {<i className="fas fa-star text-c-yellow f-30 m-r-10"></i>}
-                                count = ''
+                                title='Work Status'
+                                symbol =  {<i className="fas fa-check-circle text-c-green f-30 m-r-10"></i>}
+                                count = 'Finished'
                                 button = {
-                                    <Link to={`/CSA/viewRating/${id}`} className="label theme-bg text-white f-12" style={{width:"100%",float:"right",textAlign:"center"}}>
-                                    view 
-                                        &nbsp; <i className="far fa-eye"></i>
-                                    </Link>
+                                    <button className="label theme-bg text-white f-12" style={{width:"100%",float:"right",textAlign:"center",borderWidth:0}} disabled>
+                                        
+                                        {content.paid ?
+                                        <>
+                                            Payment Finished &nbsp;
+                                         <i className="fas fa-check-circle"></i> 
+                                        </>
+                                        :
+                                        <>
+                                            Payment Pending
+                                            &nbsp; <i className="feather icon-loader"></i>
+                                        </>
+                                        }
+                                        
+                                    </button>
                                 }
-                                />  :
+                                /> :
                                 <Card
                                     title='Work Status'
                                     symbol =  {<i className="feather icon-loader text-c-green f-30 m-r-10"></i>}
                                     count = 'pending'
                                     button = {
-                                        <Link to="" className="label theme-bg2 text-white f-12" style={{width:"100%",float:"right",textAlign:"center"}}>
+                                        <a href="" className="label theme-bg2 text-white f-12" style={{width:"100%",float:"right",textAlign:"center"}}>
                                             Finish work
                                             &nbsp; <i className="far fa-trash-alt"></i>
-                                        </Link>
+                                        </a>
                                     }
                                 />
                             
@@ -136,7 +145,7 @@ const WorkProfile = () => {
                                                         Work Id:
                                                     </div>
                                                     <div className="col-8 col-md-8 col-sm-8">
-                                                        {content?content.workId:null}
+                                                        {content.appointment_id}
                                                     </div>
                                                 </div>
                                                 <hr/>
@@ -146,54 +155,60 @@ const WorkProfile = () => {
                                                         Ordered Date:
                                                     </div>
                                                     <div className="col-8 col-md-8 col-sm-8">
-                                                            {content?content.date:null}
+                                                            {dateFormatter(content.starting_date)}
                                                     </div>
                                                 </div>
                                                 <hr/>
                                                 <div className="row" style={{display:"flex"}}>
                                                     <div className="col-4 col-md-4 col-sm-4">
-                                                        Subject:
+                                                        Work Address:
                                                     </div>
                                                     <div className="col-8 col-md-8 col-sm-8">
-                                                        {content?content.jobTitle:null}
+                                                        {content.booking.workStationAddress}
                                                     </div>
                                                 </div>
                                                 <hr/>
                                                 <div className="row" style={{display:"flex"}}>
                                                     <div className="col-4 col-md-4 col-sm-4">
-                                                        Details:
+                                                        Description:
                                                     </div>
                                                     <div className="col-8 col-md-8 col-sm-8">
-                                                        {content?content.description:null}
+                                                        {content.booking.description}
                                                     </div>
                                                 </div>
                                                 <hr/>
                                                 <div className="row" style={{display:"flex"}}>
                                                     <div className="col-4 col-md-4 col-sm-4">
-                                                        Address:
+                                                        District:
                                                     </div>
                                                     <div className="col-8 col-md-8 col-sm-8">
-                                                        {content?content.Address:null}
+                                                        {content.booking.workStationDistrict}
                                                     </div>
                                                 </div>
                                                 <hr/>
                                                 <div className="row" style={{display:"flex"}}>
                                                     <div className="col-4 col-md-4 col-sm-4">
-                                                        Finish Date:
+                                                        Paid:
                                                     </div>
                                                     <div className="col-8 col-md-8 col-sm-8">
-                                                        {content?content.finishDate?content.finishDate:'...':null}
+                                                        {content.paid?"Yes":'...'}
+                                                    </div>
+                                                </div>
+                                                <hr/>
+                                                <div className="row" style={{display:"flex"}}>
+                                                    <div className="col-4 col-md-4 col-sm-4">
+                                                        Budget:
+                                                    </div>
+                                                    <div className="col-8 col-md-8 col-sm-8">
+                                                        {content.cost}
                                                     </div>
                                                 </div>
                                             </div>
-                                            :null}
+                                            :
+                                                <Loading/>
+                                            }
                                             <br/>
-                                            {/* <div style={{paddingTop:"20px",float:"right"}}>
-                                                <button className="btn btn-mtd btn-primary" style={{width:"100px",height:"25px",padding:'0 0'}}> 
-                                                    Edit 
-                                                    <i className="fas fa-edit" style={{paddingLeft:'10px'}}></i>
-                                                </button>
-                                            </div> */}
+                                            
                                         
                                         </div>
                                     </div>
@@ -203,20 +218,22 @@ const WorkProfile = () => {
                                 
                                 <div className="col-md-12 col-xl-6">
 
-                                    
-                                    {/*<!-- [ customer info ] starts-->*/}
+                                      {/*<!-- [ customer info ] starts-->*/}
+                                   
+                                  
                                     <div className="card yearly-sales">
                                         <div className="card-block" style={{padding:'10px 30px 10px 30px'}}>
                                             <div className="card-header">
                                                 <h5>Customer info</h5>
                                             </div>
+                                            {content ?
                                             <div className="" style={{paddingTop:"25px"}}>
                                                 <div className="row" style={{display:"flex"}}>
                                                     <div className="col-4 col-md-4 col-sm-4">
                                                         Full Name:
                                                     </div>
                                                     <div className="col-8 col-md-8 col-sm-8">
-                                                        Thakshayan Thanabalasingam
+                                                        {content.booking.by.name}
                                                     </div>
                                                 </div>
                                                 <hr/>
@@ -226,7 +243,7 @@ const WorkProfile = () => {
                                                         Customer ID:
                                                     </div>
                                                     <div className="col-8 col-md-8 col-sm-8">
-                                                        001
+                                                        {content.booking.by.username}
                                                     </div>
                                                 </div>
                                                 <hr/>
@@ -235,31 +252,43 @@ const WorkProfile = () => {
                                                         Email:
                                                     </div>
                                                     <div className="col-8 col-md-8 col-sm-8">
-                                                        Thakshayan007@gmail.com
+                                                        {content.booking.by.email}
                                                     </div>
                                                 </div>
                                                 <hr/>
                                                 <div className="row" style={{display:"flex"}}>
                                                     <div className="col-4 col-md-4 col-sm-4">
-                                                        Address:
+                                                        Phone:
                                                     </div>
                                                     <div className="col-8 col-md-8 col-sm-8">
-                                                        Sample Address
+                                                        {content.booking.by.contact_no}
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div style={{paddingTop:"20px",float:"right"}}>
-                                                <button className="btn btn-mtd btn-primary" style={{width:"100px",height:"25px",padding:'0 0'}}> 
-                                                    View 
-                                                    &nbsp; <i className="far fa-eye"></i>
-                                                </button>
-                                            </div>
+                                                <hr/>
+                                                <div className="row" style={{display:"flex"}}>
+                                                    <div className="col-4 col-md-4 col-sm-4">
+                                                        rating:
+                                                    </div>
+                                                    <div className="col-8 col-md-8 col-sm-8">
+                                                        {content.booking.by.rating}
+                                                    </div>
+                                                </div>
+                                                <br/>
+                                         
+                                            </div> 
+                                            :
+                                            
+                                            <Loading/>
+
+                                             }
+                                         
                                         
 
                                         
                                         </div>
                                         
                                     </div>
+
                                     {/*<!--[ customer info ] end-->*/}
 
                                     <Card
@@ -267,10 +296,17 @@ const WorkProfile = () => {
                                     symbol = {<i className="far fa-images text-c-green f-30 m-r-10"></i>}
                                     count = ''
                                     button = {
-                                        <Link to={`/CSA/work/images/${id}`} className="label theme-bg text-white f-12" style={{width:"100%",float:"right",textAlign:"center"}}>
+                                        !disable ?<a href={`/CSA/work/images/${Id}`} className="label theme-bg text-white f-12" style={{width:"100%",float:"right",textAlign:"center"}}>
                                             View Images
                                             &nbsp; <i className="far fa-eye"></i>
-                                        </Link>
+                                        </a>
+                                        :
+                                        <a href={`/Worker/work/images/${Id}`} className="label theme-bg text-white f-12" style={{width:"100%",float:"right",textAlign:"center"}}>
+                                            View Images
+                                            &nbsp; <i className="far fa-eye"></i>
+                                        </a>
+                                        
+
                                     }
                                 />
 

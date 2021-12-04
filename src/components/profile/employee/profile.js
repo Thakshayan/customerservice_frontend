@@ -1,30 +1,31 @@
 import { useEffect } from 'react';
-import { useParams } from 'react-router';
+
 import { useState } from 'react';
 import FinishCard from '../../finishCard';
 import Notificator from '../../notification/notificator';
-import RatingList from "../../rating/ratingSection/ratingList";
+
 import ProfileCard from '../profileCard';
 import PhotoCard from '../profilephoto';
 import WorkerInfoCard from "../workerInfoCard";
+import Loading from '../../loading';
 
 
 
-function ProfileContent(){
 
-    const {id} = useParams();
+function ProfileContent({contents,notification,type,id,edit}){
+
     
-    const [content,setContent] = useState([]);
+    
+    const [content,setContent] = useState(contents);
 
     useEffect(()=>{
-
-        console.log(id)
-
-
-    },[id])
+        if(contents){
+            setContent(contents)
+        }
+    },[contents])
 
     return(
-        <div className="pcoded-main-container">
+        <div className="pcoded-main-container main-container">
             <div className="pcoded-wrapper">
                 <div className="pcoded-content">
                     <div className="pcoded-inner-content">
@@ -32,7 +33,7 @@ function ProfileContent(){
 
                     //<!-- [ breadcrumb ] end -->
                     }
-                    <div className="main-body">
+                    {content ?<div className="main-body">
                         <div className="page-wrapper">
                             {//<!-- [ Main Content ] start -->
                             }
@@ -40,45 +41,65 @@ function ProfileContent(){
 
                                 {/*<!--[ profile section ] starts-->*/}
                                 <div className="col-md-12 col-xl-5">
-                                    <PhotoCard id={id}/>
+                                    <PhotoCard id={content._id} profile={content.profile} type={type} edit={edit}/>
                                 </div>
                                 
                                 {/*<!--[ profile section ] end-->
 
                                 /*<!--[ basic info section ] start-->*/}
                                 <div className="col-md-12 col-xl-7">
-                                    <ProfileCard id={id} edit={true} title="Personal Info"/>
+                                    {content ?
+                                        <ProfileCard 
+                                            id={content._id} 
+                                            edit={edit}
+                                            title="Personal Info" 
+                                            name = {content.name}
+                                            nic = {content.nic}
+                                            contact ={content.contact_no}
+                                            address = {content.address}
+                                        />
+                                    :null}
                                 </div>
                                 
                                 {/*<!--[ basic info section ] end-->*/}
 
                                 <div className="col-xl-4">
                                     {/*<!--[ Worker info section ] starts-->*/}
-                                    <WorkerInfoCard id={id} edit={true} title="Worker Info"/>
+                                    {content ? 
+                                        <WorkerInfoCard 
+                                            id={contents._id} 
+                                            edit={edit} 
+                                            title="Worker Info" 
+                                            content={content}
+                                            type = {type}
+                                        />
+                                        :
+                                            null
+                                        }
                                     {/*<!--[ Worker info section ] end-->
 
-                                    <!-- [ rating list ] starts-->*/}
-                                    <RatingList 
-                                        content={[5,4,5,2,1]} 
-                                        value = {4.7}
-                                    />
-                                    {/*<!-- [ rating list ] end-->*/}
+                                    
 
                                     {/*<!-- [ finish button ] starts-->*/}
-                                    <FinishCard
+                                    {/* <FinishCard
                                         title='Remove Employee'
                                         icon ={<i className="fas fa-user-slash" style={{paddingLeft:'10px'}}></i>}
                                         button = 'Suspend'
                                         buttonClass = 'btn-danger'
-                                        id = {id}
-                                    />
+                                        id = {contents.username}
+                                    /> */}
                                     {/*<!-- [ finish button ] end-->*/}
 
                                 </div>
                                 
                                 <div className="col-xl-8">
                                     {/*<!--[ Recent Notification ] start-->*/}
-                                    <Notificator title="New Notifications" content={null}/>  {/* Need add the content */}
+                                    <Notificator 
+                                        title="New Notifications" 
+                                        content={notification}
+                                        id={id}
+                                    />  
+                                    {/* Need add the content */}
                                     {/*<!--[ Recent Notification ] end--> */}
                                     
                                     {/*<!--[ Recent Notification ] start-->*/}
@@ -90,7 +111,7 @@ function ProfileContent(){
                             </div>
                             
                         </div>
-                    </div>
+                    </div> : <Loading/>}
                 </div>
             </div>
         </div>

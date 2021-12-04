@@ -1,30 +1,33 @@
-import { useMutation } from "@apollo/client";
-// import { ASSIGN_WORKER } from "../../GraphQL/Mutations";
 
+import swal from 'sweetalert';
 
-const AssignForm = (workId,workerId) => {
+const AssignForm = ({worker,appointment,action}) => {
+    
+    const assignWorkerClick = (e) =>{
+        e.preventDefault()
 
-    // const [assignWorker,{loading,error}] = useMutation(ASSIGN_WORKER,{
-    //     onCompleted:data=>{
-    //         console.log(data)
-    //     }
-    // })
-
-    const assignWorkerClick = () =>{
-
-        // assignWorker({
-        //     variables:{
-        //         workerId:workerId,
-        //         workId:workId
-        //     }
-        // })
+        action({
+            variables:{
+                appointment,
+                worker
+            }
+        }).catch(err => {
+            swal({
+                title: "Error",
+                text: "Error occurred in the search",
+                icon: "warning",
+                button: {
+                  text: "Close",
+                  closeModal: true,
+                }, 
+                dangerMode: true  
+            })
+        })
 
     }
 
-    return ( 
-        
+    return (        
         <button type="submit" onClick={assignWorkerClick} className="btn btn-primary"> Add to the Work</button>                                                    
-
      );
 }
  

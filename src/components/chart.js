@@ -14,6 +14,7 @@ function Chart({ArrayX,Request,ArrayY}) {
         backgroundColor: '#1de9b6',
         borderColor: '#1de9b6',
         borderWidth: 1,
+        display:false,
         data: ArrayY
       }
     ]
@@ -33,13 +34,18 @@ function Chart({ArrayX,Request,ArrayY}) {
             },
             
             scales : {
+              
               x: {
+                  ticks: {
+                      display: false
+                  }
+                ,
                 grid: {
                   display: false
                 },
                 title:{
                   display:true,
-                  text:'Days',
+                  text:'In a Day',
                   font:{
                    
                   }

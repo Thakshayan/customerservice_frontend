@@ -40,9 +40,20 @@ const PhotoUpdate  = ({id}) => {
 
     const upload = ()=>{
 
-        alert(id,selectedFile)
+
         // uploadProfile({
         //     variables:selectedFile
+        // }).catch(err=>{
+        //     swal({
+        //         title: "Error",
+        //         text: "Error occurred in initiating appointment",
+        //         icon: "warning",
+        //         button: {
+        //           text: "Close",
+        //           closeModal: true,
+        //         }, 
+        //         dangerMode: true  
+        //     })
         // })
 
     }
@@ -59,7 +70,7 @@ const PhotoUpdate  = ({id}) => {
                   
                     <input 
                         className="form-control"
-                        
+                        id = "photo"
                         type="file" 
                         name="user[image]" 
                         multiple={false}

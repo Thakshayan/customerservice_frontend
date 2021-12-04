@@ -1,24 +1,29 @@
 import React, { useEffect } from 'react';
 import { useMutation, useApolloClient } from '@apollo/client';
-import { Link } from 'react-router-dom';
+import { BrowserRouter as Router,Link } from 'react-router-dom';
 
 
-import { SIGNIN_MODERATOR } from '../GraphQL/Mutations';
-import SignUpForm from '../components/form/signupForm';
+import {  SIGNIN_MOD_SP } from '../GraphQL/Mutations';
+import SignInForm from '../components/form/signInForm';
 
 const SignIn = (props) => {
 
     const client = useApolloClient();
-    const [signINModerator, { loading, error }] = useMutation(SIGNIN_MODERATOR, {
+    const [signINModSP, { loading, error }] = useMutation( SIGNIN_MOD_SP, {
       onCompleted: data => {
-
-        console.log(data)
+       
+        if(data.signINModSP){
           //store the token
-        localStorage.setItem('token', data.signINModerator);
+        localStorage.setItem('token', data.signINModSP);
         // update the local cache
+        localStorage.removeItem('refresh');
+        localStorage.setItem('role','Provider')
         client.writeData({ data: { isLoggedIn: true } });
+        
         // redirect the user to the homepage
-        props.history.push('/CSA');
+        //props.history.push('/CSA');
+        window.location.href='/CSA'
+        }
       }
     });
 
@@ -37,27 +42,37 @@ const SignIn = (props) => {
                         <i className="feather icon-unlock auth-icon"></i>
                     </div>
                     <h3 className="mb-4">Login</h3>
-                    {/* <form action={signIn}>
-                    <div className="input-group mb-3">
-                        <input type="text" className="form-control" placeholder="ID"/>
-                    </div>
-                    <div className="input-group mb-4">
-                        <input type="password" className="form-control" placeholder="password"/>
-                    </div>
-                    {/* <div className="form-group text-left">
-                        <div className="checkbox checkbox-fill d-inline">
-                            <input type="checkbox" name="checkbox-fill-1" id="checkbox-fill-a1" checked=""/>
-                            <label for="checkbox-fill-a1" className="cr"> Save Details</label>
-                        </div>
-                    </div>
-                    <button className="btn btn-primary shadow-2 mb-4">Login</button>
-                    </form> */}
+                
 
-                    <SignUpForm action={signINModerator} formType="signin"/>
+                    <SignInForm action={signINModSP} loading={loading} type="Moderator"/>
+                    
+                    <p className="mb-2 text-muted" >
+                        Signin ?
+                        <a href="/signInCustomer" style={{color:'#038fcf',fontStyle:'italic',textDecoration:'underline'}}>
+                            Customer 
+                        </a>
+                        /
+                        <a href="/signinWorker" style={{color:'#038fcf',fontStyle:'italic',textDecoration:'underline'}}>
+                            Worker
+                        </a>
+                    </p>
 
+                    
 
-                    {/* <p className="mb-2 text-muted">Forgot password? <Link to="">Reset</Link></p>
-                    <p className="mb-0 text-muted">Don’t have an account? <Link to="">Signup</Link></p> */}
+                    {/* <p className="mb-2 text-muted" >
+                        Signin Administrator? 
+                        <a href="/signInAdmin" style={{color:'#038fcf',fontStyle:'italic',textDecoration:'underline'}}>
+                            Administrator
+                        </a>
+                    </p> */}
+
+                    <p className="mb-0 text-muted" >
+                        Create a Service Provider? 
+                        <a href="signup" style={{color:'#038fcf',fontStyle:'italic',textDecoration:'underline'}}>
+                            Signup
+                        </a>
+                    </p>
+
                 </div>
             </div>
         </div>

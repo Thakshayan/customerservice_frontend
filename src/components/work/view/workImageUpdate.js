@@ -28,11 +28,11 @@ const PhotoUpdate  = ({id}) => {
             setSelectedFiles([...selectedFiles,selectedFile])
         }else{
             setSelectedFiles([selectedFile])
-            console.log(selectedFiles)
+            
         }
         
         setPreview([...previews,objectUrl])
-        console.log(previews);
+        
         // free memory when ever this component is unmounted
         return () => URL.revokeObjectURL(objectUrl)
     }, [selectedFile])

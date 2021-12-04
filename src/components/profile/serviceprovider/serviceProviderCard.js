@@ -1,6 +1,9 @@
-import { Link } from "react-router-dom";
+import Empty from '../../empty'
+import {BrowserRouter as Router, Link } from "react-router-dom";
+import React, { Fragment } from 'react';
 
 const ProviderCard = ({title,content}) => {
+
     return ( 
         <div className="">
             <div className="card yearly-sales">
@@ -16,18 +19,27 @@ const ProviderCard = ({title,content}) => {
                                 Services:
                             </div>
                             <div className="col-8 col-md-8 col-sm-8">
-                                First Service 
                                 
-                                <hr/>
-                                First Service 
-                                <hr/>
-                                First Service 
-                                <hr/>
+                                {content && content.service ? 
+                                
+                                content.service.map(e=>{
+                                    return <React.Fragment key={e}>
+                                        {e}
+                                        <hr/>
+                                    </React.Fragment>
+                                }):
+                                    <Empty/>
+                                }
+                                
                                 <div style={{paddingTop:"20px",float:"right"}}>
-                                    <Link to="serviceInfo" className="btn btn-mtd btn-primary" style={{width:"100px",height:"25px",padding:'0 0'}}> 
-                                        Edit 
-                                        <i className="fas fa-edit" style={{paddingLeft:'10px'}}></i>
-                                    </Link>
+                                    <a href="serviceInfo" className="btn btn-mtd btn-primary" style={{width:"100px",height:"25px",padding:'0 0'}}> 
+                                        <div className="tooltips" id="tooltips">
+                                            Edit 
+                                            <i className="fas fa-edit" style={{paddingLeft:'10px'}}></i>
+                                            <span className="tooltiptext" >Click to edit</span>
+                                        </div> 
+                                        
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -39,14 +51,39 @@ const ProviderCard = ({title,content}) => {
                             </div>
                             <div className="col-8 col-md-8 col-sm-8">
                                 <div>
-                                2 <hr/>
-                                A,B,C,D <hr/>
+                                { content && content.workingRange ?
+                                    content.workingRange.length
+                                :
+                                    0
+                                }
+
+                                <br/>
+                                { content && content.workingRange ?
+                                
+                                content.workingRange.map((e)=>{
+                                    return <Fragment key={e}>
+                                        <div style={{padding:1}}>
+                                        {e}
+                                        </div>
+                                       
+                                    </Fragment>
+                                })
+                                    
+                                :
+                                    <Empty/>
+                                }
+                                
                                 </div>
-                                <div style={{paddingTop:"20px",float:"right"}}>
-                                    <Link to="/CSA/serviceInfo/" className="btn btn-mtd btn-primary" style={{width:"100px",height:"25px",padding:'0 0'}}> 
-                                        Edit 
-                                        <i className="fas fa-edit" style={{paddingLeft:'10px'}}></i>
-                                    </Link>
+                                <div style={{float:"right"}}>
+                                    <a href="/CSA/serviceInfo/" className="btn btn-mtd btn-primary" style={{width:"100px",height:"25px",padding:'0 0'}}> 
+                                        
+                                        <div className="tooltips" id="tooltips">
+                                            Edit 
+                                            <i className="fas fa-edit" style={{paddingLeft:'10px'}}></i>
+                                            <span className="tooltiptext" >Click to edit</span>
+                                        </div> 
+                                        
+                                    </a>
                                 </div>
                             </div>
                         </div>

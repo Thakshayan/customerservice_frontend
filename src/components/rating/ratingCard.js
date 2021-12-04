@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { BrowserRouter as Router,Link } from "react-router-dom";
 
 const RatingCard = ({id}) => {
     return ( 
@@ -50,10 +50,10 @@ const RatingCard = ({id}) => {
                     
 
                     <div style={{paddingTop:"0px 20px",float:"right"}}>
-                        <Link to={`/edit/basicInfo/${id}`} className="btn btn-mtd btn-primary" style={{width:"100px",height:"25px",padding:'0 0'}}> 
+                        <a href={`/edit/basicInfo/${id}`} className="btn btn-mtd btn-primary" style={{width:"100px",height:"25px",padding:'0 0'}}> 
                             View 
                             <i className="fas fa-eye" style={{paddingLeft:'10px'}}></i>
-                        </Link>
+                        </a>
                     </div>
                     
                    
