@@ -10,7 +10,7 @@ const NavBarAdmin=()=>{
                         </div>
                         <span className="b-title">Admin Panel</span>
                     </a>
-                    <a className="mobile-menu" id="mobile-collapse" href="javascript:"><span></span></a>
+                    <a className="mobile-menu" id="mobile-collapse" href="#0"><span></span></a>
                 </div>
                 <div className="navbar-content scroll-div">
                     <ul className="nav pcoded-inner-navbar">

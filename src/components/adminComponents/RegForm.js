@@ -20,17 +20,17 @@ const RegForm=()=>{
                                                     <div className="col-md-6">
                                                         <form>
                                                         <div className="form-group">
-                                                            <label for="exampleInputEmail1">User Name</label>
+                                                            <label htmlFor="exampleInputEmail1">User Name</label>
                                                             <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="JET Constructions" readOnly/>
                                                            
                                                         </div>
                                                         <div className="form-group">
-                                                            <label for="exampleInputPassword1">Field</label>
+                                                            <label htmlFor="exampleInputPassword1">Field</label>
                                                             <input type="password" className="form-control" id="exampleInputPassword1" placeholder="Plumbing Work"/>
                                                         </div>
                                                         <div className="form-group form-check">
                                                             <input type="checkbox" className="form-check-input" id="exampleCheck1"/>
-                                                            <label className="form-check-label" for="exampleCheck1">Checked By Admin</label>
+                                                            <label className="form-check-label" htmlFor="exampleCheck1">Checked By Admin</label>
                                                         </div>
                                                         <button type="submit" className="btn btn-primary">Approve</button>
                                                         </form>
@@ -42,7 +42,7 @@ const RegForm=()=>{
                                                             <input type="text" className="form-control" placeholder="Colombo"/>
                                                         </div>
                                                         <div className="form-group">
-                                                            <label for="exampleFormControlSelect1">Profile Type</label>
+                                                            <label htmlFor="exampleFormControlSelect1">Profile Type</label>
                                                             <select className="form-control" id="exampleFormControlSelect1">
                                                                 <option>Gold</option>
                                                                 <option>Silver</option>
@@ -52,7 +52,7 @@ const RegForm=()=>{
                                                             </select>
                                                         </div>
                                                         <div className="form-group">
-                                                            <label for="exampleFormControlTextarea1">Address</label>
+                                                            <label htmlFor="exampleFormControlTextarea1">Address</label>
                                                             <textarea className="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="No.64,Jayamawatha,Colombo 4"></textarea>
                                                         </div>
                                                     </form>

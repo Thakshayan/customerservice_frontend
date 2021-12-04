@@ -22,8 +22,6 @@ describe("Add employee component tests",()=>{
                 </MockedProvider>
             </BrowserRouter>
           ))
-        // const linkElement = screen.getByText(/New Messages/i);
-        // expect(linkElement).toBeInTheDocument();
     });
     
 })

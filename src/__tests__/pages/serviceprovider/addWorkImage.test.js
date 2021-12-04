@@ -3,11 +3,15 @@ import ReactDOM from 'react-dom';
 import {render,act,screen} from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { BrowserRouter } from 'react-router-dom';
-import AddModerator from '../../../pages/serviceProvider/addModerator';
+import AddWorkImage from '../../../pages/serviceProvider/addWorkImage';
 import TestRenderer from 'react-test-renderer';
 import { MockedProvider } from '@apollo/client/testing';
 
-describe("Profile photo component tests",()=>{
+
+window.scrollTo = jest.fn()
+
+
+describe("Work Image page tests",()=>{
     
     const mocks= []
     
@@ -15,8 +19,8 @@ describe("Profile photo component tests",()=>{
        
         await act(async () => render(
             <BrowserRouter>
-                <MockedProvider mocks={mocks} type='Moderator' addTypename={false}>
-                    <AddModerator/>
+                <MockedProvider mocks={mocks} addTypename={false}>
+                    <AddWorkImage/>
                 </MockedProvider>
             </BrowserRouter>,
         ));
