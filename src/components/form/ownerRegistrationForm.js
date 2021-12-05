@@ -133,9 +133,9 @@ const OwnerRegisterForm = ({services,districts,setContent,loading,myServiceArray
                             <label htmlFor="workerId">Services</label>
                                 <div className="input-group mb-3">
                                     < select className="form-control" id="service" data-testid="services" value={service}  onChange={(e) => {setService(e.target.value)}} >
-                                        <option  value="" disabled></option>
+                                        <option  value="" key="1" disabled></option>
                                             
-                                        {services[0] ?
+                                        {services && services[0] ?
 
                                             services.map((e)=>{
                                                             
@@ -163,10 +163,11 @@ const OwnerRegisterForm = ({services,districts,setContent,loading,myServiceArray
 
                                     <div className="d-flex row" style={{padding:"10px"}}>
 
-                                        {myServiceArray[0] ? 
+                                        {myServiceArray && myServiceArray[0] ? 
 
                                             myServiceArray.map((e)=>{
                                                 return <ButtonCard 
+                                                    
                                                     id={e}  
                                                     key={e}
                                                     array ={myServiceArray}
@@ -188,10 +189,10 @@ const OwnerRegisterForm = ({services,districts,setContent,loading,myServiceArray
                                         <label htmlFor="workerId">Districts</label>
                                         <div className="input-group mb-3">
                                             
-                                                <select className="form-control" id="service" value={district}  onChange={(e) => {setDistrict(e.target.value)}}>
-                                                    <option  value="" disabled></option>
+                                                <select className="form-control" id="service" value={district} data-testid="districts" onChange={(e) => {setDistrict(e.target.value)}} >
+                                                    <option  value="" key="1" disabled></option>
                                                     
-                                                    {districts[0] ?
+                                                    {districts && districts[0] ?
 
                                                         districts.map((e)=>{
                                                             
@@ -207,7 +208,7 @@ const OwnerRegisterForm = ({services,districts,setContent,loading,myServiceArray
                                             
                                             <div className="input-group-append">
                                             <button onClick={(e) => {addToArray(e,workRangeArray,setWorkRangeArray,district,setDistrict)}}
-                                                className="btn btn-primary" type="button" aria-label="Click to Add district" >
+                                                className="btn btn-primary" type="button" aria-label="Click to Add district" data-testid="district-button">
                                                     
                                                     <div className="tooltips" id="tooltips" >
                                                         Add District
@@ -220,7 +221,7 @@ const OwnerRegisterForm = ({services,districts,setContent,loading,myServiceArray
                                     </div>
                                     <div className="d-flex row" style={{padding:"10px"}}>
 
-                                        {workRangeArray[0] ? 
+                                        {workRangeArray && workRangeArray[0] ? 
 
                                             workRangeArray.map((e)=>{
                                                 return <ButtonCard 
@@ -282,7 +283,7 @@ const OwnerRegisterForm = ({services,districts,setContent,loading,myServiceArray
                                     Choose the Membership
                                 </div>
                                 <hr/>
-                                {!loading ? memberships[0] ? memberships.map((e)=>{
+                                {!loading ? memberships && memberships[0] ? memberships.map((e)=>{
 
 
                                     return (

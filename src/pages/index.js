@@ -10,7 +10,7 @@ import SignIn from "./signin";
 import SignInWorker from "./signInWorker";
 import SignInCustomer from "./signInCustomer";
 import SignInAdmin from "./signInAdmin";
-import SignUp from "./singnup";
+import SignUp from "./signup";
 
 import Home from './serviceProvider/home';
 import AddEmployee from "./serviceProvider/addEmployee";
@@ -98,7 +98,7 @@ const Pages = () => {
         <Route path="/signup" component={SignUp}/>
         <Route path="/success" component={SuccessPage}/> 
         <Route path="/signInWorker" component={SignInWorker}/> 
-        <Route path="/signInCustomer" component={SignInCustomer}/>
+        <Route path="/" component={SignInCustomer}/>
         <Route path="/signInAdmin"  component={SignInAdmin}/>
 
 

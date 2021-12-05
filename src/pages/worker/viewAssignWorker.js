@@ -76,13 +76,9 @@ const AssignWorker = () => {
             <AssignWorkerForm 
                 type = "Employee"
                 contents = {content}
-                action = {assignWorker}
-                setAssignWorkerID = {setAssignWorkerID}
-                workId = {id}
-                assignWorkerId = {workerId}
+                workId = {id} 
                 workerContent = {workerContent}
-                ID = {ID}
-                loading = {fetchContent.loading}
+       
                 state = 'finished'
                 loadingWorker = {loading}
             />

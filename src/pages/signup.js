@@ -1,3 +1,4 @@
+import React from 'react'
 import SignUpForm from "../components/form/signUpForm";
 import OwnerRegisterForm from "../components/form/ownerRegistrationForm";
 import { useMutation, useQuery } from "@apollo/client";
@@ -49,8 +50,8 @@ const SignUp = (props) => {
         }
     })
 
-    const [services,setService] = useState([]);
-    const [districts,setDistricts] = useState([]);
+    const [services,setService] = React.useState([]);
+    const [districts,setDistricts] = React.useState([]);
     const [memberships,setMemberships] =useState([])
 
     useEffect(() => {
@@ -83,7 +84,7 @@ const SignUp = (props) => {
     },[data])
 
     return ( 
-    <div className="auth-wrapper">
+     <div className="auth-wrapper">
         <div className="auth-content" style={{width:'90%'}}>
             <div className="auth-bg">
                 <span className="r"></span>
@@ -130,6 +131,7 @@ const SignUp = (props) => {
             }
         </div>
     </div>
+        
      );
 }
  

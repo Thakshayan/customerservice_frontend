@@ -94,7 +94,7 @@ const PasswordChanger = ({id,action}) => {
                 <label htmlFor="confirmPassword">Confirm Password</label>
                 <input type={addPassword} className="form-control" id="confirmPassword"  placeholder="Confirm Password" onChange={formik.handleChange} onBlur={formik.handleBlur} required/>
                 <div className="tooltips" id="tooltips" style={{float:'right'}} >
-                    <i className={addClassName} id="visibile" style={{float:"right",cursor:"pointer",transform:"translate(-10px,-30px)"}} onClick={toggleAddPassword}></i>
+                    <i className={addClassName} id="visibile" style={{float:"right",cursor:"pointer",transform:"translate(-10px,-30px)"}} onClick={toggleAddPassword} data-testid='visible'></i>
                                         
                     <span className="tooltiptext" style={{width:'150px',transform:"translate(-20px,-30px)"}}>{addPassword=='password'?'view password':'hide password'}</span>
                 </div> {formik.touched.confirmPassword && formik.errors.confirmPassword ? <small id="nameError" className="error form-text text-muted error "> {formik.errors.confirmPassword}</small>: null}

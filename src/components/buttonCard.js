@@ -13,7 +13,7 @@ const ButtonCard = ({id,array,setArray}) => {
     }
 
     return ( 
-        <div className="col-6 col-xl-4" style={{padding:"10px",height:"100%"}}>
+        <div className="col-6 col-xl-4" style={{padding:"10px",height:"100%"}} >
     
             
             <div className="tooltips" id="tooltips">

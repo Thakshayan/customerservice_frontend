@@ -81,7 +81,7 @@ const SignInForm = props => {
             style= {{paddingRight:30}}
           />
           <div className="tooltips" id="tooltips" style={{float:'right'}} >
-            <i className={className} id="visibile" style={{float:"right",cursor:"pointer",transform:"translate(-10px,-28px)"}} onClick={togglePassword}></i>
+            <i className={className} id="visibile" style={{float:"right",cursor:"pointer",transform:"translate(-10px,-28px)"}} onClick={togglePassword} data-testid="visible"></i>
             <span className="tooltiptext" style={{width:'150px',transform:"translate(-20px,-30px)"}}>{password=='password'?'view password':'hide password'}</span>
           </div>
         </div>

@@ -22,20 +22,24 @@ describe("Add employee component tests",()=>{
         // expect(linkElement).toBeInTheDocument();
     });
 
-    it("check both values same or not", async () => {
+    it("check for values", async () => {
         await act(async () => render(
-            <HashRouter>
+            <BrowserRouter>
                 <PasswordChanger/>  
-            </HashRouter>
+            </BrowserRouter>,
         ));
     
-        // const pw = screen.getByPlaceholderText(/Password/i)
-        // userEvent.type(pw, "AAA3");
-        // const conPw = screen.getByPlaceholderText(/Confirm Password/i)
-        // userEvent.type(conPw, "AAA3");
+   
+        const pw = screen.getByPlaceholderText('Password')
+       
+        const conPw = screen.getByPlaceholderText('Confirm Password')
+        await act(async () => {
 
-        //expect(pw.value).toBe(conPw.value)
-          
+            userEvent.type(conPw, "AAA3");
+            userEvent.type(pw, "AAA3");
+        });
+
+        expect(conPw.value).toBe('AAA3')
       });
 
     

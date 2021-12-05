@@ -29,8 +29,8 @@ const WorkDetailsPaid=(props)=>{
                                                     </div>
                                                     
                                                 </div>
-                                                <div class="col-12">
-                                                    <label class="label theme-bg2 text-white f-25 f-w-400 float-right">Paid</label>
+                                                <div className="col-12">
+                                                    <label className="label theme-bg2 text-white f-25 f-w-400 float-right">Paid</label>
                                                     
                                                 </div>
                                             </div>

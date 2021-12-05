@@ -163,9 +163,9 @@ const SignUpForm = ({error,loading,setUsername,username,setUserError,workRangeAr
                                     </div>                            
                                     <div className="form-group">
                                         <label htmlFor="password">Password</label>
-                                        <input type={addPassword} className="form-control" value={formik.values.password} id="password" placeholder="Password" onChange={formik.handleChange} onBlur={formik.handleBlur} required/>
+                                        <input type={addPassword} className="form-control" value={formik.values.password} id="password" placeholder="Password" onChange={formik.handleChange} onBlur={formik.handleBlur} required />
                                         <div className="tooltips" id="tooltips" style={{float:'right'}} >
-                                            <i className={addClassName} id="visibile" style={{float:"right",cursor:"pointer",transform:"translate(-10px,-30px)"}} onClick={toggleAddPassword}></i>
+                                            <i className={addClassName} id="visibile" style={{float:"right",cursor:"pointer",transform:"translate(-10px,-30px)"}} onClick={toggleAddPassword} data-testid="visible"></i>
                                         
                                             <span className="tooltiptext" style={{width:'150px',transform:"translate(-20px,-30px)"}}>{addPassword=='password'?'view password':'hide password'}</span>
                                         </div> 

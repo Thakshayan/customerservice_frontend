@@ -21,11 +21,11 @@ const WorkProgress=(props)=>{
                                                 <div className="col">
                                                     <h4 className="mb-4">Service Provider:<p> {props.SP}</p></h4>
                                                     <div>
-                                                        <p className="m-b-0"><h5>Description:</h5> {props.job}</p>
+                                                    <h5><p className="m-b-0">Description: {props.job}</p></h5>
                                                     </div>
                                                     <hr/>
                                                     <div>
-                                                        <p className="m-b-0"><h5>Started Date:</h5> {date}</p>
+                                                    <h5><p className="m-b-0">Started Date: {date}</p></h5>
                                                     </div>
                                                     <div>
                                                     
@@ -35,9 +35,9 @@ const WorkProgress=(props)=>{
                                                          </a> */}
                                                     </div>
                                                 </div>
-                                                <div class="col-auto">
+                                                <div className="col-auto">
                                                     
-                                                    <table class="table table-hover">
+                                                    <table className="table table-hover">
                                                         <thead>
                                                             <tr>
                                                                 <th>Worker Name</th>
@@ -46,14 +46,14 @@ const WorkProgress=(props)=>{
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            {props.workers.map(worker=>(
+                                                            {props.workers ? props.workers.map(worker=>(
                                                                 <tr>
                                                                 
                                                                 <td>{worker.name}</td>
                                                                 <td>{worker.contact_no}</td>
                                                                
                                                         </tr>
-                                                            ))}
+                                                            )): null }
                                                         </tbody>
                                                     </table>   
                                                     

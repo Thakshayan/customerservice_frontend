@@ -241,8 +241,8 @@ function AddWorkerForm({type,addEmployee,setID,Id,content,ID,photoFocus,loading}
                                                             </div> */}
                                                             <div className="form-group">
                                                                 <label htmlFor="password">Password</label>
-                                                                <input type={addPassword} className="form-control" value={formik.values.password} id="password" placeholder="Password" onChange={formik.handleChange} onBlur={formik.handleBlur} required/>
-                                                                <i className={addClassName} id="visibile" style={{float:"right",cursor:"pointer",transform:"translate(-10px,-30px)"}} onClick={toggleAddPassword}></i>
+                                                                <input type={addPassword} className="form-control" value={formik.values.password} id="password" placeholder="Password" onChange={formik.handleChange} onBlur={formik.handleBlur} required />
+                                                                <i className={addClassName} id="visibile" style={{float:"right",cursor:"pointer",transform:"translate(-10px,-30px)"}} onClick={toggleAddPassword} data-testid='visible'></i>
                                                                 {formik.touched.password && formik.errors.password ? <small id="nameError" className="error form-text text-muted error "> {formik.errors.password}</small>: null}
                                                             </div>
                                                             <div className="form-group">

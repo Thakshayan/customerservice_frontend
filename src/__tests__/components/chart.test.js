@@ -22,7 +22,7 @@ describe("Chart component tests",()=>{
            
         )
 
-        console.log()
+   
 
         // const linkElement = screen.getByText(/New Messages/i);
         // expect(linkElement).toBeInTheDocument();
